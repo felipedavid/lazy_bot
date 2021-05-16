@@ -13,32 +13,23 @@ static const uint32_t OBJECT_TYPE_OFFSET = 0x14;
 static const uint32_t UNIT_HEALTH_OFFSET = 0x58;
 
 //static int n_players;
-//static int n_units;
+static int n_units;
 static object_t local_player = {0};
-static object_t nearest_monster = {0};
 //static object_t players[10];
-//static object_t units[500];
+static object_t units[500];
 
 void update() {
     // temporary, just for debugging
     if (game_get_player_guid()) {
-        //if (local_player.pointer    == 0 || 
-        //    nearest_monster.pointer == 0 ||
-        //    nearest_monster.health  == 0) {
-           game_enumerate_visible_objects(callback, 0);
-        //}
-        uint32_t object_descriptor_addr = get_object_descriptor_addr(&nearest_monster);
-        nearest_monster.distance_from_local_player = 
-            local_player_distance_from_position(nearest_monster.position);
-        set_unit_position(&nearest_monster);
-        nearest_monster.health = 
-            read_uint32(object_descriptor_addr + UNIT_HEALTH_OFFSET);
-        set_unit_position(&nearest_monster);
-        if (nearest_monster.distance_from_local_player >= 4) {
-            go_to(local_player, nearest_monster.position, MoveClick);
+        n_units = 0;
+        game_enumerate_visible_objects(callback, 0);
+        sort_units_by_distance();
+       
+        if (units->distance_from_local_player >= 4) {
+            go_to(local_player, units->position, MoveClick);
         } else {
-            go_to(local_player, nearest_monster.position, NoneClick);
-            game_set_target(nearest_monster.guid);
+            go_to(local_player, units->position, NoneClick);
+            game_set_target(units->guid);
             invoke("CastSpellByName('Attack')");
         }
     }
@@ -103,7 +94,7 @@ void set_player_name_ptr(object_t *object) {
 }
 
 int32_t __fastcall callback(void *thiscall_garbage, uint32_t filter, uint64_t guid) {
-    static float closest_unit_distance = 1000; // just a random large value
+    float closest_unit_distance = 1000; // just a random large value
     object_t object = {0};
     object.guid = guid;
     object.pointer = game_get_object_ptr(guid);
@@ -117,14 +108,11 @@ int32_t __fastcall callback(void *thiscall_garbage, uint32_t filter, uint64_t gu
     }
 
     // Player names are stored differently from other units
-    if (object.type == Unit && object.health != 0) {
+    if (object.type == Unit && object.health > 0) {
         set_unit_name_ptr(&object);
         object.distance_from_local_player = 
             local_player_distance_from_position(object.position);
-        if (object.distance_from_local_player < closest_unit_distance) {
-            nearest_monster = object;
-            closest_unit_distance = object.distance_from_local_player;
-        }
+        units[n_units++] = object;
     } else if (object.type == Player) {
         set_player_name_ptr(&object);
         if (object.guid == game_get_player_guid()) {
@@ -164,20 +152,20 @@ void print_object_info(object_t *object) {
     printf("\n");
 }
 
-//void sort_units_by_distance() {
-//    object_t tmp;
-//    int swaps = -1;
-//    while (swaps != 0) {
-//        swaps = 0;
-//        for (int i = 0; i < n_units-2; i++) {
-//            if (units[i].distance_from_local_player > 
-//                units[i+1].distance_from_local_player) {
-//                tmp = units[i];
-//                units[i] = units[i+1];
-//                units[i+1] = tmp;
-//                swaps++;
-//            }
-//        }
-//    }
-//}
+void sort_units_by_distance() {
+    object_t tmp;
+    int swaps = -1;
+    while (swaps != 0) {
+        swaps = 0;
+        for (int i = 0; i < n_units-2; i++) {
+            if (units[i].distance_from_local_player > 
+                units[i+1].distance_from_local_player) {
+                tmp = units[i];
+                units[i] = units[i+1];
+                units[i+1] = tmp;
+                swaps++;
+            }
+        }
+    }
+}
 
