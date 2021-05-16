@@ -4,7 +4,7 @@
 #include "object_manager.h"
 
 extern object_t local_player;
-extern object_t units[100];
+extern object_t nearest_monster;
 
 bool running = false;
 

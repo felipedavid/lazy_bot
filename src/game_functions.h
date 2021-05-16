@@ -3,10 +3,6 @@
 
 void game_call_lua(const char *lua_command);
 
-typedef enum {
-    MoveClick = 0x4,
-    NoneClick = 0xD,
-} click_type_t;
 
 typedef uint64_t (__cdecl* get_player_guid_ft)();
 typedef uint32_t (__stdcall* get_object_ptr_ft)(uint64_t guid);

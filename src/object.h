@@ -28,4 +28,9 @@ typedef struct {
     float distance_from_local_player;
 } object_t;
 
+typedef enum {
+    MoveClick = 0x4,
+    NoneClick = 0xD,
+} click_type_t;
+
 #endif
