@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DLL_PATH "C:\\Users\\Felipe David\\work\\lazy\\bin\\lazy_bot.dll"
+#define DLL_PATH "C:\\lazy\\bin\\lazy_bot.dll"
 
 void set_debug_privileges() {
     LUID luid;
@@ -67,7 +67,7 @@ void inject_dll() {
 
 void setup_windows_layout() {
     HANDLE wow_window  = FindWindow(NULL, "World of Warcraft");
-    HANDLE logs_window = FindWindow(NULL, "World of Warcraft Classic");
+    HANDLE logs_window = FindWindow(NULL, "WoW");
     HANDLE bot_window  = FindWindow(NULL, "Lazy Bot");
 
     SetWindowPos(wow_window,  HWND_TOP, -10, 0, 800, 600, 0);
