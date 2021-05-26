@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DLL_PATH "W:\\lazy\\bin\\lazy_bot.dll"
+#define DLL_PATH "W:\\lazy_bot\\build\\lazy_bot.dll"
 
 void set_debug_privileges() {
     LUID luid;
