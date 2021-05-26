@@ -14,9 +14,9 @@ static const uint32_t UNIT_HEALTH_OFFSET = 0x58;
 
 //static int n_players;
 static int n_units;
-static object_t local_player = {0};
+object_t local_player = {0};
 //static object_t players[10];
-static object_t units[500];
+object_t units[500];
 
 void update() {
     // temporary, just for debugging

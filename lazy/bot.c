@@ -4,7 +4,7 @@
 #include "object_manager.h"
 
 extern object_t local_player;
-extern object_t nearest_monster;
+extern object_t units[500];
 
 bool running = false;
 
@@ -21,6 +21,8 @@ void stop() {
     if (running) {
         printf("Stoping Bot...\n");
         running = false;
+
+        go_to(local_player, units->position, NoneClick);
     } else {
         printf("Bot is already stopped.\n");
     }
