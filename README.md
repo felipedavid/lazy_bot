@@ -1,5 +1,6 @@
 ![](demo2.gif)
-
+# How it works?
+The bot works by injecting a dll into the game's client, directly calling game's functions and accessing its data structures in memory.
 # TODO
 * Find a better way to store and iterate over object manager
 * Implement a state machine for the bot's logic
@@ -7,7 +8,7 @@
 * Implement fishing
 * Implement something to record and load a defined path
 * Implement a navigation system, probably using [recastnavigation](https://github.com/recastnavigation/recastnavigation)
-* Find out how to loot enemies
+* Figure out how to loot enemies
 * Implement something to allow the bot's customization
 * Hook the graphics api to draw the bot's menu inside the game, probably with [ImGui](https://github.com/ocornut/imgui)
 * Figure out how to load the bot at runtime (without closing and opening the client everytime I make a little modification)
