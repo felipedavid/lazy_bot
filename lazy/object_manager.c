@@ -18,17 +18,17 @@ object_t local_player = {0};
 //static object_t players[10];
 object_t units[500];
 
+// temporary, just for debugging
 void update() {
-    // temporary, just for debugging
     if (game_get_player_guid()) {
         n_units = 0;
         game_enumerate_visible_objects(objects_callback, 0);
         sort_units_by_distance();
        
         if (units->distance_from_local_player >= 4) {
-            go_to(local_player, units->position, MoveClick);
+            go_to(units->position, MoveClick);
         } else {
-            go_to(local_player, units->position, NoneClick);
+            go_to(units->position, NoneClick);
             game_set_target(units->guid);
             invoke("CastSpellByName('Attack')");
         }

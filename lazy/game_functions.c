@@ -3,6 +3,8 @@
 #include "game_functions.h"
 #include "sync_thread.h"
 
+extern object_t local_player;
+
 #define CALL_LUA_FUN_PTR                  0x704CD0
 #define GET_PLAYER_GUID_FUN_PTR           0x468550
 #define ENUMERATE_VISIBLE_OBJECTS_FUN_PTR 0x468380
@@ -28,7 +30,7 @@ void game_call_lua(const char *lua_command) {
     }
 }
 
-void go_to(object_t local_player, position_t position, click_type_t click_type) {
+void go_to(position_t position, click_type_t click_type) {
     uint64_t interact_guid_ptr = 0; 
     game_click_to_move((void*)local_player.pointer, local_player.pointer, click_type, &interact_guid_ptr, &position, 2);
 }

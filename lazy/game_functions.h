@@ -20,4 +20,4 @@ _set_target game_set_target;
 
 /* function wrappers */
 void game_call_lua(const char *lua_command);
-void go_to(object_t local_player, position_t position, click_type_t click_type);
+void go_to(position_t position, click_type_t click_type);
