@@ -66,9 +66,10 @@ void inject_dll() {
 }
 
 void setup_windows_layout() {
-    HANDLE wow_window  = FindWindow(NULL, "World of Warcraft");
-    HANDLE logs_window = FindWindow(NULL, "WoW");
-    HANDLE bot_window  = FindWindow(NULL, "Lazy Bot");
+    HANDLE wow_window, logs_window, bot_window;
+    while (!(wow_window = FindWindow(NULL, "World of Warcraft"))) Sleep(100);
+    while (!(logs_window = FindWindow(NULL, "WoW 1.12.1"))) Sleep(100);
+    while (!(bot_window  = FindWindow(NULL, "Lazy Bot"))) Sleep(100);
 
     SetWindowPos(wow_window,  HWND_TOP, -10, 0, 800, 600, 0);
     SetWindowPos(bot_window, HWND_TOP, 780, 0, 500, 250, 0);
@@ -78,6 +79,5 @@ void setup_windows_layout() {
 int main() {
     set_debug_privileges();
     inject_dll();
-    Sleep(500);
     setup_windows_layout();
 }

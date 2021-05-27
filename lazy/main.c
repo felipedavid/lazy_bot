@@ -1,13 +1,11 @@
 #include <windows.h>
-#include <stdbool.h>
-#include <stdint.h>
 
 #include "gui.h"
 #include "bot.h"
 
 HINSTANCE instance_handle;
 
-bool WINAPI DllMain(HINSTANCE instance_handle_dll, DWORD reason, LPVOID reserved) {
+BOOL WINAPI DllMain(HINSTANCE instance_handle_dll, DWORD reason, LPVOID reserved) {
     instance_handle = instance_handle_dll;
     switch (reason) {
         case DLL_PROCESS_ATTACH:
@@ -15,5 +13,5 @@ bool WINAPI DllMain(HINSTANCE instance_handle_dll, DWORD reason, LPVOID reserved
             CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start_gui, &instance_handle, 0, NULL);
             break;
     }
-    return true;
+    return TRUE;
 }

@@ -3,13 +3,13 @@
 #include <stdio.h>
 
 void fix_click_to_move() {
-    uint32_t click_to_move_fix_addr = 0x860A90;
-    *(uint32_t*)click_to_move_fix_addr = 0;
+    uint32_t *click_to_move_fix_addr = (uint32_t *) 0x860A90;
+    *click_to_move_fix_addr = 0;
 }
 
 // Enable protected lua functions
 void unlock_lua() {
-    char bytes_to_write[] = { 0xB8, 0x01, 0x00, 0x00, 0x00, 0xc3 };
+    uint8_t bytes_to_write[] = { 0xB8, 0x01, 0x00, 0x00, 0x00, 0xc3 };
     WriteProcessMemory(GetCurrentProcess(), 
                        (void *)0x494A50, 
                        (void*)bytes_to_write, 
@@ -24,7 +24,7 @@ void create_console() {
 }
 
 void setup_client() {
-    sync(); // setup stuff to run code on the main thread
+    hook(); // setup stuff to run code on the main thread
     unlock_lua();
     fix_click_to_move();
     create_console();

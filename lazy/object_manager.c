@@ -9,31 +9,11 @@
 #include "object_manager.h"
 #include "object.h"
 
-static const uint32_t OBJECT_TYPE_OFFSET = 0x14;
-static const uint32_t UNIT_HEALTH_OFFSET = 0x58;
-
-//static int n_players;
-static int n_units;
+int n_units;
 object_t local_player = {0};
-//static object_t players[10];
-object_t units[500];
-
-// temporary, just for debugging
-void update() {
-    if (game_get_player_guid()) {
-        n_units = 0;
-        game_enumerate_visible_objects(objects_callback, 0);
-        sort_units_by_distance();
-       
-        if (units->distance_from_local_player >= 4) {
-            go_to(units->position, MoveClick);
-        } else {
-            go_to(units->position, NoneClick);
-            game_set_target(units->guid);
-            invoke("CastSpellByName('Attack')");
-        }
-    }
-}
+object_t closest_unit = {0};
+//object_t units[100]; // TODO: make this dynamic, if still some need to store
+                     // all objects
 
 float local_player_distance_from_position(position_t position) {
     int delta_x = local_player.position.x - position.x;
@@ -43,8 +23,7 @@ float local_player_distance_from_position(position_t position) {
     return (float) sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
 }
 
-// Units have their details stored in a different memory location. These
-// details are known as 'Descriptors'.
+// Units have their details stored in a different memory location
 uint32_t get_object_descriptor_addr(object_t *object) {
     static const uint32_t DESCRIPTOR_OFFSET = 0x8;
     return read_uint32(object->pointer + DESCRIPTOR_OFFSET);
@@ -89,6 +68,10 @@ void set_player_name_ptr(object_t *object) {
 }
 
 int32_t __fastcall objects_callback(void *thiscall_garbage, uint32_t filter, uint64_t guid) {
+
+    static const uint32_t OBJECT_TYPE_OFFSET = 0x14;
+    static const uint32_t UNIT_HEALTH_OFFSET = 0x58;
+
     float closest_unit_distance = 1000; // just a random large value
     object_t object = {0};
     object.guid = guid;
@@ -106,7 +89,14 @@ int32_t __fastcall objects_callback(void *thiscall_garbage, uint32_t filter, uin
         set_unit_name_ptr(&object);
         object.distance_from_local_player = 
             local_player_distance_from_position(object.position);
-        units[n_units++] = object;
+        //units[n_units++] = object;
+        if (n_units == 0) {
+            closest_unit = object;
+        } else if (object.distance_from_local_player <
+                   closest_unit.distance_from_local_player) {
+            closest_unit = object;
+        }
+        n_units++;
     } else if (object.type == Player) {
         set_player_name_ptr(&object);
         if (object.guid == game_get_player_guid()) {
@@ -131,35 +121,35 @@ const char *object_type_code_to_string(object_type_t object_type) {
     return NULL;
 }
 
-void print_object_info(object_t *object) {
-    printf("ObjectType: %s\n", object_type_code_to_string(object->type));
-    printf("Guid: %llu\n", object->guid);
-    printf("Pointer: %u\n", object->pointer);
+void print_object_info(object_t object) {
+    printf("ObjectType: %s\n", object_type_code_to_string(object.type));
+    printf("Guid: %llu\n", object.guid);
+    printf("Pointer: %u\n", object.pointer);
 
-    if (object->type == Player || object->type == Unit) {
-        printf("Health: %u\n", object->health);
-        printf("Position: %f %f %f\n", object->position.x,
-                                       object->position.y,
-                                       object->position.z);
-        printf("Name: %s\n", object->name_ptr);
+    if (object.type == Player || object.type == Unit) {
+        printf("Health: %u\n", object.health);
+        printf("Position: %f %f %f\n", object.position.x,
+                                       object.position.y,
+                                       object.position.z);
+        printf("Name: %s\n", object.name_ptr);
     }
     printf("\n");
 }
 
-void sort_units_by_distance() {
-    object_t tmp;
-    int swaps = -1;
-    while (swaps != 0) {
-        swaps = 0;
-        for (int i = 0; i < n_units-2; i++) {
-            if (units[i].distance_from_local_player > 
-                units[i+1].distance_from_local_player) {
-                tmp = units[i];
-                units[i] = units[i+1];
-                units[i+1] = tmp;
-                swaps++;
-            }
-        }
-    }
-}
+//void sort_units_by_distance() {
+//    object_t tmp;
+//    int swaps = -1;
+//    while (swaps != 0) {
+//        swaps = 0;
+//        for (int i = 0; i < n_units-2; i++) {
+//            if (units[i].distance_from_local_player > 
+//                units[i+1].distance_from_local_player) {
+//                tmp = units[i];
+//                units[i] = units[i+1];
+//                units[i+1] = tmp;
+//                swaps++;
+//            }
+//        }
+//    }
+//}
 

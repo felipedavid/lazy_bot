@@ -1,7 +1,6 @@
 #include <windows.h>
 #include <stdint.h>
 
-//#include "game_functions.h"
 #include "utils.h"
 #include "sync_thread.h"
 #include "bot.h"

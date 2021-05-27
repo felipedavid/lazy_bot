@@ -1,1 +1,2 @@
 void bot();
+void update();

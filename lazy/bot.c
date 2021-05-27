@@ -2,15 +2,19 @@
 #include <stdbool.h>
 
 #include "object_manager.h"
+#include "game_functions.h"
+#include "sync_thread.h"
 
 extern object_t local_player;
-extern object_t units[500];
+extern object_t closest_unit;
+extern int n_units;
+//extern object_t units[100];
 
 bool running = false;
 
 void start() {
     if (!running) {
-        printf("Starting Bot...\n");
+        printf("\n--- Starting Bot ---\n");
         running = true;
     } else {
         printf("Bot already running.\n");
@@ -19,19 +23,41 @@ void start() {
 
 void stop() {
     if (running) {
-        printf("Stoping Bot...\n");
+        printf("\n--- Stoping Bot ---\n");
         running = false;
-
-        go_to(local_player, units->position, NoneClick);
+        go_to(closest_unit.position, NoneClick);
     } else {
         printf("Bot is already stopped.\n");
+    }
+}
+
+// temporary, just for debugging
+void update() {
+    if (game_get_player_guid()) {
+        static uint64_t prev_target_guid = 0;
+        n_units = 0;
+        game_enumerate_visible_objects(objects_callback, 0);
+        
+        if (closest_unit.guid != prev_target_guid) {
+            printf("\nNew Target:\n");
+            print_object_info(closest_unit);
+            prev_target_guid = closest_unit.guid;
+        }
+
+        if (closest_unit.distance_from_local_player >= 4) {
+            go_to(closest_unit.position, MoveClick);
+        } else {
+            go_to(closest_unit.position, NoneClick);
+            game_set_target(closest_unit.guid);
+            run_lua_on_main_thread("CastSpellByName('Attack')");
+        }
     }
 }
 
 void bot() {
     while (true) {
         if (running) {
-            invoke_update();
+            run_update_on_main_thread();
         }
         Sleep(500);
     }
