@@ -1,8 +1,10 @@
 # lazy_bot
 A automation tool to play World of Warcraft for me. (Memory based, only supports client v1.12.1)
-![](demo2.gif)
+![](demo.gif)
+# Why?
+I'm too damn lazy to even play the game
 # How it works?
-The bot works by injecting a dll into the game's client, directly calling game's functions and accessing its data structures in memory.
+The bot works by injecting a dll into the game's client, directly calling game's functions and accessing its data structures in memory
 # TODO
 * Find out a better way to store and iterate over the object manager
 * Implement a state machine for the bot's logic
