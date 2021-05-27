@@ -22,7 +22,7 @@ void update() {
     // temporary, just for debugging
     if (game_get_player_guid()) {
         n_units = 0;
-        game_enumerate_visible_objects(callback, 0);
+        game_enumerate_visible_objects(objects_callback, 0);
         sort_units_by_distance();
        
         if (units->distance_from_local_player >= 4) {
@@ -33,11 +33,6 @@ void update() {
             invoke("CastSpellByName('Attack')");
         }
     }
-}
-
-void go_to(object_t local_player, position_t position, click_type_t click_type) {
-    uint64_t interact_guid_ptr = 0; 
-    game_click_to_move((void*)local_player.pointer, local_player.pointer, click_type, &interact_guid_ptr, &position, 2);
 }
 
 float local_player_distance_from_position(position_t position) {
@@ -93,7 +88,7 @@ void set_player_name_ptr(object_t *object) {
     object->name_ptr = (char *)(name_ptr + PLAYER_NAME_OFFSET);
 }
 
-int32_t __fastcall callback(void *thiscall_garbage, uint32_t filter, uint64_t guid) {
+int32_t __fastcall objects_callback(void *thiscall_garbage, uint32_t filter, uint64_t guid) {
     float closest_unit_distance = 1000; // just a random large value
     object_t object = {0};
     object.guid = guid;
@@ -107,7 +102,6 @@ int32_t __fastcall callback(void *thiscall_garbage, uint32_t filter, uint64_t gu
         set_unit_position(&object);
     }
 
-    // Player names are stored differently from other units
     if (object.type == Unit && object.health > 0) {
         set_unit_name_ptr(&object);
         object.distance_from_local_player = 
