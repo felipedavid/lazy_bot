@@ -63,6 +63,6 @@ void bot() {
             break;                                   // to run stuff on the main thread
         }
         run_update_on_main_thread();
-        Sleep(500);
+        Sleep(100);
     }
 }

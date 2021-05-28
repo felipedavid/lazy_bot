@@ -12,8 +12,6 @@
 int n_units;
 object_t local_player = {0};
 object_t closest_unit = {0};
-//object_t units[100]; // TODO: make this dynamic, if still some need to store
-                     // all objects
 
 float local_player_distance_from_position(position_t position) {
     int delta_x = local_player.position.x - position.x;
@@ -72,7 +70,6 @@ int32_t __fastcall objects_callback(void *thiscall_garbage, uint32_t filter, uin
     static const uint32_t OBJECT_TYPE_OFFSET = 0x14;
     static const uint32_t UNIT_HEALTH_OFFSET = 0x58;
 
-    float closest_unit_distance = 1000; // just a random large value
     object_t object = {0};
     object.guid = guid;
     object.pointer = game_get_object_ptr(guid);
@@ -89,7 +86,6 @@ int32_t __fastcall objects_callback(void *thiscall_garbage, uint32_t filter, uin
         set_unit_name_ptr(&object);
         object.distance_from_local_player = 
             local_player_distance_from_position(object.position);
-        //units[n_units++] = object;
         if (n_units == 0) {
             closest_unit = object;
         } else if (object.distance_from_local_player <
@@ -135,21 +131,3 @@ void print_object_info(object_t object) {
     }
     printf("\n");
 }
-
-//void sort_units_by_distance() {
-//    object_t tmp;
-//    int swaps = -1;
-//    while (swaps != 0) {
-//        swaps = 0;
-//        for (int i = 0; i < n_units-2; i++) {
-//            if (units[i].distance_from_local_player > 
-//                units[i+1].distance_from_local_player) {
-//                tmp = units[i];
-//                units[i] = units[i+1];
-//                units[i+1] = tmp;
-//                swaps++;
-//            }
-//        }
-//    }
-//}
-

@@ -24,7 +24,7 @@ void create_console() {
 }
 
 void setup_client() {
-    hook(); // setup stuff to run code on the main thread
+    hook_win_proc();
     unlock_lua();
     fix_click_to_move();
     create_console();
