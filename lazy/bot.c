@@ -28,7 +28,6 @@ void stop() {
     if (running) {
         printf("\n--- Stoping Bot ---\n");
         running = false;
-        go_to(closest_unit.position, NoneClick);
     } else {
         printf("Bot is already stopped.\n");
     }
@@ -58,7 +57,11 @@ void update() {
 }
 
 void bot() {
-    while (running) {
+    while (true) {
+        if (!running) {
+            go_to(closest_unit.position, NoneClick); // create a general function
+            break;                                   // to run stuff on the main thread
+        }
         run_update_on_main_thread();
         Sleep(500);
     }
