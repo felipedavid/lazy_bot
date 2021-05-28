@@ -4,7 +4,9 @@
 #include "object_manager.h"
 #include "game_functions.h"
 #include "sync_thread.h"
+#include "bot.h"
 
+extern HINSTANCE instance_handle; // <- keep an eye on this buddy :)
 extern object_t local_player;
 extern object_t closest_unit;
 extern int n_units;
@@ -16,6 +18,7 @@ void start() {
     if (!running) {
         printf("\n--- Starting Bot ---\n");
         running = true;
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot, &instance_handle, 0, NULL);
     } else {
         printf("Bot already running.\n");
     }
@@ -55,10 +58,8 @@ void update() {
 }
 
 void bot() {
-    while (true) {
-        if (running) {
-            run_update_on_main_thread();
-        }
+    while (running) {
+        run_update_on_main_thread();
         Sleep(500);
     }
 }
