@@ -3,15 +3,6 @@
 #include "game_functions.h"
 #include "sync_thread.h"
 
-#define CALL_LUA_FUN_PTR                  0x704CD0
-#define GET_PLAYER_GUID_FUN_PTR           0x468550
-#define ENUMERATE_VISIBLE_OBJECTS_FUN_PTR 0x468380
-#define GET_OBJECT_FUN_PTR                0x464870
-#define CLICK_TO_MOVE_FUN_PTR             0x611130
-#define SET_TARGET_FUN_PTR                0x493540
-
-extern object_t local_player;
-
 _get_player_guid game_get_player_guid = (_get_player_guid) GET_PLAYER_GUID_FUN_PTR;
 _enumerate_visible_objects game_enumerate_visible_objects =
     (_enumerate_visible_objects) ENUMERATE_VISIBLE_OBJECTS_FUN_PTR;
@@ -30,11 +21,36 @@ void game_call_lua(const char *lua_command) {
     }
 }
 
-void go_to(position_t position, click_type_t click_type) {
-    uint64_t interact_guid_ptr = 0;
+void click_to_move(position_t position) {
+    uint64_t interact_guid_ptr = 0; // no idea what this is.. but still works :)
     game_click_to_move((void*)local_player.pointer, 
                        local_player.pointer, 
-                       click_type, 
+                       MoveClick, 
                        &interact_guid_ptr, 
                        &position, 2);
+}
+
+void click_to_move_stop() {
+    uint64_t interact_guid_ptr = 0; // no idea what this is.. but still works :)
+    game_click_to_move((void*)local_player.pointer, 
+                       local_player.pointer, 
+                       NoneClick, 
+                       &interact_guid_ptr, 
+                       &(local_player.position), 2);
+}
+
+void set_target(object_t object) {
+    game_set_target(object.guid);
+}
+
+bool player_logged_in() {
+    return game_get_player_guid() > 0;
+}
+
+void cast_spell_by_name(const char *spell_name) {
+    char lua_command[256] = "CastSpellByName('";
+    strcat(lua_command, spell_name);
+    strcat(lua_command, "')");
+
+    run_lua_on_main_thread(lua_command);
 }

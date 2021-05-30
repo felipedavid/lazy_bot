@@ -6,12 +6,6 @@
 #include "sync_thread.h"
 #include "bot.h"
 
-extern HINSTANCE instance_handle; // <- keep an eye on this buddy :)
-extern object_t local_player;
-extern object_t closest_unit;
-extern int n_units;
-//extern object_t units[100];
-
 bool running = false;
 
 void start() {
@@ -35,7 +29,7 @@ void stop() {
 
 // temporary, just for debugging
 void update() {
-    if (game_get_player_guid()) {
+    if (player_logged_in()) {
         static uint64_t prev_target_guid = 0;
         n_units = 0;
         game_enumerate_visible_objects(objects_callback, 0);
@@ -47,11 +41,11 @@ void update() {
         }
 
         if (closest_unit.distance_from_local_player >= 4) {
-            go_to(closest_unit.position, MoveClick);
+            click_to_move(closest_unit.position);
         } else {
-            go_to(closest_unit.position, NoneClick);
-            game_set_target(closest_unit.guid);
-            run_lua_on_main_thread("CastSpellByName('Attack')");
+            click_to_move_stop();
+            set_target(closest_unit);
+            cast_spell_by_name("Attack");
         }
     }
 }
@@ -59,8 +53,9 @@ void update() {
 void bot() {
     while (true) {
         if (!running) {
-            go_to(closest_unit.position, NoneClick); // create a general function
-            break;                                   // to run stuff on the main thread
+            // TODO: Create a general function to run stuff on the main thread
+            click_to_move_stop();
+            break;
         }
         run_update_on_main_thread();
         Sleep(100);

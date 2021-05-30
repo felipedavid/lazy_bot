@@ -13,6 +13,11 @@ int n_units;
 object_t local_player = {0};
 object_t closest_unit = {0};
 
+uint64_t get_target_guid_from_object(object_t object) {
+    static const uint32_t TARGET_GUID_OFFSET = 0x40;
+    return read_uint64(get_object_descriptor_addr(object) + TARGET_GUID_OFFSET);
+}
+
 float local_player_distance_from_position(position_t position) {
     int delta_x = local_player.position.x - position.x;
     int delta_y = local_player.position.y - position.y;
@@ -22,9 +27,9 @@ float local_player_distance_from_position(position_t position) {
 }
 
 // Units have their details stored in a different memory location
-uint32_t get_object_descriptor_addr(object_t *object) {
+uint32_t get_object_descriptor_addr(object_t object) {
     static const uint32_t DESCRIPTOR_OFFSET = 0x8;
-    return read_uint32(object->pointer + DESCRIPTOR_OFFSET);
+    return read_uint32(object.pointer + DESCRIPTOR_OFFSET);
 }
 
 // The player its a type of unit, so this functions will also work with the
@@ -77,7 +82,7 @@ int32_t __fastcall objects_callback(void *thiscall_garbage, uint32_t filter, uin
         (object_type_t) read_byte(object.pointer + OBJECT_TYPE_OFFSET);
 
     if (object.type == Unit || object.type == Player) {
-        uint32_t object_descriptor_addr = get_object_descriptor_addr(&object);
+        uint32_t object_descriptor_addr = get_object_descriptor_addr(object);
         object.health = read_uint32(object_descriptor_addr + UNIT_HEALTH_OFFSET);
         set_unit_position(&object);
     }
