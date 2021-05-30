@@ -21,9 +21,9 @@ typedef void (__stdcall* _set_target)(uint64_t guid);
 #define CLICK_TO_MOVE_FUN_PTR             0x611130
 #define SET_TARGET_FUN_PTR                0x493540
 
-_get_player_guid game_get_player_guid;
-_enumerate_visible_objects game_enumerate_visible_objects;
-_get_object_ptr game_get_object_ptr;
+extern _get_player_guid game_get_player_guid;
+extern _enumerate_visible_objects game_enumerate_visible_objects;
+extern _get_object_ptr game_get_object_ptr;
 
 extern object_t local_player;
 
@@ -33,3 +33,4 @@ void click_to_move(position_t position);
 void click_to_move_stop();
 bool player_logged_in();
 void cast_spell_by_name(const char *spell_name);
+void set_target(object_t object);

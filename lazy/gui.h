@@ -1,2 +1,1 @@
-#include <stdint.h>
-uint32_t WINAPI start_gui(LPVOID injected_instance);
+int start_gui();

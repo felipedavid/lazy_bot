@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <stdint.h>
 #include "object.h"
 
@@ -9,3 +10,5 @@ extern int n_units;
 
 void bot();
 void update();
+void start();
+void stop();

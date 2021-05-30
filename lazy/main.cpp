@@ -9,7 +9,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle_dll, DWORD reason, LPVOID reserved
     instance_handle = instance_handle_dll;
     switch (reason) {
         case DLL_PROCESS_ATTACH:
-            CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start_gui, &instance_handle, 0, NULL);
+            CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start_gui, NULL, 0, NULL);
             break;
     }
     return TRUE;

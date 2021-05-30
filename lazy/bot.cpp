@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <stdbool.h>
+#include <cstdio>
 
 #include "object_manager.h"
 #include "game_functions.h"

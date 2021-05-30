@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "sync_thread.h"
+
 void fix_click_to_move() {
     uint32_t *click_to_move_fix_addr = (uint32_t *) 0x860A90;
     *click_to_move_fix_addr = 0;
