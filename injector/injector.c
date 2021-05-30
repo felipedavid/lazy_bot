@@ -79,5 +79,5 @@ void setup_windows_layout() {
 int main() {
     set_debug_privileges();
     inject_dll();
-    //setup_windows_layout();
+    setup_windows_layout();
 }

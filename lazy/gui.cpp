@@ -5,8 +5,14 @@
 #include "imgui.h"
 #include "bot.h"
 #include "utils.h"
+#include "gui.h"
 
 #define WINDOW_NAME "Lazy Bot"
+
+char buf1[200];
+char buf2[200];
+char buf3[200];
+size_t bufSize = 200;
 
 void frame() {
     if (ImGui::Button("Start")) {
@@ -17,6 +23,12 @@ void frame() {
         stop();
     }
     ImGui::SetWindowPos(ImVec2(0, -20));
+
+    if (running) {
+        ImGui::Text("Running...");
+    } else {
+        ImGui::Text("Not running.");
+    }
 
     RECT rect;
     ::GetClientRect(FindWindow(NULL, WINDOW_NAME), &rect);
