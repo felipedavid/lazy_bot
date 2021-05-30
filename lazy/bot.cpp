@@ -48,6 +48,8 @@ void update() {
             set_target(closest_unit);
             cast_spell_by_name("Attack");
         }
+    } else {
+        running = false;
     }
 }
 

@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "gui.h"
 #include "sync_thread.h"
+#include "game_functions.h"
 
 #define WINDOW_NAME "Lazy Bot"
 
@@ -18,7 +19,9 @@ void frame() {
         if (ImGui::BeginTabItem("Main")) {
             if (!running) {
                 if (ImGui::Button("Start")) {
-                    start();
+                    if (player_logged_in()) {
+                        start();
+                    }
                 }
             } else {
                 if (ImGui::Button("Stop")) {
@@ -74,6 +77,8 @@ void frame() {
     RECT rect;
     ::GetClientRect(FindWindow(NULL, WINDOW_NAME), &rect);
     ImGui::SetWindowSize(ImVec2((float)(rect.right - rect.left), (float)(rect.bottom - rect.top)+20));
+
+    Sleep(20);
 }
 
 int start_gui() {
