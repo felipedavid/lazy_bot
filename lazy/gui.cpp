@@ -6,29 +6,70 @@
 #include "bot.h"
 #include "utils.h"
 #include "gui.h"
+#include "sync_thread.h"
 
 #define WINDOW_NAME "Lazy Bot"
 
-char buf1[200];
-char buf2[200];
-char buf3[200];
-size_t bufSize = 200;
+char input[256];
 
 void frame() {
-    if (ImGui::Button("Start")) {
-        start();
+    ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+    if (ImGui::BeginTabBar("#tabs", tab_bar_flags)) {
+        if (ImGui::BeginTabItem("Main")) {
+            if (!running) {
+                if (ImGui::Button("Start")) {
+                    start();
+                }
+            } else {
+                if (ImGui::Button("Stop")) {
+                    stop();
+                }
+            }
+            if (running) {
+                ImGui::Text("Running...");
+            } else {
+                ImGui::Text("Not running.");
+            }
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Fish")) {
+            ImGui::Text("Not Implemented.\n");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Combat")) {
+            ImGui::Text("Not Implemented.\n");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Gather")) {
+            ImGui::Text("Not Implemented.\n");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Mount")) {
+            ImGui::Text("Not Implemented.\n");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Vendor")) {
+            ImGui::Text("Not Implemented.\n");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Hacks")) {
+            ImGui::Text("Not Implemented.\n");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("LUA Test")) {
+            ImGui::InputText("Lua command: ", input, 256);
+            if (ImGui::Button("Run")) {
+                run_lua_on_main_thread(input);
+            }
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Debug")) {
+            if (ImGui::Button("Clear Log Console")) system("cls");
+            ImGui::EndTabItem();
+        }
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Stop")) {
-        stop();
-    }
+    ImGui::EndTabBar();
     ImGui::SetWindowPos(ImVec2(0, -20));
-
-    if (running) {
-        ImGui::Text("Running...");
-    } else {
-        ImGui::Text("Not running.");
-    }
 
     RECT rect;
     ::GetClientRect(FindWindow(NULL, WINDOW_NAME), &rect);
@@ -40,6 +81,6 @@ int start_gui() {
 
     int imguiConfigFlags = 0;
     //imguiConfigFlags = imguiConfigFlags | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
-    imgui_app(frame, WINDOW_NAME, 500, 250, imguiConfigFlags);    
+    imgui_app(frame, WINDOW_NAME, 500, 600, imguiConfigFlags);    
     return 0;
 }
