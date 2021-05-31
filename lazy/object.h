@@ -1,3 +1,4 @@
+#include <stdint.h>
 #ifndef OBJECTS
 #define OBJECTS
 
@@ -26,6 +27,7 @@ typedef struct {
     position_t position;
     object_type_t type;
     float distance_from_local_player;
+    uint64_t target_guid;
 } object_t;
 
 typedef enum {

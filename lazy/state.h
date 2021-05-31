@@ -1,3 +1,4 @@
+#include "object.h"
 
 typedef enum {
     NO_STATE,
@@ -10,6 +11,10 @@ typedef struct {
     state_t stack[10];
     int n_states;
 } state_stack_t;
+
+extern object_t local_player;
+extern object_t closest_unit;
+extern int n_units;
 
 void grind_state_handler();
 void move_to_target_state_handler();
