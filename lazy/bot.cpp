@@ -6,6 +6,7 @@
 #include "game_functions.h"
 #include "sync_thread.h"
 #include "bot.h"
+#include "state.h"
 
 bool running = false;
 
@@ -36,8 +37,8 @@ void update() {
         game_enumerate_visible_objects(objects_callback, 0);
         
         if (closest_unit.guid != prev_target_guid) {
-            printf("\nNew Target:\n");
-            print_object_info(closest_unit);
+            //printf("\nNew Target:\n");
+            //print_object_info(closest_unit);
             prev_target_guid = closest_unit.guid;
         }
 
@@ -50,6 +51,20 @@ void update() {
         }
     } else {
         running = false;
+    }
+
+    switch (top_state()) {
+        case GRIND_STATE: 
+            grind_state_handler();
+            break;
+        case MOVE_TO_TARGET_STATE:
+            move_to_target_state_handler();
+            break;
+        case COMBAT_STATE:
+            combat_state_handler();
+            break;
+        default: 
+            printf("NO_STATE.\n"); break;
     }
 }
 

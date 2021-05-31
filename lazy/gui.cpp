@@ -2,12 +2,13 @@
 #include <cstdlib>
 #include <stdio.h>
 
-#include "imgui.h"
+#include "imgui\imgui.h"
 #include "bot.h"
 #include "utils.h"
 #include "gui.h"
 #include "sync_thread.h"
 #include "game_functions.h"
+#include "state.h"
 
 #define WINDOW_NAME "Lazy Bot"
 
@@ -67,6 +68,21 @@ void frame() {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Debug")) {
+            if (ImGui::Button("Push GRIND_STATE")) {
+                push_state(GRIND_STATE);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Push MOVE_TO_TARGET_STATE")) {
+                push_state(MOVE_TO_TARGET_STATE);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Push COMBAT_STATE")) {
+                push_state(COMBAT_STATE);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Pop state")) {
+                pop_state();
+            }
             if (ImGui::Button("Clear Log Console")) system("cls");
             ImGui::EndTabItem();
         }
