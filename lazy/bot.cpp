@@ -8,6 +8,8 @@
 #include "bot.h"
 #include "state.h"
 
+#include "hacks.h" // temporary
+
 bool running = false;
 
 void start() {
@@ -53,23 +55,24 @@ void update() {
     //    running = false;
     //}
 
-    switch (top_state()) {
-        case GRIND_STATE: 
-            grind_state_handler();
-            puts("GRIND_STATE");
-            break;
-        case MOVE_TO_TARGET_STATE:
-            move_to_target_state_handler();
-            puts("MOVE_TO_TARGET_STATE");
-            break;
-        case COMBAT_STATE:
-            combat_state_handler();
-            puts("COMBAT_STATE");
-            break;
-        case NO_STATE: 
-            push_state(GRIND_STATE);
-            break;
-    }
+    //switch (top_state()) {
+    //    case GRIND_STATE: 
+    //        grind_state_handler();
+    //        puts("GRIND_STATE");
+    //        break;
+    //    case MOVE_TO_TARGET_STATE:
+    //        move_to_target_state_handler();
+    //        puts("MOVE_TO_TARGET_STATE");
+    //        break;
+    //    case COMBAT_STATE:
+    //        combat_state_handler();
+    //        puts("COMBAT_STATE");
+    //        break;
+    //    case NO_STATE: 
+    //        push_state(GRIND_STATE);
+    //        break;
+    //}
+    show_position();
 }
 
 void bot() {

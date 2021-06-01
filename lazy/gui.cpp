@@ -9,6 +9,7 @@
 #include "sync_thread.h"
 #include "game_functions.h"
 #include "state.h"
+#include "hacks.h"
 
 #define WINDOW_NAME "Lazy Bot"
 
@@ -57,7 +58,9 @@ void frame() {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Hacks")) {
-            ImGui::Text("Not Implemented.\n");
+            if (ImGui::Button("Click to Teleport")) {
+                toggle_click_to_teleport();
+            }
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("LUA Test")) {
