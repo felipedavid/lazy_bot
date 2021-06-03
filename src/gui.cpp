@@ -4,9 +4,8 @@
 
 #include "imgui\imgui.h"
 #include "utils.h"
-
-// temporary
-#include "object_manager.h"
+#include "objects.h"
+#include "local_player.h"
 
 #define WINDOW_NAME "Kronos Bot"
 
@@ -22,10 +21,12 @@ void frame() {
             if (ImGui::Button("Show Console")) {
                 create_console();
             }
-            ImGui::EndTabItem();
-            if (ImGui::Button("Show Objects")) {
+            ImGui::SameLine();
+            if (ImGui::Button("Test")) {
                 update_view();
+                go_to(get_object_position(get_closest_enemy()));
             }
+            ImGui::EndTabItem();
         }
     }
     ImGui::EndTabBar();

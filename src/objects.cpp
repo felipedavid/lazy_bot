@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-#include "object_manager.h"
-#include "game_functions.h"
-#include "object.h"
+#include "objects.h"
 #include "stdint.h"
+#include "game_functions.h"
 #include "memory_manager.h"
+#include "local_player.h"
 
 object_t objects[500];
 size_t n_objects;
@@ -15,6 +15,11 @@ uint32_t __fastcall enumerate_objects_callback(void *thiss, uint32_t filter, uin
     object.pointer = get_object_ptr(object.guid);
     object.type = get_object_type(object.pointer);
 
+    // TODO: remove this
+    if (object.type == Player) {
+        local_player = &objects[n_objects];
+    }
+
     if (object.type == Unit || object.type == Player) {
         objects[n_objects++] = object;
     }
@@ -22,25 +27,10 @@ uint32_t __fastcall enumerate_objects_callback(void *thiss, uint32_t filter, uin
     return 1;
 }
 
+// temporary
 void update_view() {
-    // temporary
     n_objects = 0; 
     enumerate_visible_objects(enumerate_objects_callback);
-
-    for (size_t i = 0; i < n_objects; i++) {
-        printf("Object %u\n", i);
-        printf("Guid: %llu\n", objects[i].guid);
-        printf("Pointer: 0x%x\n", objects[i].pointer);
-        printf("Type: 0x%x\n", objects[i].type);
-        printf("Health %d\n", get_object_health(objects[i]));
-        printf("Name %s\n", get_object_name(objects[i]));
-
-        position_t position = get_object_position(objects[i]);
-        printf("Position: %.2f %.2f %.2f\n", position.x,
-                                             position.y,
-                                             position.z);
-        printf("\n");
-    }
 }
 
 object_type_t get_object_type(uint32_t object_ptr) {
@@ -108,4 +98,18 @@ position_t get_object_position(object_t object) {
     position.z = read_float(object.pointer + POS_Z_OFFSET);
 
     return position;
+}
+
+void print_object_info(object_t object) {
+    printf("Guid: %llu\n", object.guid);
+    printf("Pointer: 0x%x\n", object.pointer);
+    printf("Type: 0x%x\n", object.type);
+    printf("Health %d\n", get_object_health(object));
+    printf("Name %s\n", get_object_name(object));
+
+    position_t position = get_object_position(object);
+    printf("Position: %.2f %.2f %.2f\n", position.x,
+                                         position.y,
+                                         position.z);
+    printf("Distance from local player: %.2f\n\n", distance_from_object(object));
 }
