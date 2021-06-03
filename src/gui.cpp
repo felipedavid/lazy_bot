@@ -5,6 +5,9 @@
 #include "imgui\imgui.h"
 #include "utils.h"
 
+// temporary
+#include "object_manager.h"
+
 #define WINDOW_NAME "Kronos Bot"
 
 void frame() {
@@ -12,7 +15,6 @@ void frame() {
     if (ImGui::BeginTabBar("#tabs", tab_bar_flags)) {
         if (ImGui::BeginTabItem("Main")) {
             if (ImGui::Button("Start")) {
-                puts("Doing stuff...");
             }
             ImGui::EndTabItem();
         }
@@ -21,6 +23,9 @@ void frame() {
                 create_console();
             }
             ImGui::EndTabItem();
+            if (ImGui::Button("Show Objects")) {
+                update_view();
+            }
         }
     }
     ImGui::EndTabBar();
