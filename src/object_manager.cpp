@@ -29,13 +29,16 @@ void update_view() {
 
     for (size_t i = 0; i < n_objects; i++) {
         printf("Object %u\n", i);
-        printf("Guid: %lld\n", objects[i].guid);
+        printf("Guid: %llu\n", objects[i].guid);
         printf("Pointer: 0x%x\n", objects[i].pointer);
         printf("Type: 0x%x\n", objects[i].type);
-        if (objects[i].type == Unit) {
-            printf("Health %d\n", get_object_health(objects[i]));
-            printf("Name %s\n", get_object_name(objects[i]));
-        }
+        printf("Health %d\n", get_object_health(objects[i]));
+        printf("Name %s\n", get_object_name(objects[i]));
+
+        position_t position = get_object_position(objects[i]);
+        printf("Position: %.2f %.2f %.2f\n", position.x,
+                                             position.y,
+                                             position.z);
         printf("\n");
     }
 }
@@ -46,14 +49,28 @@ object_type_t get_object_type(uint32_t object_ptr) {
 }
 
 char *get_object_name(object_t object) {
-    const uint32_t NAME_OFFSET = 0xB30;
     char *name = NULL;
 
     switch (object.type) {
         case Unit: {
-            uint32_t ptr = read_dword(object.pointer + 0xB30);
+            const uint32_t NAME_OFFSET = 0xB30;
+            uint32_t ptr = read_dword(object.pointer + NAME_OFFSET);
             name = (char *) read_dword(ptr);
-            } break;
+        } break;
+
+        case Player: {
+            const uint32_t NAME_BASE_OFFSET   = 0xC0E230;
+            const uint32_t NEXT_NAME_OFFSET   = 0xC;
+            const uint32_t PLAYER_NAME_OFFSET = 0x14;
+            uint32_t name_ptr = read_dword(NAME_BASE_OFFSET);
+            while (true) {
+                uint64_t next_guid = read_qword(name_ptr + NEXT_NAME_OFFSET);
+                if (next_guid == object.guid) break;
+                name_ptr = read_dword(name_ptr);    
+            }
+            name = (char *) (name_ptr + PLAYER_NAME_OFFSET);
+        } break;
+
         default:
             break;
     }
@@ -62,13 +79,13 @@ char *get_object_name(object_t object) {
 }
 
 uint32_t get_object_health(object_t object) {
-    const uint32_t DESCRIPTOR_OFFSET = 0x8;
-    const uint32_t HEALTH_OFFSET     = 0x58;
-
     uint32_t health = 0;
 
     switch(object.type) {
-        case Unit: {
+        case Unit: 
+        case Player: {
+            const uint32_t DESCRIPTOR_OFFSET  = 0x8;
+            const uint32_t HEALTH_OFFSET      = 0x58;
             uint32_t descriptor_collection_addr = 
                 read_dword(object.pointer + DESCRIPTOR_OFFSET);
             health = read_dword(descriptor_collection_addr + HEALTH_OFFSET);
@@ -78,4 +95,17 @@ uint32_t get_object_health(object_t object) {
     }
 
     return health;
+}
+
+position_t get_object_position(object_t object) {
+    const uint32_t POS_X_OFFSET = 0x9B8;
+    const uint32_t POS_Y_OFFSET = 0x9BC;
+    const uint32_t POS_Z_OFFSET = 0x9C0;
+
+    position_t position;
+    position.x = read_float(object.pointer + POS_X_OFFSET);
+    position.y = read_float(object.pointer + POS_Y_OFFSET);
+    position.z = read_float(object.pointer + POS_Z_OFFSET);
+
+    return position;
 }

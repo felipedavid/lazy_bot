@@ -20,4 +20,10 @@ typedef struct {
     object_type_t type;
 } object_t;
 
+typedef struct {
+    float x;
+    float y;
+    float z;
+} position_t;
+
 #endif
