@@ -8,6 +8,8 @@
 #include "local_player.h"
 #include "game_functions.h"
 #include "hacks.h"
+#include "sync_thread.h"
+#include "bot.h"
 
 #define WINDOW_NAME "Kenny Bot"
 
@@ -16,19 +18,13 @@ void frame() {
     if (ImGui::BeginTabBar("#tabs", tab_bar_flags)) {
         if (ImGui::BeginTabItem("Main")) {
             if (ImGui::Button("Start")) {
+                toggle_bot_running_state();
             }
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Debug")) {
             if (ImGui::Button("Show Console")) {
                 create_console();
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("Test")) {
-                update_view();
-                object_t closest_enemy = get_closest_enemy();
-                set_target(closest_enemy);
-                go_to(get_object_position(closest_enemy));
             }
             ImGui::EndTabItem();
         }
@@ -55,6 +51,7 @@ void frame() {
 
 void gui() {
     unlock_lua();  // place this in other place
+    hook_window_proc();
     uint32_t config_flags = 0;
     imgui_app(frame, WINDOW_NAME, 500, 300, config_flags);
 }

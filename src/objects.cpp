@@ -111,5 +111,5 @@ void print_object_info(object_t object) {
     printf("Position: %.2f %.2f %.2f\n", position.x,
                                          position.y,
                                          position.z);
-    printf("Distance from local player: %.2f\n\n", distance_from_object(object));
+    printf("Distance from local player: %.2f\n\n", get_distance_from_object(object));
 }
