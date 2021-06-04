@@ -6,8 +6,10 @@
 #include "utils.h"
 #include "objects.h"
 #include "local_player.h"
+#include "game_functions.h"
+#include "hacks.h"
 
-#define WINDOW_NAME "Kronos Bot"
+#define WINDOW_NAME "Kenny Bot"
 
 void frame() {
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
@@ -24,7 +26,17 @@ void frame() {
             ImGui::SameLine();
             if (ImGui::Button("Test")) {
                 update_view();
-                go_to(get_object_position(get_closest_enemy()));
+                object_t closest_enemy = get_closest_enemy();
+                set_target(closest_enemy);
+                go_to(get_object_position(closest_enemy));
+            }
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Lua")) {
+            static char lua_input[256];
+            ImGui::InputText("Lua command", lua_input, 256);
+            if (ImGui::Button("Run")) {
+                call_lua(lua_input);
             }
             ImGui::EndTabItem();
         }
@@ -42,6 +54,7 @@ void frame() {
 }
 
 void gui() {
+    unlock_lua();  // place this in other place
     uint32_t config_flags = 0;
     imgui_app(frame, WINDOW_NAME, 500, 300, config_flags);
 }
