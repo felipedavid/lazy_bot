@@ -10,6 +10,7 @@
 #include "hacks.h"
 #include "sync_thread.h"
 #include "bot.h"
+#include "gui.h"
 
 #define WINDOW_NAME "Kenny Bot"
 
@@ -17,8 +18,14 @@ void frame() {
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("#tabs", tab_bar_flags)) {
         if (ImGui::BeginTabItem("Main")) {
-            if (ImGui::Button("Start")) {
-                toggle_bot_running_state();
+            if (!running) {
+                if (ImGui::Button("Start")) {
+                    toggle_bot_running_state();
+                }
+            } else {
+                if (ImGui::Button("Stop")) {
+                    toggle_bot_running_state();
+                }
             }
             ImGui::EndTabItem();
         }
@@ -52,6 +59,8 @@ void frame() {
 void gui() {
     unlock_lua();  // place this in other place
     hook_window_proc();
+    fix_click_to_move();
+
     uint32_t config_flags = 0;
     imgui_app(frame, WINDOW_NAME, 500, 300, config_flags);
 }

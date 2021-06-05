@@ -27,8 +27,8 @@ typedef struct {
 } position_t;
 
 typedef enum {
-    Stop = 0x0,
-    Move = 0x4,
+    MoveClick = 0x4,
+    NoneClick = 0xD,
 } click_type_t;
 
 #endif

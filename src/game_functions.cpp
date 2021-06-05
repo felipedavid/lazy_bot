@@ -26,7 +26,7 @@ uint32_t get_object_ptr(uint64_t guid) {
 void click_to_move(position_t position, click_type_t click_type) {
     typedef void (__fastcall* _click_to_move)(void *thiss, 
                                               uint32_t player_ptr, 
-                                              uint8_t click_type, // <- create a type for clicks
+                                              click_type_t click_type, // <- create a type for clicks
                                               uint64_t *interact_guid, 
                                               position_t *position, 
                                               float precision);

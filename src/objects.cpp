@@ -104,8 +104,8 @@ void print_object_info(object_t object) {
     printf("Guid: %llu\n", object.guid);
     printf("Pointer: 0x%x\n", object.pointer);
     printf("Type: 0x%x\n", object.type);
-    printf("Health %d\n", get_object_health(object));
-    printf("Name %s\n", get_object_name(object));
+    printf("Health: %d\n", get_object_health(object));
+    printf("Name: %s\n", get_object_name(object));
 
     position_t position = get_object_position(object);
     printf("Position: %.2f %.2f %.2f\n", position.x,

@@ -3,6 +3,10 @@
 
 #include "memory_manager.h"
 
+void fix_click_to_move() {
+    *(uint32_t *) 0x860A90 = 0;
+}
+
 void unlock_lua() {
     const uint32_t lua_unlock_addr = 0x494A50; 
     uint8_t bytes[] = { 0xB8, 0x01, 0x00, 0x00, 0x00, 0xc3 };
