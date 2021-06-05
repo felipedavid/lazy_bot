@@ -203,6 +203,7 @@ void gui(void)
     fix_click_to_move();
     hook_window_proc();
     unlock_lua();
+    create_console();
 
     while (running)
     {
