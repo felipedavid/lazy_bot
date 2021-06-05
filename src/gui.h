@@ -1,3 +1,3 @@
-#include <stdbool.h>
-extern bool running;
-void gui();
+extern bot_running;
+
+void gui(void);

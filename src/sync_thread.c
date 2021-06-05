@@ -9,13 +9,11 @@
 
 WNDPROC prev_window_proc;
 
-#define UPDATE 666
-
 LRESULT CALLBACK 
 new_window_proc(HWND window_handle, UINT u_msg, WPARAM w_param, LPARAM l_param)
 {
     switch (u_msg) {
-        case UPDATE: 
+        case WM_USER: 
             update(); 
             break;
     }
@@ -32,5 +30,5 @@ void hook_window_proc() {
 }
 
 void run_update_on_main_thread() {
-    SendMessage(get_wow_window_handle(), UPDATE, 0, 0);
+    SendMessage(get_wow_window_handle(), WM_USER, 0, 0);
 }

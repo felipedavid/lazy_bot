@@ -10,16 +10,16 @@
 #include "sync_thread.h"
 
 extern HINSTANCE instance_handle;
-bool running = false;
+bool bot_running = false;
 
 void toggle_bot_running_state() {
-    if (!running) {
-        printf("---- STARTING BOT ----");
-        running = true;
+    if (!bot_running) {
+        //printf("---- STARTING BOT ----");
+        bot_running = true;
         CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot, &instance_handle, 0, 0);
     } else {
-        printf("---- STOPPING BOT ----");
-        running = false;
+        //printf("---- STOPPING BOT ----");
+        bot_running = false;
     }
 }
 
@@ -40,7 +40,7 @@ void update() {
 
 void bot() {
     while (true) {
-        if (!running) {
+        if (!bot_running) {
             click_to_move(get_object_position(*local_player), NoneClick);
             break;
         }

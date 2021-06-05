@@ -4,7 +4,7 @@
 
 HINSTANCE instance_handle;
 
-BOOL DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved) {
+BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved) {
     instance_handle = instance;
     switch (reason) {
         case DLL_PROCESS_ATTACH:
