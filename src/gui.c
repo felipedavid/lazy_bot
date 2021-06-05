@@ -221,6 +221,15 @@ void gui(void)
         /* GUI */
         if (nk_begin(ctx, "Lazy Bot", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), 0))
         {
+            nk_layout_row_begin(ctx, NK_STATIC, 30, 2);
+            {
+                nk_layout_row_push(ctx, 80);
+                nk_label(ctx, "Update delay:", NK_TEXT_LEFT);
+                nk_layout_row_push(ctx, 150);
+                nk_slider_int(ctx, 0, &update_delay, 1000, 10);
+            }
+            nk_layout_row_end(ctx);
+
             nk_layout_row_static(ctx, 20, 80, 1);
             if (!bot_running) {
                 if (nk_button_label(ctx, "Start"))

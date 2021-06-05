@@ -11,6 +11,7 @@
 
 extern HINSTANCE instance_handle;
 bool bot_running = false;
+uint32_t update_delay = 100;
 
 void toggle_bot_running_state() {
     if (!bot_running) {
@@ -44,7 +45,7 @@ void bot() {
             click_to_move(get_object_position(*local_player), NoneClick);
             break;
         }
-        run_update_on_main_thread();
-        Sleep(100);
+        run_procedure_on_main_thread(&update);
+        Sleep(update_delay);
     }
 }
