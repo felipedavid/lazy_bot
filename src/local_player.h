@@ -5,4 +5,3 @@ extern object_t objects[500];
 
 float get_distance_from_object(object_t object);
 object_t get_closest_enemy();
-void go_to(position_t position);

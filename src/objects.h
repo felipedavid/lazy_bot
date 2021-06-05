@@ -26,6 +26,11 @@ typedef struct {
     float z;
 } position_t;
 
+typedef enum {
+    Stop = 0x0,
+    Move = 0x4,
+} click_type_t;
+
 #endif
 
 extern object_t *local_player;

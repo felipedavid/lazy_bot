@@ -33,7 +33,3 @@ object_t get_closest_enemy() {
     }
     return closest_enemy;
 }
-
-void go_to(position_t position) {
-    click_to_move(position);
-}

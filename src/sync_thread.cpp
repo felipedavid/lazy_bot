@@ -16,7 +16,6 @@ new_window_proc(HWND window_handle, UINT u_msg, WPARAM w_param, LPARAM l_param)
 {
     switch (u_msg) {
         case UPDATE: 
-            printf("hello from main thread.\n");
             update(); 
             break;
     }
