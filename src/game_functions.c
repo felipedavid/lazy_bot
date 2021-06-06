@@ -1,17 +1,18 @@
+#include <windows.h>
 #include <stdint.h>
 
 #include "game_functions.h"
 #include "objects.h"
 
-#define ENUM_VISIBLE_OBJECTS_FUN_PTR 0x00468380
-#define GET_OBJECT_PTR_FUN_PTR       0x00464870
-#define CLICK_TO_MOVE_FUN_PTR        0x00611130
-#define SET_TARGET_FUN_PTR           0x00493540
-#define CALL_LUA_FUN_PTR             0x00704CD0
+#define ENUM_VISIBLE_OBJECTS_FUN_PTR 0x004D4B30    
+#define GET_OBJECT_PTR_FUN_PTR       0x004D4BB0
+#define CLICK_TO_MOVE_FUN_PTR        0x00BD08F4
+#define SET_TARGET_FUN_PTR           0x00493540 // to update
+#define CALL_LUA_FUN_PTR             0x00704CD0 // to update
 
 // call the 'callback' for each object passing their guid
 void enumerate_visible_objects(void *callback) {
-    typedef void (__fastcall* _enumerate_visible_objects)(void *callback, int32_t filter);
+    typedef void (__cdecl* _enumerate_visible_objects)(void *callback, int32_t filter);
     _enumerate_visible_objects fun = 
         (_enumerate_visible_objects) ENUM_VISIBLE_OBJECTS_FUN_PTR;
     fun(callback, 0);

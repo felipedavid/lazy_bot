@@ -34,7 +34,7 @@ void toggle_bot_running_state() {
 // It runs on the main thread before the hooked window procedure so it should 
 // not contain infinite loops
 void update() {
-    update_view();
+    update_view(); // TODO: think about where this goes
     static object_t enemy;
     static position_t enemy_position;
 
@@ -58,7 +58,9 @@ void update() {
             printf("MoveToTargetState\n");
         } break;
         case CombatState: {
-            if (get_object_health(enemy) > 0) {
+            if (get_distance_from_object(enemy) >= 4) {
+                pop_state();
+            } else if (get_object_health(enemy) > 0) {
                 call_lua("CastSpellByName(\"Attack\")");
             } else {
                 pop_state();
@@ -67,16 +69,6 @@ void update() {
             printf("CombatState\n");
         } break;
     }
-
-    //object_t closest_enemy = get_closest_enemy();
-    //position_t closest_enemy_pos = get_object_position(closest_enemy);
-    //if (get_distance_from_object(closest_enemy) >= 4) {
-    //    click_to_move(closest_enemy_pos, MoveClick);
-    //} else {
-    //    click_to_move(get_object_position(*local_player), NoneClick);
-    //    set_target(closest_enemy);
-    //    call_lua("CastSpellByName(\"Attack\")");
-    //}
 }
 
 void bot() {
@@ -88,4 +80,11 @@ void bot() {
         run_procedure_on_main_thread(&update);
         Sleep(update_delay);
     }
+}
+
+void test_335() {
+    enumerate_visible_objects(&enumerate_objects_callback);
+    //for (int i = 0; i < n_objects; i++) {
+    //    print_object_info(objects[i]);
+    //}
 }

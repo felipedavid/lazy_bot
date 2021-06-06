@@ -24,6 +24,7 @@ uint32_t __fastcall enumerate_objects_callback(void *thiss, uint32_t filter, uin
     if (object.type == Unit || object.type == Player) {
         objects[n_objects++] = object;
     }
+    printf("%llu\n", guid);
 
     return 1;
 }
@@ -105,12 +106,12 @@ void print_object_info(object_t object) {
     printf("Guid: %llu\n", object.guid);
     printf("Pointer: 0x%x\n", object.pointer);
     printf("Type: 0x%x\n", object.type);
-    printf("Health: %d\n", get_object_health(object));
-    printf("Name: %s\n", get_object_name(object));
+    //printf("Health: %d\n", get_object_health(object));
+    //printf("Name: %s\n", get_object_name(object));
 
-    position_t position = get_object_position(object);
-    printf("Position: %.2f %.2f %.2f\n", position.x,
-                                         position.y,
-                                         position.z);
-    printf("Distance from local player: %.2f\n\n", get_distance_from_object(object));
+    //position_t position = get_object_position(object);
+    //printf("Position: %.2f %.2f %.2f\n", position.x,
+    //                                     position.y,
+    //                                     position.z);
+    //printf("Distance from local player: %.2f\n\n", get_distance_from_object(object));
 }

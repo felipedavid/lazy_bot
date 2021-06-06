@@ -115,7 +115,7 @@ WindowProc(HWND wnd, UINT msg, WPARAM wparam, LPARAM lparam)
     return DefWindowProcW(wnd, msg, wparam, lparam);
 }
 
-void gui(void)
+void gui(HINSTANCE instance)
 {
     struct nk_context *ctx;
     struct nk_colorf bg;
@@ -199,11 +199,9 @@ void gui(void)
 
     bg.r = 0.10f, bg.g = 0.18f, bg.b = 0.24f, bg.a = 1.0f;
 
-    // temporary
     fix_click_to_move();
     hook_window_proc();
     unlock_lua();
-    create_console();
 
     while (running)
     {
@@ -220,7 +218,7 @@ void gui(void)
         nk_input_end(ctx);
 
         /* GUI */
-        if (nk_begin(ctx, "Lazy Bot", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), 0))
+        if (nk_begin(ctx, "Kenny Bot", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), 0))
         {
             nk_layout_row_begin(ctx, NK_STATIC, 30, 2);
             {
@@ -238,6 +236,9 @@ void gui(void)
             } else {
                 if (nk_button_label(ctx, "Stop"))
                     toggle_bot_running_state();
+            }
+            if (nk_button_label(ctx, "Test")) {
+                test_335();
             }
         }
         nk_end(ctx);
@@ -277,4 +278,7 @@ void gui(void)
     ID3D11Device_Release(device);
     IDXGISwapChain_Release(swap_chain);
     UnregisterClassW(wc.lpszClassName, wc.hInstance);
+
+    // Unload dll
+    FreeLibraryAndExitThread(instance, 0);
 }
