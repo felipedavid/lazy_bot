@@ -276,6 +276,7 @@ void gui(HINSTANCE instance)
     IDXGISwapChain_Release(swap_chain);
     UnregisterClassW(wc.lpszClassName, wc.hInstance);
 
+    unhook_window_proc();
     // Unload dll
     FreeLibraryAndExitThread(instance, 0);
 }

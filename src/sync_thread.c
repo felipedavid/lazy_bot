@@ -30,6 +30,13 @@ void hook_window_proc() {
                                 (LONG_PTR)&new_window_proc);
 }
 
+void unhook_window_proc() {
+    prev_window_proc = 
+        (WNDPROC) SetWindowLong(get_wow_window_handle(),
+                                GWL_WNDPROC, 
+                                (LONG_PTR)prev_window_proc);
+}
+
 void run_procedure_on_main_thread(void *procedure) {
     SendMessage(get_wow_window_handle(), WM_USER, (WPARAM)procedure, 0);
 }

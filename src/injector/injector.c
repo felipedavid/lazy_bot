@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define DLL_PATH "W:\\kenny_bot\\bin\\kenny_bot.dll"
+#define DLL_PATH "W:\\lazy_bot\\bin\\lazy_bot.dll"
 
 void setup_debug_privileges();
 HANDLE get_proc_handle_by_window_name(char *window_name);
