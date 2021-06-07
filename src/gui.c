@@ -200,7 +200,7 @@ void gui(HINSTANCE instance)
     bg.r = 0.10f, bg.g = 0.18f, bg.b = 0.24f, bg.a = 1.0f;
 
     fix_click_to_move();
-    hook_window_proc();
+    hook_window_proc(); // TODO: Unhook before unload dll
     unlock_lua();
 
     while (running)
@@ -218,7 +218,7 @@ void gui(HINSTANCE instance)
         nk_input_end(ctx);
 
         /* GUI */
-        if (nk_begin(ctx, "Kenny Bot", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), 0))
+        if (nk_begin(ctx, "Lazy Bot", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), 0))
         {
             nk_layout_row_begin(ctx, NK_STATIC, 30, 2);
             {
@@ -236,9 +236,6 @@ void gui(HINSTANCE instance)
             } else {
                 if (nk_button_label(ctx, "Stop"))
                     toggle_bot_running_state();
-            }
-            if (nk_button_label(ctx, "Test")) {
-                test_335();
             }
         }
         nk_end(ctx);
