@@ -29,6 +29,7 @@
 #include "bot.h"
 #include "hacks.h"
 #include "sync_thread.h"
+#include "signal_event_manager.h"
 
 #ifdef INCLUDE_ALL
   #define INCLUDE_STYLE
@@ -200,8 +201,12 @@ void gui(HINSTANCE instance)
     bg.r = 0.10f, bg.g = 0.18f, bg.b = 0.24f, bg.a = 1.0f;
 
     fix_click_to_move();
-    hook_window_proc(); // TODO: Unhook before unload dll
+    hook_window_proc(); 
+    hook_event_signal(); // TODO: unhook when bot gui is closed
     unlock_lua();
+
+    bool console_open = false;
+    FILE *dummy_console;
 
     while (running)
     {
@@ -236,6 +241,21 @@ void gui(HINSTANCE instance)
             } else {
                 if (nk_button_label(ctx, "Stop"))
                     toggle_bot_running_state();
+            }
+
+            nk_layout_row_static(ctx, 20, 110, 1);
+            if (!console_open) {
+                if (nk_button_label(ctx, "Open Console")) {
+                    AllocConsole();
+                    freopen_s(&dummy_console, "CONOUT$", "w", stdout);
+                    console_open = true;
+                }
+            } else {
+                if (nk_button_label(ctx, "Close Console")) {
+                    fclose(dummy_console);
+                    FreeConsole();
+                    console_open = false;
+                }
             }
         }
         nk_end(ctx);
@@ -276,7 +296,9 @@ void gui(HINSTANCE instance)
     IDXGISwapChain_Release(swap_chain);
     UnregisterClassW(wc.lpszClassName, wc.hInstance);
 
+    // unhook stuff
     unhook_window_proc();
+    unhook_event_signal();
     // Unload dll
     FreeLibraryAndExitThread(instance, 0);
 }

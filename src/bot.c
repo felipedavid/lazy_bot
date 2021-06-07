@@ -9,6 +9,7 @@
 #include "bot.h"
 #include "sync_thread.h"
 #include "state.h"
+#include "signal_event_manager.h"
 
 extern HINSTANCE instance_handle;
 extern state_stack_t state_stack;
@@ -31,6 +32,7 @@ void toggle_bot_running_state() {
     }
 }
 
+extern char *event;
 // It runs on the main thread before the hooked window procedure so it should 
 // not contain infinite loops
 void update() {
@@ -45,7 +47,7 @@ void update() {
                 set_target(enemy);
                 push_state(MoveToTargetState);
             }
-            printf("GrindState\n");
+            //printf("GrindState\n");
         } break;
         case MoveToTargetState: {
             enemy_position = get_object_position(enemy);
@@ -55,7 +57,7 @@ void update() {
                 click_to_move(get_object_position(*local_player), NoneClick);
                 push_state(CombatState);
             }
-            printf("MoveToTargetState\n");
+            //printf("MoveToTargetState\n");
         } break;
         case CombatState: {
             if (get_distance_from_object(enemy) >= 4) {
@@ -66,7 +68,7 @@ void update() {
                 pop_state();
                 pop_state();
             }
-            printf("CombatState\n");
+            //printf("CombatState\n");
         } break;
     }
 }
