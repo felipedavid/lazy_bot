@@ -202,7 +202,7 @@ void gui(HINSTANCE instance)
 
     fix_click_to_move();
     hook_window_proc(); 
-    hook_event_signal(); // TODO: unhook when bot gui is closed
+    hook_event_signal();
     unlock_lua();
 
     bool console_open = false;

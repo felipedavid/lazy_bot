@@ -1,20 +1,21 @@
 #include <windows.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "memory_manager.h"
 
-uint32_t event = 0;
+uint32_t event_name;
 const uint32_t whatever_fun_ptr = 0x7040D0;
 const uint32_t jump_back = 0x703E78;
 __declspec(naked) void get_event_code_cave() {
     __asm {
+        call whatever_fun_ptr
         pushad
-        mov event, edi
+        mov event_name, edi
     }
-    printf("%s\n", (char *) *(uint32_t *)event);
+    process_event((char *)event_name);
     __asm {
         popad
-        call whatever_fun_ptr
         jmp jump_back
     }
 }
@@ -33,4 +34,10 @@ void unhook_event_signal() {
     const uint32_t hook_location = 0x00703E73;
     uint8_t original_code[5] = {0xE8, 0x58, 0x2, 0x0, 0x0};
     write_bytes(hook_location, original_code, sizeof(original_code));
+}
+
+void process_event(char *event_name) {
+    if (!strcmp(event_name, "SPELL_UPDATE_USABLE")) {
+        // do stuff
+    }
 }

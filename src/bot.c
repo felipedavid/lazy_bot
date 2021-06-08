@@ -9,7 +9,6 @@
 #include "bot.h"
 #include "sync_thread.h"
 #include "state.h"
-#include "signal_event_manager.h"
 
 extern HINSTANCE instance_handle;
 extern state_stack_t state_stack;
@@ -32,7 +31,6 @@ void toggle_bot_running_state() {
     }
 }
 
-extern char *event;
 // It runs on the main thread before the hooked window procedure so it should 
 // not contain infinite loops
 void update() {
@@ -82,11 +80,4 @@ void bot() {
         run_procedure_on_main_thread(&update);
         Sleep(update_delay);
     }
-}
-
-void test_335() {
-    enumerate_visible_objects(&enumerate_objects_callback);
-    //for (int i = 0; i < n_objects; i++) {
-    //    print_object_info(objects[i]);
-    //}
 }
