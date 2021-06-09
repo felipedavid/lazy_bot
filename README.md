@@ -1,5 +1,5 @@
 A automation tool to play World of Warcraft for me
-![](demo.gif)
+![](demo3.gif)
 ## Why?
 I thought it would be a fun little project, I don't even play the game.
 
