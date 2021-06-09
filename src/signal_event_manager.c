@@ -4,16 +4,17 @@
 
 #include "memory_manager.h"
 
-uint32_t event_name;
+char *event_name;
 const uint32_t whatever_fun_ptr = 0x7040D0;
 const uint32_t jump_back = 0x703E78;
 __declspec(naked) void get_event_code_cave() {
     __asm {
         call whatever_fun_ptr
         pushad
-        mov event_name, edi
+        mov event_name, edi // 'edi' is a pointer to a char pointer
     }
-    process_event((char *)event_name);
+    event_name = (char *) (*(uint32_t *) event_name);
+    process_event(event_name);
     __asm {
         popad
         jmp jump_back
@@ -37,7 +38,5 @@ void unhook_event_signal() {
 }
 
 void process_event(char *event_name) {
-    if (!strcmp(event_name, "SPELL_UPDATE_USABLE")) {
-        // do stuff
-    }
+    printf("%s\n", event_name);
 }

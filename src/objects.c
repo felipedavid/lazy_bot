@@ -24,7 +24,6 @@ uint32_t __fastcall enumerate_objects_callback(void *thiss, uint32_t filter, uin
     if (object.type == Unit || object.type == Player) {
         objects[n_objects++] = object;
     }
-    printf("%llu\n", guid);
 
     return 1;
 }
