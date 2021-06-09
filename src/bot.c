@@ -3,8 +3,6 @@
 #include <stdio.h>
 
 #include "utils.h"
-#include "objects.h"
-#include "local_player.h"
 #include "game_functions.h"
 #include "bot.h"
 #include "sync_thread.h"
@@ -35,39 +33,11 @@ void toggle_bot_running_state() {
 // not contain infinite loops
 void update() {
     update_view(); // TODO: think about where this goes
-    static object_t enemy;
-    static position_t enemy_position;
-
     switch (get_top_state()) {
-        case GrindState: {
-            enemy = get_closest_enemy_named("Plainstrider");
-            if (enemy.guid) {
-                set_target(enemy);
-                push_state(MoveToTargetState);
-            }
-            //printf("GrindState\n");
-        } break;
-        case MoveToTargetState: {
-            enemy_position = get_object_position(enemy);
-            if (get_distance_from_object(enemy) >= 4) {
-                click_to_move(enemy_position, MoveClick);
-            } else {
-                click_to_move(get_object_position(*local_player), NoneClick);
-                push_state(CombatState);
-            }
-            //printf("MoveToTargetState\n");
-        } break;
-        case CombatState: {
-            if (get_distance_from_object(enemy) >= 4) {
-                pop_state();
-            } else if (get_object_health(enemy) > 0) {
-                call_lua("CastSpellByName(\"Attack\")");
-            } else {
-                pop_state();
-                pop_state();
-            }
-            //printf("CombatState\n");
-        } break;
+        case GrindState:        handle_grind_state();          break;
+        case MoveToTargetState: handle_move_to_target_state(); break;
+        case CombatState:       handle_combat_state();         break;
+        case LootState:         handle_loot_state();           break;
     }
 }
 

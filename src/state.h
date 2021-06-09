@@ -4,6 +4,7 @@ typedef enum {
     GrindState,
     MoveToTargetState,
     CombatState,
+    LootState,
 } state_t;
 
 typedef struct {
@@ -15,3 +16,8 @@ typedef struct {
 void push_state(state_t state);
 void pop_state();
 state_t get_top_state();
+
+void handle_grind_state();
+void handle_move_to_target_state();
+void handle_combat_state();
+void handle_loot_state();
