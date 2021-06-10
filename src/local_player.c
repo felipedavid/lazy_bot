@@ -3,7 +3,7 @@
 
 #include "local_player.h"
 #include "game_functions.h"
-#include "objects.h"
+#include "objects/objects.h"
 
 object_t *local_player;
 

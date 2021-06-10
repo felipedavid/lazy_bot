@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "local_player.h"
-#include "objects.h"
+#include "objects/objects.h"
 
 extern object_t *local_player;
 

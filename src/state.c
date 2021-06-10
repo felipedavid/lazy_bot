@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "objects.h"
+#include "objects/objects.h"
 #include "local_player.h"
 #include "state.h"
 
@@ -32,7 +32,7 @@ state_t get_top_state() {
 }
 
 void handle_grind_state() {
-    enemy = get_closest_enemy_named("Plainstrider");
+    enemy = get_closest_enemy_named("Mindless Zombie");
     if (enemy.guid) {
         set_target(enemy);
         push_state(MoveToTargetState);

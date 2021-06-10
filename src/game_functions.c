@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #include "game_functions.h"
-#include "objects.h"
+#include "objects/objects.h"
 
 #define ENUM_VISIBLE_OBJECTS_FUN_PTR 0x00468380
 #define GET_OBJECT_PTR_FUN_PTR       0x00464870
