@@ -15,7 +15,7 @@ bool bot_running = false;
 uint32_t update_delay = 100;
 
 void toggle_bot_running_state() {
-    if (!bot_running) {
+    if (!bot_running && (get_player_guid() > 0)) {
         printf("---- STARTING BOT ----");
         bot_running = true;
         state_stack.top_index = -1;

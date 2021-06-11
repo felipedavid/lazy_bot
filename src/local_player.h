@@ -1,4 +1,4 @@
-#include "objects/objects.h"
+#include "objects.h"
 
 extern size_t n_objects;
 extern object_t objects[500];

@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 #include "objects.h"
-#include "../game_functions.h"
-#include "../memory_manager.h"
+#include "game_functions.h"
+#include "memory_manager.h"
 
 object_t objects[500];
 size_t n_objects;
@@ -85,4 +85,13 @@ position_t get_object_position(object_t object) {
     position.z = read_float(object.pointer + POS_Z_OFFSET);
 
     return position;
+}
+
+uint32_t get_unit_level(object_t object) {
+    const uint32_t LEVEL_OFFSET = 0x88;
+
+    if (object.type == Unit) {
+        return read_dword(get_descriptor_addr(object) + LEVEL_OFFSET);
+    }
+    return 0;
 }

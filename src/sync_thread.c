@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "utils.h"
-#include "objects/objects.h"
+#include "objects.h"
 #include "local_player.h"
 #include "game_functions.h"
 #include "bot.h"

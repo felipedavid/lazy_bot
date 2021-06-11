@@ -31,6 +31,31 @@ typedef enum {
     NoneClick = 0xD,
 } click_type_t;
 
+typedef enum {
+    Beast = 1,
+    Dragonkin = 2,
+    Demon = 3,
+    Elemental = 4,
+    Giant = 5,
+    Undead = 6,
+    Humanoid = 7,
+    Critter = 8,
+    Mechanical = 9,
+    NotSpecified = 10,
+    Totem = 11,
+} creature_type_t;
+
+typedef enum {
+    Hated,
+    Hostile,
+    Unfriendly,
+    Neutral,
+    Friendly,
+    Honored,
+    Revered,
+    Exalted,
+} unit_reaction_t;
+
 #endif
 
 extern object_t *local_player;

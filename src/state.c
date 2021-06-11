@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "objects/objects.h"
+#include "objects.h"
 #include "local_player.h"
 #include "state.h"
 
