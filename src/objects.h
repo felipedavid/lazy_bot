@@ -14,18 +14,6 @@ typedef enum {
     Corpse        = 0x7,
 } object_type_t;
 
-typedef struct {
-    uint64_t guid;
-    uint32_t pointer;
-    object_type_t type;
-} object_t;
-
-typedef struct {
-    float x;
-    float y;
-    float z;
-} position_t;
-
 typedef enum {
     MoveClick = 0x4,
     NoneClick = 0xD,
@@ -55,6 +43,21 @@ typedef enum {
     Revered,
     Exalted,
 } unit_reaction_t;
+
+typedef struct {
+    float x;
+    float y;
+    float z;
+} position_t;
+
+typedef struct {
+    uint64_t guid;
+    uint32_t pointer;
+    uint32_t health;
+    object_type_t type;
+    creature_type_t creature_type;
+    unit_reaction_t unit_reaction;
+} object_t;
 
 #endif
 

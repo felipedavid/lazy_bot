@@ -18,9 +18,13 @@ uint32_t __fastcall enumerate_objects_callback(void *thiss, uint32_t filter, uin
     // TODO: remove this
     if (object.type == Player) {
         local_player = &objects[n_objects];
+        objects[n_objects++] = object;
     }
 
-    if (object.type == Unit || object.type == Player) {
+    if (object.type == Unit) {
+        object.creature_type = get_creature_type(object);
+        object.unit_reaction = get_unit_reaction(object);
+        object.health = get_object_health(object);
         objects[n_objects++] = object;
     }
 
@@ -89,9 +93,5 @@ position_t get_object_position(object_t object) {
 
 uint32_t get_unit_level(object_t object) {
     const uint32_t LEVEL_OFFSET = 0x88;
-
-    if (object.type == Unit) {
-        return read_dword(get_descriptor_addr(object) + LEVEL_OFFSET);
-    }
-    return 0;
+    return read_dword(get_descriptor_addr(object) + LEVEL_OFFSET);
 }

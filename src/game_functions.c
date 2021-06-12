@@ -67,5 +67,5 @@ uint32_t get_unit_reaction(object_t object) {
     typedef uint32_t (__fastcall* _get_unit_reaction)
         (uint32_t garbage, uint32_t player_ptr, uint32_t unit_ptr);
     _get_unit_reaction fun = (_get_unit_reaction) GET_UNIT_REACTION_FUN_PTR;
-    return fun(local_player->pointer, local_player->pointer, object.pointer);
+    return fun(local_player->pointer, object.pointer, local_player->pointer);
 }

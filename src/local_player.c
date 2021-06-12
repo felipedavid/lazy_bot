@@ -18,27 +18,37 @@ float get_distance_from_object(object_t object) {
     return (float) sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
 }
 
-object_t get_closest_enemy_named(char *unit_name) {
-    object_t closest_enemy;
+object_t get_new_target() {
+    object_t new_enemy = {0};
     // temporary dumb thing
+    object_t *obj_ptr;
     for (int i = 0; i < n_objects; i++) {
-        if (objects[i].type == Unit && 
-            !strcmp(get_object_name(objects[i]), unit_name) &&
-            get_object_health(objects[i]) >= 0) {
-            closest_enemy = objects[i];
+        obj_ptr = &objects[i];
+        if (obj_ptr->health > 0 &&
+            obj_ptr->creature_type != Critter &&
+            obj_ptr->creature_type != NotSpecified &&
+            obj_ptr->creature_type != Totem //&&
+            //(obj_ptr->unit_reaction == Hostile ||
+            // obj_ptr->unit_reaction == Unfriendly ||
+            // obj_ptr->unit_reaction == Neutral)) {
+            ) {
+            new_enemy = *obj_ptr;
         }
     }
+
     for (size_t i = 0; i < n_objects; i++) {
-        if (objects[i].type != Unit) {
-            continue;
-        } else if (get_object_health(objects[i]) <= 0) {
-            continue;
-        } else if (strcmp(get_object_name(objects[i]), unit_name)) {
-            continue;
-        } else if (get_distance_from_object(objects[i]) < 
-                   get_distance_from_object(closest_enemy)) {
-            closest_enemy = objects[i]; 
+        obj_ptr = &objects[i];
+        if (obj_ptr->health > 0 &&
+            obj_ptr->creature_type != Critter &&
+            obj_ptr->creature_type != NotSpecified &&
+            obj_ptr->creature_type != Totem &&
+            //(obj_ptr->unit_reaction == Hostile ||
+            // obj_ptr->unit_reaction == Unfriendly ||
+            // obj_ptr->unit_reaction == Neutral) &&
+             get_distance_from_object(objects[i]) <
+             get_distance_from_object(new_enemy)) {
+            new_enemy = *obj_ptr;
         }
     }
-    return closest_enemy;
+    return new_enemy;
 }

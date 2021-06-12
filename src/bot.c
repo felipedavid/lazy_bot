@@ -16,14 +16,14 @@ uint32_t update_delay = 100;
 
 void toggle_bot_running_state() {
     if (!bot_running && (get_player_guid() > 0)) {
-        printf("---- STARTING BOT ----");
+        printf("---- STARTING BOT ----\n");
         bot_running = true;
         state_stack.top_index = -1;
         state_stack.max_size = 20;
         push_state(GrindState);
         CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot, &instance_handle, 0, 0);
     } else {
-        printf("---- STOPPING BOT ----");
+        printf("---- STOPPING BOT ----\n");
         bot_running = false;
         state_stack.top_index = -1;
     }
