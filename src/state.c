@@ -40,11 +40,10 @@ void handle_grind_state() {
 }
 
 void handle_move_to_target_state() {
-    position_t target_position = get_object_position(target);
     if (get_distance_from_object(target) >= 4) {
-        click_to_move(target_position, MoveClick);
+        click_to_move(target.position, MoveClick);
     } else {
-        click_to_move(get_object_position(*local_player), NoneClick);
+        click_to_move(local_player->position, NoneClick);
         call_lua("CastSpellByName(\"Attack\")"); // temporary
         push_state(CombatState);
     }
@@ -53,7 +52,7 @@ void handle_move_to_target_state() {
 void handle_combat_state() {
     if (get_distance_from_object(target) >= 4) {
         pop_state();
-    } else if (get_object_health(target) > 0) {
+    } else if (target.health > 0) {
     } else {
         pop_state();
         pop_state();

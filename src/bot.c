@@ -32,7 +32,7 @@ void toggle_bot_running_state() {
 // It runs on the main thread before the hooked window procedure so it should 
 // not contain infinite loops
 void update() {
-    update_view(); // TODO: think about where this goes
+    populate_lists();
     switch (get_top_state()) {
         case GrindState:        handle_grind_state();          break;
         case MoveToTargetState: handle_move_to_target_state(); break;
@@ -44,7 +44,7 @@ void update() {
 void bot() {
     while (true) {
         if (!bot_running) {
-            click_to_move(get_object_position(*local_player), NoneClick);
+            click_to_move(local_player->position, NoneClick);
             break;
         }
         run_procedure_on_main_thread(&update);

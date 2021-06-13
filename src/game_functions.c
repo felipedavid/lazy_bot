@@ -21,10 +21,10 @@ void enumerate_visible_objects(void *callback) {
     fun(callback, 0);
 }
 
-uint32_t get_object_ptr(uint64_t guid) {
+void set_object_ptr(object_t *object) {
     typedef uint32_t (__stdcall* _get_object_ptr)(uint64_t guid);
     _get_object_ptr fun = (_get_object_ptr) GET_OBJECT_PTR_FUN_PTR;
-    return fun(guid);
+    object->pointer = fun(object->guid);
 }
 
 void click_to_move(position_t position, click_type_t click_type) {

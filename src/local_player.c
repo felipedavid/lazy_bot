@@ -8,12 +8,9 @@
 object_t *local_player;
 
 float get_distance_from_object(object_t object) {
-    position_t local_player_position = get_object_position(*local_player);
-    position_t object_position = get_object_position(object);
-
-    float delta_x = local_player_position.x - object_position.x;
-    float delta_y = local_player_position.y - object_position.y;
-    float delta_z = local_player_position.z - object_position.z;
+    float delta_x = local_player->position.x - object.position.x;
+    float delta_y = local_player->position.y - object.position.y;
+    float delta_z = local_player->position.z - object.position.z;
 
     return (float) sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
 }
