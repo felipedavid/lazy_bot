@@ -9,6 +9,7 @@
 #define CLICK_TO_MOVE_FUN_PTR        0x00611130
 #define SET_TARGET_FUN_PTR           0x00493540
 #define CALL_LUA_FUN_PTR             0x00704CD0 
+#define GET_PLAYER_GUID_FUN_PTR      0x00468550
 
 // call the 'callback' for each object passing their guid
 void enumerate_visible_objects(void *callback) {
@@ -46,4 +47,10 @@ void call_lua(char *code) {
     typedef uint32_t (__fastcall* _call_lua)(char *code, void *no_idea);
     _call_lua fun = (_call_lua) CALL_LUA_FUN_PTR;
     fun(code, (void*)CALL_LUA_FUN_PTR);
+}
+
+uint64_t get_player_guid() {
+    typedef uint64_t (__stdcall *_get_player_guid)();
+    _get_player_guid fun = (_get_player_guid) GET_PLAYER_GUID_FUN_PTR;
+    return fun();
 }

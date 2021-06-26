@@ -5,3 +5,4 @@ uint32_t get_object_ptr(uint64_t guid);
 void set_target(object_t object);
 void call_lua(char *code);
 void click_to_move(position_t position, click_type_t click_type);
+uint64_t get_player_guid();
