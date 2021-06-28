@@ -1,9 +1,13 @@
 #include <stdint.h>
+#include <vector>
+
+#include "objects/object.hpp"
 
 class ObjectManager {
     std::vector<WowObject> object_list;
-    int callback(uint32_t garbage, int filter, uint64_t guid);
+
+    int enumerate_objects_callback(int filter, uint64_t guid);
 public:
-    void populate_lists();
+    void populate_list();
     void log_objects();
-}
+};

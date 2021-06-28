@@ -1,3 +1,5 @@
+#ifndef OBJECT_TYPE
+#define OBJECT_TYPE
 typedef enum {
     None,
     Item,
@@ -8,3 +10,4 @@ typedef enum {
     DynamicObject,
     Corpse,
 } ObjectType;
+#endif

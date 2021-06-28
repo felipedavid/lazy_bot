@@ -1,8 +1,8 @@
 #include <windows.h>
 #include <stdint.h>
 
-#include "game_functions.h"
-#include "objects.h"
+#include "functions.hpp"
+#include "objects/object.h"
 
 #define ENUM_VISIBLE_OBJECTS_FUN_PTR 0x00468380
 #define GET_OBJECT_PTR_FUN_PTR       0x00464870
@@ -37,10 +37,10 @@ void click_to_move(position_t position, click_type_t click_type) {
     fun((void*)local_player->pointer, local_player->pointer, click_type, &interact_guid, &position, 2);
 }
 
-void set_target(object_t object) {
+void set_target(WowObject object) {
     typedef uint32_t (__stdcall* _set_target)(uint64_t target_guid);
     _set_target fun = (_set_target) SET_TARGET_FUN_PTR;
-    fun(object.guid);
+    fun(object.get_guid());
 }
 
 void call_lua(char *code) {

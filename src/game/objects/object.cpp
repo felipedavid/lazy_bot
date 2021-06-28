@@ -1,35 +1,26 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "object.h"
-#include "../enums/object_type.hpp"
-
-WowObject::WowObject(uint64_t guid, uint32_t pointer, ObjectType type) {
-    this->guid = guid;
-    this->pointer = pointer;
-    this->type = type;
+WowObject::WowObject(uint64_t obj_guid, uint32_t obj_pointer, ObjectType obj_type) {
+    guid = obj_guid;
+    pointer = obj_pointer;
+    type = obj_type;
 }
 
-WowObject::log_object_info() {
-    printf("Guid: %" PRIu64 "\n", guid);
-    printf("Pointer: %" PRIu32 "\n", pointer);
-    printf("Type : %" PRIu32 "\n", type);
-}
-
-WowObject::get_position() {
-    Position position;
-    *position = read_memory<Position>(pointer + pos_x_offset);
-    return position;
+void WowObject::log_object_info() {
+    printf("Guid: %llu\n", this->guid);
+    printf("Pointer: %u\n", this->pointer);
+    printf("Type : %u\n", this->type);
 }
 
 uint32_t WowObject::get_pointer() { 
-    return pointer;
+    return this->pointer;
 }
 
 uint64_t WowObject::get_guid() { 
-    return guid;
+    return this->guid;
 }
 
 ObjectType WowObject::get_object_type() { 
-    return type;
+    return this->type;
 }

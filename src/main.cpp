@@ -1,8 +1,9 @@
 #include <windows.h>
 
 #include "game/object_manager.hpp"
+#include "game/functions.hpp"
 
-void bot(HMODULE module_handle) {
+void entrypoint(HMODULE module_handle) {
     while (true) {
         if (GetAsyncKeyState(VK_END)) {
             FreeLibraryAndExitThread(module_handle, 0);
@@ -11,7 +12,7 @@ void bot(HMODULE module_handle) {
         if (GetAsyncKeyState(VK_CONTROL)) {
             if (get_player_guid() > 0) {
                 ObjectManager obj_manager;
-                obj_manager.populate_lists();
+                obj_manager.populate_list();
                 obj_manager.log_objects();
             }
         }
@@ -21,6 +22,6 @@ void bot(HMODULE module_handle) {
 
 BOOL DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot, instance, 0, NULL);
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)entrypoint, instance, 0, NULL);
     }
 }

@@ -1,10 +1,9 @@
+#include <stdint.h>
 
-template<typename T>
-T read_memory(uint32_t address) {
+uint32_t read_uint32(uint32_t address) {
     return *(uint32_t *)address;
 }
 
-template<typedef T>
-void write_memory(uint32_t address, T value) {
-    *(T*)address = value;
+void write_uint32(uint32_t address, uint32_t value) {
+    *(uint32_t*)address = value;
 }
