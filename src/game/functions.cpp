@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #include "functions.hpp"
-#include "objects/object.h"
+#include "objects/object.hpp"
 
 #define ENUM_VISIBLE_OBJECTS_FUN_PTR 0x00468380
 #define GET_OBJECT_PTR_FUN_PTR       0x00464870
@@ -13,7 +13,7 @@
 
 // call the 'callback' for each object passing their guid
 void enumerate_visible_objects(void *callback) {
-    typedef void (__fastcall* _enumerate_visible_objects)(void *callback, int32_t filter);
+    typedef void (__fastcall* _enumerate_visible_objects)(void* callback, int32_t filter);
     _enumerate_visible_objects fun = 
         (_enumerate_visible_objects) ENUM_VISIBLE_OBJECTS_FUN_PTR;
     fun(callback, 0);
@@ -25,16 +25,16 @@ uint32_t get_object_ptr(uint64_t guid) {
     return fun(guid);
 }
 
-void click_to_move(position_t position, click_type_t click_type) {
+void click_to_move(Position position, int click_type) {
     typedef void (__fastcall* _click_to_move)(void *thiss, 
                                               uint32_t player_ptr, 
-                                              click_type_t click_type,
+                                              int click_type,
                                               uint64_t *interact_guid, 
-                                              position_t *position, 
+                                              Position *position, 
                                               float precision);
     _click_to_move fun = (_click_to_move) CLICK_TO_MOVE_FUN_PTR; 
     uint64_t interact_guid = 0;
-    fun((void*)local_player->pointer, local_player->pointer, click_type, &interact_guid, &position, 2);
+    //fun((void*)local_player->pointer, local_player->pointer, click_type, &interact_guid, &position, 2);
 }
 
 void set_target(WowObject object) {
