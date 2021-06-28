@@ -17,7 +17,7 @@ void entrypoint(HMODULE module_handle) {
             if (get_player_guid() > 0) {
                 ObjectManager obj_manager;
                 obj_manager.populate_list();
-                obj_manager.log_objects();
+                //obj_manager.log_objects();
             }
         }
         Sleep(100);
