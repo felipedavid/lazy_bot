@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include "object.hpp"
+#include "..\functions.hpp" // remove it later
 
 WowObject::WowObject(uint64_t obj_guid, uint32_t obj_pointer, ObjectType obj_type) {
     guid = obj_guid;
@@ -12,7 +13,7 @@ WowObject::WowObject(uint64_t obj_guid, uint32_t obj_pointer, ObjectType obj_typ
 void WowObject::log_info() {
     printf("Guid: %llu\n", this->guid);
     printf("Pointer: %u\n", this->pointer);
-    printf("Type : %u\n", this->type);
+    printf("Type : %u\n\n", this->type);
 }
 
 uint32_t WowObject::get_pointer() { 

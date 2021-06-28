@@ -7,16 +7,15 @@
 #include "enums/object_type.hpp"
 #include "object_manager.hpp"
 
-int enumerate_objects_callback(int filter, uint64_t guid) {
-    //const uint32_t object_type_offset = 0x14;
-    //uint32_t pointer = get_object_ptr(guid);
-    //ObjectType type = (ObjectType) read_uint32(pointer + object_type_offset);
+int __fastcall enumerate_objects_callback(void *base_pointer, int filter, uint64_t guid) {
+    uint32_t pointer = get_object_ptr(guid);
+    const uint32_t object_type_offset = 0x14;
+    auto type = (ObjectType) read_uint32(pointer + object_type_offset);
     
-    //WowObject *object = new WowObject(guid, pointer, type);
+    WowObject *object = new WowObject(guid, pointer, type);
     //object_list.push_back(*object);
-    //object->log_info();
-    //delete object;
-    printf("guid: %llu.\n", guid);
+    object->log_info();
+    delete object;
 
     return 1;
 }
