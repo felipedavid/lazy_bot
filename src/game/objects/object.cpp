@@ -36,12 +36,24 @@ float WowObject::get_x_pos() {
     return read_float(base_addr + pos_x_offset);
 }
 
+void WowObject::set_x_pos(float new_x) {
+    write_float(base_addr + pos_x_offset, new_x);
+}
+
 float WowObject::get_y_pos() {
     return read_float(base_addr + pos_y_offset);
 }
 
+void WowObject::set_y_pos(float new_y) {
+    write_float(base_addr + pos_y_offset, new_y);
+}
+
 float WowObject::get_z_pos() {
     return read_float(base_addr + pos_z_offset);
+}
+
+void WowObject::set_z_pos(float new_z) {
+    write_float(base_addr + pos_z_offset, new_z);
 }
 
 uint32_t WowObject::get_descriptor_addr() {

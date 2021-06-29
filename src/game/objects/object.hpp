@@ -25,6 +25,12 @@ public:
     float get_x_pos();
     float get_y_pos();
     float get_z_pos();
+    
+    // Be careful, almost every server check this stuff
+    void set_x_pos(float new_x);
+    void set_y_pos(float new_y);
+    void set_z_pos(float new_z);
+
     uint32_t get_descriptor_addr();
 };
 #endif
