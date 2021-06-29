@@ -20,8 +20,7 @@ int UnitObject::get_health_percentage() {
 }
 
 char *UnitObject::get_name() {
-    auto name_addr = read_uint32(get_base_addr() + name_offset);
-    name_addr = read_uint32(name_addr);
+    uint32_t name_addr = read_uint32(get_base_addr() + name_offset);
     return (char *) read_uint32(name_addr);
 }
 
@@ -32,7 +31,7 @@ void UnitObject::log_info() {
     printf("Helth Percentage: %d\n", get_health_percentage());
     printf("Base Address: %x\n", get_base_addr());
     printf("Guid: %llu\n", get_guid());
-    printf("Position: {X: %f, Y: %f, Z: %f}\n", get_x_pos(),
-                                                get_y_pos(),
-                                                get_z_pos());
+    printf("Position: {X: %f, Y: %f, Z: %f}\n\n", get_x_pos(),
+                                                  get_y_pos(),
+                                                  get_z_pos());
 }
