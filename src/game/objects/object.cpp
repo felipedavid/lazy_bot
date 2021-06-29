@@ -3,27 +3,47 @@
 
 #include "object.hpp"
 #include "..\functions.hpp" // remove it later
+#include "..\..\memory_manager.hpp"
 
-WowObject::WowObject(uint64_t obj_guid, uint32_t obj_pointer, ObjectType obj_type) {
-    guid = obj_guid;
-    pointer = obj_pointer;
-    type = obj_type;
+WowObject::WowObject(uint64_t guid, uint32_t base_addr, ObjectType type) {
+    this->guid = guid;
+    this->base_addr = base_addr;
+    this->type = type;
 }
 
 void WowObject::log_info() {
-    printf("Guid: %llu\n", this->guid);
-    printf("Pointer: %u\n", this->pointer);
-    printf("Type : %u\n\n", this->type);
+    printf("Guid: %llu\n",  guid);
+    printf("Pointer: %u\n", base_addr);
+    printf("Type : %u\n",   type);
+    printf("Position: {X: %f, Y: %f, Z: %f}\n", get_x_pos(), 
+                                                get_y_pos(), 
+                                                get_z_pos());
 }
 
-uint32_t WowObject::get_pointer() { 
-    return this->pointer;
+uint32_t WowObject::get_base_addr() { 
+    return base_addr;
 }
 
 uint64_t WowObject::get_guid() { 
-    return this->guid;
+    return guid;
 }
 
-ObjectType WowObject::get_object_type() { 
-    return this->type;
+ObjectType WowObject::get_type() { 
+    return type;
+}
+
+float WowObject::get_x_pos() {
+    return read_float(base_addr + pos_x_offset);
+}
+
+float WowObject::get_y_pos() {
+    return read_float(base_addr + pos_y_offset);
+}
+
+float WowObject::get_z_pos() {
+    return read_float(base_addr + pos_z_offset);
+}
+
+uint32_t WowObject::get_descriptor_addr() {
+    return read_uint32(base_addr + descriptor_fields_offset);
 }

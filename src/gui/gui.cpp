@@ -20,6 +20,10 @@ void window() {
                 if (ImGui::Button("Start")) {
                     printf("Starting...\n");
                     bot_running = true;
+
+                    // test
+                    ObjectManager object_manager;
+                    object_manager.populate_list();
                 }
             } else {
                 if (ImGui::Button("Stop")) {
