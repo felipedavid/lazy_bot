@@ -1,3 +1,4 @@
+## Lazy Bot
 A automation tool to play World of Warcraft for me
 ![](demo3.gif)
 ## Why?
@@ -18,5 +19,5 @@ Don't. It is not usable yet.
 * Implement something to allow the bot's customization
 * Hook the graphics api to draw the bot's menu inside the game, probably with [ImGui](https://github.com/ocornut/imgui)
 * Figure out how to load the bot at runtime
-* Make it look like a real player :v
-* Try to make it less detectable in some boring private servers
+* Bypass warden
+* Make it look like a real player
