@@ -1,9 +1,9 @@
 #include <stdint.h>
 
-#include "object.hpp"
-#include "..\enums\object_type.hpp"
+#include "wow_object.hpp"
+#include "..\enums\entity_type.hpp"
 
-class UnitObject : public WowObject {
+class Unit : public WowObject {
     const uint32_t name_offset = 0xB30;
 
     // Some unit's information are stored in a different memory location. 
@@ -13,7 +13,7 @@ class UnitObject : public WowObject {
     const uint32_t unit_field_max_health_offset = 0x70;
 
 public:
-    UnitObject(uint64_t guid, uint32_t base_addr, ObjectType type);
+    Unit(uint64_t guid, uint32_t base_addr, ObjectType type);
     int get_health();
     int get_max_health();
     int get_health_percentage();
