@@ -18,6 +18,5 @@ Don't. It is not usable yet.
 * Implement a navigation system, probably using [recastnavigation](https://github.com/recastnavigation/recastnavigation)
 * Implement something to allow the bot's customization
 * Hook the graphics api to draw the bot's menu inside the game, probably with [ImGui](https://github.com/ocornut/imgui)
-* Figure out how to load the bot at runtime
 * Bypass warden
 * Make it look like a real player
