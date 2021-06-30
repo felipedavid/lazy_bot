@@ -9,5 +9,5 @@ typedef enum {
     GameObject,
     DynamicObject,
     Corpse,
-} WowObjectType;
+} ObjectType;
 #endif

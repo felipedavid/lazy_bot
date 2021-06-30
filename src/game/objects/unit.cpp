@@ -1,18 +1,18 @@
 #include <stdio.h>
 
 #include "unit.hpp"
-#include "..\..\memory_manager.hpp"
+#include "../position.hpp"
 
 Unit::Unit(uint32_t base_addr):
     WowObject(base_addr) {
 }
 
 int Unit::get_health() {
-    return read_int32(get_descriptor_addr() + unit_field_health_offset);
+    return *(uint32_t *) (get_descriptor_addr() + unit_field_health_offset);
 }
 
 int Unit::get_max_health() {
-    return read_int32(get_descriptor_addr() + unit_field_max_health_offset);
+    return *(uint32_t *) (get_descriptor_addr() + unit_field_max_health_offset);
 }
 
 int Unit::get_health_percentage() {
@@ -20,8 +20,8 @@ int Unit::get_health_percentage() {
 }
 
 char *Unit::get_name() {
-    uint32_t name_addr = read_uint32(get_base_addr() + name_offset);
-    return (char *) read_uint32(name_addr);
+    uint32_t name_addr = *(uint32_t *) (get_base_addr() + name_offset);
+    return (char *) *(uint32_t *) name_addr;
 }
 
 void Unit::log_info() {
@@ -31,7 +31,7 @@ void Unit::log_info() {
     printf("Helth Percentage: %d\n", get_health_percentage());
     printf("Base Address: %x\n", get_base_addr());
     printf("Guid: %llu\n", get_guid());
-    printf("Position: {X: %f, Y: %f, Z: %f}\n\n", get_x_pos(),
-                                                  get_y_pos(),
-                                                  get_z_pos());
+
+    Position pos = get_position();
+    printf("Position: {X: %f, Y: %f, Z: %f}\n\n", pos.x, pos.y, pos.z);
 }

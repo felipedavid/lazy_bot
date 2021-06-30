@@ -2,19 +2,18 @@
 #include <stdint.h>
 
 #include "wow_object.hpp"
-#include "..\..\memory_manager.hpp"
+#include "../position.hpp"
 
 WowObject::WowObject(uint32_t base_addr) {
     this->base_addr = base_addr;
 }
 
 void WowObject::log_info() {
-    printf("Guid: %llu\n",  guid);
-    printf("Pointer: %u\n", base_addr);
-    printf("Type : %u\n",   type);
-    printf("Position: {X: %f, Y: %f, Z: %f}\n", get_x_pos(), 
-                                                get_y_pos(), 
-                                                get_z_pos());
+    printf("Guid: %llu\n",  get_guid());
+    printf("Pointer: %u\n", get_base_addr());
+    printf("Type : %u\n",   get_type());
+    Position pos = get_position();
+    printf("Position: {X: %f, Y: %f, Z: %f}\n", pos.x, pos.y, pos.z);
 }
 
 uint32_t WowObject::get_base_addr() { 
@@ -25,7 +24,7 @@ uint64_t WowObject::get_guid() {
     return *(uint64_t *) (base_addr + guid_offset);
 }
 
-WowObjectType WowObject::get_type() { 
+ObjectType WowObject::get_type() { 
     return (ObjectType) (*(uint32_t *) (base_addr + type_offset));
 }
 
@@ -37,10 +36,6 @@ Position WowObject::get_position() {
     return pos;
 }
 
-void WowObject::set_position(Position new_position) {
-    *(Position *) (base_addr + pos_x_offset) = new_position;
-}
-
 uint32_t WowObject::get_descriptor_addr() {
-    return read_uint32(base_addr + descriptor_fields_offset);
+    return *(uint32_t *) (base_addr + descriptor_fields_offset);
 }

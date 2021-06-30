@@ -1,3 +1,5 @@
+#ifndef POSITION
+#define POSITION
 
 class Position {
 public:
@@ -7,4 +9,5 @@ public:
 
     Position(float x, float y, float z);
     float get_distance_from(Position pos);
-}
+};
+#endif
