@@ -1,13 +1,13 @@
 #ifndef OBJECT_TYPE
 #define OBJECT_TYPE
 enum ObjectType {
-    None = 0,
-    Item = 1,
-    Container = 2,
-    Unit = 3,
-    Player = 4,
-    GameObject = 5,
-    DynamicObject = 6,
-    Corpse = 7,
+    NoneType = 0,
+    ItemType = 1,
+    ContainerType = 2,
+    UnitType = 3,
+    PlayerType = 4,
+    GameObjectType = 5,
+    DynamicObjectType = 6,
+    CorpseType = 7,
 };
 #endif

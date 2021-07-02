@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "objects/object.h"
+#include "objects/unit.h"
 #include "object_manager.h"
 #include "../memory_manager.h"
 
@@ -14,10 +15,15 @@ void ObjectManager::populate_lists() {
     
     uint32_t cur_obj_ptr = read_uint(read_uint(object_manager_offset) + first_obj_ptr_offset);
     uint32_t next_obj_ptr;
-    WowObject curr_object;
     while (cur_obj_ptr != 0 && (cur_obj_ptr & 1) == 0) {
-        curr_object = {cur_obj_ptr};
-        objects.push_back(curr_object);
+        ObjectType cur_obj_type = (ObjectType) read_uint(cur_obj_ptr + obj_type_offset);
+        switch (cur_obj_type) {
+            case UnitType:
+                Unit new_unit;
+                new_unit.base_addr = cur_obj_ptr;
+                units.push_back(new_unit);
+                break;
+        }
 
         next_obj_ptr = read_uint(cur_obj_ptr + next_obj_ptr_offset);
         if (next_obj_ptr == cur_obj_ptr) break;
@@ -26,7 +32,7 @@ void ObjectManager::populate_lists() {
 }
 
 void ObjectManager::log_info() {
-    for (auto object : objects) {
-        object.log_info();
+    for (auto unit : units) {
+        unit.log_info();
     }
 }

@@ -4,9 +4,10 @@
 #include <vector>
 
 #include "objects\object.h"
+#include "objects\unit.h"
 
 struct ObjectManager {
-    std::vector<WowObject> objects;
+    std::vector<Unit> units;
 
     void populate_lists();
     void log_info();

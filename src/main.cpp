@@ -15,9 +15,9 @@ void entrypoint(HMODULE instance) {
         }
 
         if (GetAsyncKeyState(VK_END)) {
-            FreeLibraryAndExitThread(instance, 0);
             fclose(dummy_file);
             FreeConsole();
+            FreeLibraryAndExitThread(instance, 0);
         }
         Sleep(100);
     }

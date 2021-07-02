@@ -16,6 +16,6 @@ struct WowObject {
     Position get_position();
     ObjectType get_type();
     uint64_t get_guid();
-    void log_info();
+    virtual void log_info();
 };
 #endif
