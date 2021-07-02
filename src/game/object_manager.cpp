@@ -4,6 +4,7 @@
 
 #include "objects/object.h"
 #include "objects/unit.h"
+#include "objects/player.h"
 #include "object_manager.h"
 #include "../memory_manager.h"
 
@@ -18,11 +19,16 @@ void ObjectManager::populate_lists() {
     while (cur_obj_ptr != 0 && (cur_obj_ptr & 1) == 0) {
         ObjectType cur_obj_type = (ObjectType) read_uint(cur_obj_ptr + obj_type_offset);
         switch (cur_obj_type) {
-            case UnitType:
+            case UnitType: {
                 Unit new_unit;
                 new_unit.base_addr = cur_obj_ptr;
                 units.push_back(new_unit);
-                break;
+            } break;
+            case PlayerType: {
+                Player new_player;
+                new_player.base_addr = cur_obj_ptr;
+                players.push_back(new_player);
+            } break;
         }
 
         next_obj_ptr = read_uint(cur_obj_ptr + next_obj_ptr_offset);
@@ -34,5 +40,9 @@ void ObjectManager::populate_lists() {
 void ObjectManager::log_info() {
     for (auto unit : units) {
         unit.log_info();
+    }
+
+    for (auto player : players) {
+        player.log_info();
     }
 }
