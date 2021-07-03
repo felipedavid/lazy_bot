@@ -2,7 +2,9 @@
 #define PLAYER
 #include "unit.h"
 
-struct Player : Unit {
+struct LocalPlayer : Unit {
+    LocalPlayer();
     char *get_name() override;
+    uint64_t get_guid() override;
 };
 #endif

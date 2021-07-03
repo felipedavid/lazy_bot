@@ -5,13 +5,14 @@
 
 #include "objects/object.h"
 #include "objects/unit.h"
-#include "objects/player.h"
+#include "objects/local_player.h"
 
 struct ObjectManager {
     std::vector<Unit> units;
-    std::vector<Player> players;
+    LocalPlayer local_player{};
 
     void populate_lists();
+    Unit get_closest_unit();
     void log_info();
 };
 #endif

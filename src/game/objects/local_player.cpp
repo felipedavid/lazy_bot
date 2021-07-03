@@ -1,9 +1,18 @@
 #include <cstdint>
 
-#include "player.h"
+#include "local_player.h"
 #include "../../memory_manager.h"
+#include "../functions.h"
 
-char *Player::get_name() {
+LocalPlayer::LocalPlayer() {
+    base_addr = get_object_ptr(get_player_guid());
+}
+
+uint64_t LocalPlayer::get_guid() {
+    return get_player_guid();
+}
+
+char *LocalPlayer::get_name() {
     static const uint32_t name_base_offset = 0xC0E230;
     static const uint32_t next_name_offset = 0xC;
     static const uint32_t player_name_offset = 0x14;

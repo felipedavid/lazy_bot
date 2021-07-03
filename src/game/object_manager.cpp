@@ -4,9 +4,10 @@
 
 #include "objects/object.h"
 #include "objects/unit.h"
-#include "objects/player.h"
+#include "objects/local_player.h"
 #include "object_manager.h"
 #include "../memory_manager.h"
+#include "functions.h"
 
 void ObjectManager::populate_lists() {
     static const uint32_t object_manager_offset = 0x00B41414;  
@@ -24,11 +25,6 @@ void ObjectManager::populate_lists() {
                 new_unit.base_addr = cur_obj_ptr;
                 units.push_back(new_unit);
             } break;
-            case PlayerType: {
-                Player new_player;
-                new_player.base_addr = cur_obj_ptr;
-                players.push_back(new_player);
-            } break;
         }
 
         next_obj_ptr = read_uint(cur_obj_ptr + next_obj_ptr_offset);
@@ -38,11 +34,19 @@ void ObjectManager::populate_lists() {
 }
 
 void ObjectManager::log_info() {
-    for (auto unit : units) {
-        unit.log_info();
-    }
+    get_closest_unit().log_info();
+}
 
-    for (auto player : players) {
-        player.log_info();
+Unit ObjectManager::get_closest_unit() {
+    Unit closest_unit;
+    closest_unit.base_addr = 0;
+    float closest_unit_distance, unit_distance;
+    for (auto unit : units) {
+        unit_distance = unit.get_position().distance_from(local_player.get_position());
+        if ((closest_unit.base_addr == 0) || (unit_distance < closest_unit_distance)) {
+            closest_unit = unit;
+            closest_unit_distance = unit_distance;
+        }
     }
+    return closest_unit;
 }

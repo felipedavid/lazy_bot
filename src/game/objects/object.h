@@ -15,7 +15,7 @@ struct WowObject {
     uint32_t get_descriptor_fields();
     Position get_position();
     ObjectType get_type();
-    uint64_t get_guid();
+    virtual uint64_t get_guid();
     virtual void log_info();
 };
 #endif
