@@ -48,5 +48,7 @@ Unit ObjectManager::get_closest_unit() {
             closest_unit_distance = unit_distance;
         }
     }
+    // debugging
+    local_player.move_to(closest_unit.get_position());
     return closest_unit;
 }

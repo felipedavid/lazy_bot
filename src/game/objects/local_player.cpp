@@ -3,6 +3,7 @@
 #include "local_player.h"
 #include "../../memory_manager.h"
 #include "../functions.h"
+#include "../enums/click_type.h"
 
 LocalPlayer::LocalPlayer() {
     base_addr = get_object_ptr(get_player_guid());
@@ -26,4 +27,8 @@ char *LocalPlayer::get_name() {
         else break;
     }
     return (char *) (name_ptr + player_name_offset);
+}
+
+void LocalPlayer::move_to(Position pos) {
+    click_to_move(base_addr, Move, pos);
 }
