@@ -12,9 +12,9 @@ bool running = false;
 int update_delay = 100;
 
 void update() {
-    object_manager.update();
+    //object_manager.update();
     run_lua("Jump()");
-    player.move_to(object_manager.get_closest_unit().get_position());
+    //player.move_to(object_manager.get_closest_unit().get_position());
 }
 
 void bot() {

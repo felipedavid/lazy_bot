@@ -2,22 +2,25 @@
 #include <cstdio>
 
 #include "game/object_manager.h"
+#include "sync_thread.h"
+#include "game/functions.h"
 #include "bot.h"
+#include "hacks.h"
 
 void entrypoint(HMODULE instance) {
     FILE *dummy_file;
     AllocConsole();
     freopen_s(&dummy_file, "CONOUT$", "w", stdout);
 
+    unlock_lua();
     while (true) {
         if (GetAsyncKeyState(VK_TAB)) {
-            start();
-        }
-        if (GetAsyncKeyState(VK_SHIFT)) {
-            stop();
+            //start();
+            run_lua("Jump()");
         }
 
         if (GetAsyncKeyState(VK_END)) {
+            unhook_window_proc();
             fclose(dummy_file);
             FreeConsole();
             FreeLibraryAndExitThread(instance, 0);
