@@ -25,3 +25,10 @@ void click_to_move(uint32_t player_base, ClickType click_type, Position pos) {
     uint64_t interact_guid;
     fun(player_base, player_base, click_type, &interact_guid, &pos, 2);
 }
+
+void run_lua(char *code) {
+    static const uint32_t run_lua_fun_ptr = 0x00704CD0;
+    typedef uint32_t (__fastcall* _run_lua)(char *code, void *no_idea);
+    _run_lua fun = (_run_lua) run_lua_fun_ptr;
+    fun(code, (void*)run_lua_fun_ptr);
+}
