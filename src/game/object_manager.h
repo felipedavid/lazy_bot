@@ -11,6 +11,7 @@ struct ObjectManager {
     std::vector<Unit> units;
     LocalPlayer local_player{};
 
+    void update();
     void populate_lists();
     Unit get_closest_unit();
     void log_info();

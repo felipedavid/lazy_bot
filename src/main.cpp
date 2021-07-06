@@ -2,16 +2,19 @@
 #include <cstdio>
 
 #include "game/object_manager.h"
+#include "bot.h"
 
 void entrypoint(HMODULE instance) {
     FILE *dummy_file;
     AllocConsole();
     freopen_s(&dummy_file, "CONOUT$", "w", stdout);
+
     while (true) {
+        if (GetAsyncKeyState(VK_TAB)) {
+            start();
+        }
         if (GetAsyncKeyState(VK_SHIFT)) {
-            ObjectManager obj_manager;
-            obj_manager.populate_lists();
-            obj_manager.log_info();
+            stop();
         }
 
         if (GetAsyncKeyState(VK_END)) {

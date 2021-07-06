@@ -33,6 +33,11 @@ void ObjectManager::populate_lists() {
     }
 }
 
+void ObjectManager::update() {
+    units.clear();
+    populate_lists();
+}
+
 void ObjectManager::log_info() {
     get_closest_unit().log_info();
 }
@@ -49,6 +54,5 @@ Unit ObjectManager::get_closest_unit() {
         }
     }
     // debugging
-    local_player.move_to(closest_unit.get_position());
     return closest_unit;
 }
