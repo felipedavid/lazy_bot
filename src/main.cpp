@@ -13,10 +13,10 @@ void entrypoint(HMODULE instance) {
     freopen_s(&dummy_file, "CONOUT$", "w", stdout);
 
     unlock_lua();
+    hook_window_proc();
     while (true) {
         if (GetAsyncKeyState(VK_TAB)) {
-            //start();
-            run_lua("Jump()");
+            start();
         }
 
         if (GetAsyncKeyState(VK_END)) {

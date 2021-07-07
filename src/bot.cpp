@@ -12,15 +12,15 @@ bool running = false;
 int update_delay = 100;
 
 void update() {
-    //object_manager.update();
+    object_manager.update();
+    player.move_to(object_manager.get_closest_unit().get_position());
     run_lua("Jump()");
-    //player.move_to(object_manager.get_closest_unit().get_position());
 }
 
 void bot() {
     while (true) {
         if (!running) break;
-        run_procedure_on_main_thread(update);
+        run_procedure_on_main_thread(&update);
         Sleep(update_delay);
     }
 }

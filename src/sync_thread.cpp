@@ -22,10 +22,13 @@ HWND get_wow_window_handle() {
 
 void hook_window_proc() {
     // Set our new_window_proc as the new window procedure
-    prev_window_proc = 
-        (WNDPROC) SetWindowLong(get_wow_window_handle(), 
-                                GWL_WNDPROC, 
-                                (LONG_PTR)&new_window_proc);
+    if (!hooked) {
+        prev_window_proc = 
+            (WNDPROC) SetWindowLong(get_wow_window_handle(), 
+                                    GWL_WNDPROC, 
+                                    (LONG_PTR)&new_window_proc);
+        hooked = true;
+    }
 }
 
 void unhook_window_proc() {
@@ -38,9 +41,5 @@ void unhook_window_proc() {
 }
 
 void run_procedure_on_main_thread(void *procedure) {
-    if (!hooked) {
-        hook_window_proc();
-        hooked = true;
-    }
     SendMessage(get_wow_window_handle(), WM_USER, (WPARAM)procedure, 0);
 }
