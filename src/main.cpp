@@ -6,6 +6,7 @@
 #include "game/functions.h"
 #include "bot.h"
 #include "hacks.h"
+#include "gui/gui.h"
 
 void entrypoint(HMODULE instance) {
     FILE *dummy_file;
@@ -14,19 +15,12 @@ void entrypoint(HMODULE instance) {
 
     unlock_lua();
     hook_window_proc();
-    while (true) {
-        if (GetAsyncKeyState(VK_TAB)) {
-            start();
-        }
+    start_gui(instance);
 
-        if (GetAsyncKeyState(VK_END)) {
-            unhook_window_proc();
-            fclose(dummy_file);
-            FreeConsole();
-            FreeLibraryAndExitThread(instance, 0);
-        }
-        Sleep(100);
-    }
+    unhook_window_proc();
+    fclose(dummy_file);
+    FreeConsole();
+    FreeLibraryAndExitThread(instance, 0);
 }
 
 BOOL DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved) {
