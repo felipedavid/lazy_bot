@@ -18,8 +18,8 @@ void entrypoint(HMODULE instance) {
     start_gui(instance);
 
     unhook_window_proc();
-    fclose(dummy_file);
     FreeConsole();
+    fclose(dummy_file);
     FreeLibraryAndExitThread(instance, 0);
 }
 

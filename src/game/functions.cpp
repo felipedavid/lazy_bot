@@ -2,6 +2,7 @@
 
 #include "enums/click_type.h"
 #include "../position.h"
+#include "objects/unit.h"
 
 uint64_t get_player_guid() {
     static const uint32_t get_player_guid_fun_ptr = 0x00468550;
@@ -31,4 +32,9 @@ void run_lua(char *code) {
     typedef uint32_t (__fastcall* _run_lua)(char *code, void *no_idea);
     _run_lua fun = (_run_lua) run_lua_fun_ptr;
     fun(code, (void*)run_lua_fun_ptr);
+}
+
+void set_target(Unit target) {
+    static const uint32_t set_target_fun_ptr = 0x00493540;
+    ((void (__stdcall*)(uint64_t guid))(set_target_fun_ptr))(target.get_guid());
 }
