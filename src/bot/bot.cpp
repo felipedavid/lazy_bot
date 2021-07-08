@@ -1,10 +1,10 @@
 #include <windows.h>
 
-#include "game/object_manager.h"
-#include "game/objects/local_player.h"
-#include "game/objects/unit.h"
-#include "game/functions.h"
-#include "sync_thread.h"
+#include "../game/object_manager.h"
+#include "../game/objects/local_player.h"
+#include "../game/objects/unit.h"
+#include "../game/functions.h"
+#include "../utils/sync_thread.h"
 #include "bot.h"
 
 ObjectManager object_manager;
@@ -12,7 +12,6 @@ LocalPlayer &player = object_manager.local_player;
 bool running = false;
 int update_delay = 300;
 
-// TODO: Implement this as a state machine
 void update() {
     object_manager.update();
     Unit enemy = object_manager.get_closest_unit();

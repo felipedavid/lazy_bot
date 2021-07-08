@@ -1,7 +1,7 @@
 #include <cstdint>
 
 #include "enums/click_type.h"
-#include "../position.h"
+#include "position.h"
 #include "objects/unit.h"
 
 uint64_t get_player_guid() {

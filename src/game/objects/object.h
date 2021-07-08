@@ -1,7 +1,7 @@
 #ifndef WOW_OBJECT
 #define WOW_OBJECT
 #include <cstdint>
-#include "../../position.h"
+#include "../position.h"
 #include "../enums/object_type.h"
 
 struct WowObject {

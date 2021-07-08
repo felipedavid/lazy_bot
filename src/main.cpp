@@ -2,10 +2,10 @@
 #include <cstdio>
 
 #include "game/object_manager.h"
-#include "sync_thread.h"
+#include "utils/sync_thread.h"
 #include "game/functions.h"
-#include "bot.h"
-#include "hacks.h"
+#include "bot/bot.h"
+#include "utils/hacks.h"
 #include "gui/gui.h"
 
 void entrypoint(HMODULE instance) {

@@ -1,7 +1,7 @@
 #include <cstdint>
 
 #include "local_player.h"
-#include "../../memory_manager.h"
+#include "../../utils/memory_manager.h"
 #include "../functions.h"
 #include "../enums/click_type.h"
 

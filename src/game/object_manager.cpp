@@ -6,7 +6,7 @@
 #include "objects/unit.h"
 #include "objects/local_player.h"
 #include "object_manager.h"
-#include "../memory_manager.h"
+#include "../utils/memory_manager.h"
 #include "functions.h"
 
 void ObjectManager::populate_lists() {

@@ -2,9 +2,9 @@
 #include <cstdio>
 
 #include "object.h"
-#include "../../memory_manager.h"
+#include "../../utils/memory_manager.h"
 #include "../enums/object_type.h"
-#include "../../position.h"
+#include "../position.h"
 
 uint32_t WowObject::get_descriptor_fields() {
     return read_uint(base_addr + descriptor_fields_offset);
