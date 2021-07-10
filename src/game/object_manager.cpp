@@ -48,11 +48,11 @@ Unit ObjectManager::get_closest_unit() {
     float closest_unit_distance, unit_distance;
     for (auto unit : units) {
         unit_distance = unit.get_position().distance_from(local_player.get_position());
-        if ((closest_unit.base_addr == 0) || (unit_distance < closest_unit_distance)) {
+        if (((closest_unit.base_addr == 0) || (unit_distance < closest_unit_distance)) &&
+                unit.get_health() > 0) {
             closest_unit = unit;
             closest_unit_distance = unit_distance;
         }
     }
-    // debugging
     return closest_unit;
 }
