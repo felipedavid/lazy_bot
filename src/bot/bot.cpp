@@ -19,9 +19,18 @@ Unit target;
 void update() {
     object_manager.populate_lists();
     switch(state.top()) {
-        case GrindState:  handle_grind_state();  break;
-        case MoveState:   handle_move_state();   break;
-        case CombatState: handle_combat_state(); break;
+        case GrindState: {
+              handle_grind_state();  
+              printf("Grind State.\n");
+        } break;
+        case MoveState: {
+             handle_move_state();
+             printf("Move State.\n");
+        } break;
+        case CombatState: {
+             handle_combat_state(); 
+             printf("Combat State.\n");
+        } break;
     }
 }
 
@@ -31,19 +40,20 @@ void bot() {
         run_procedure_on_main_thread(&update);
         Sleep(update_delay);
     }
+    click_to_move(player.base_addr, Move, player.get_position());
 }
 
 void start() {
     if (!running) {
+        printf("\n\n---- Starting Bot ----\n\n");
         running = true;
         state.push(GrindState);
         CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot, NULL, 0, 0);
-    } else {
-        running = false;
     }
 }
 
 void stop() {
+    printf("\n\n---- Stopping Bot ----\n\n");
     running = false;
 }
 
