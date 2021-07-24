@@ -7,6 +7,7 @@
 #include "bot/bot.h"
 #include "utils/hacks.h"
 #include "gui/gui.h"
+#include "game/signal_event_manager.h"
 
 void entrypoint(HMODULE instance) {
     FILE *dummy_file;
@@ -14,6 +15,7 @@ void entrypoint(HMODULE instance) {
     freopen_s(&dummy_file, "CONOUT$", "w", stdout);
 
     unlock_lua();
+    hook_event_signal();
     hook_window_proc();
     start_gui(instance);
 
