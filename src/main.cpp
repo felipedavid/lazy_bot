@@ -1,33 +1,24 @@
 #include <windows.h>
 #include <cstdio>
 
-#include "game/object_manager.h"
-#include "utils/sync_thread.h"
-#include "game/functions.h"
-#include "bot/bot.h"
-#include "utils/hacks.h"
-#include "gui/gui.h"
-#include "game/signal_event_manager.h"
-
-void entrypoint(HMODULE instance) {
+void entry_point(HMODULE instance) {
     FILE *dummy_file;
     AllocConsole();
     freopen_s(&dummy_file, "CONOUT$", "w", stdout);
 
-    unlock_lua();
-    hook_event_signal();
-    hook_window_proc();
-    start_gui(instance);
-
-    unhook_window_proc();
-    FreeConsole();
-    fclose(dummy_file);
-    FreeLibraryAndExitThread(instance, 0);
+    while (true) {
+        if (GetAsyncKeyState('M')) {
+            fclose(dummy_file);
+            FreeConsole();
+            FreeLibraryAndExitThread(instance, 0);
+        }
+    }
 }
 
-BOOL DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved) {
+BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved )
+{
     if (reason == DLL_PROCESS_ATTACH) {
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)entrypoint, instance, 0, NULL);
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) entry_point, instance, 0, NULL);
     }
     return TRUE;
 }
