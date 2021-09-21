@@ -16,7 +16,7 @@ enum Entity_Type {
 struct Entity {
     // We only need the pointer to the base of the entity object
     // to obtein all info that we need.
-    u32 pointer;
+    u32 base_addr;
 
     // Offsets
     static const u32 type_offset = 0x14;
@@ -26,8 +26,18 @@ struct Entity {
     Entity_Type Entity::get_type();
 };
 
+struct Unit : Entity {
+    // Units store their details in a separate memory location.
+    // We can get a pointer to that at offset "0x8".
+    static const u32 descriptor_ptr_offset = 0x8;
+    static const u32 health_offset = 0x58;
+
+    u32 get_descriptor_ptr();
+    int get_health();
+};
+
 struct Entity_Manager {
-    std::vector<Entity> entities;
+    std::vector<Unit> units;
 
     // Offsets
     static const u32 entity_manager_addr = 0xB41414;
