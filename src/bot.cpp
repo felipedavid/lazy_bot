@@ -9,7 +9,8 @@ void Bot::print_visible_objects() {
 
     int i = 1;
     for (auto entity : entity_manager.entities) {
-        printf("Entity %d\nGuid: %llu\nPointer: %u\nType: %d\n\n", i, entity.guid, entity.pointer, entity.type);
+        printf("Entity %d\nGuid: %llu\nPointer: %u\nType: %d\n\n", 
+                i, entity.get_guid(), entity.pointer, entity.get_type());
         i++;
     }
 }
