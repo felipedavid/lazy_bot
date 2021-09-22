@@ -53,6 +53,15 @@ u64 Local_Player::get_guid() {
     return ((u64 (__stdcall*)())(get_player_guid_fun_ptr))();
 }
 
+float Local_Player::distance_to(Position pos) {
+    Position lplayer = get_position();
+    float delta_x = lplayer.x - pos.x;
+    float delta_y = lplayer.y - pos.y;
+    float delta_z = lplayer.z - pos.z;
+
+    return (float)sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
+}
+
 void Entity_Manager::populate_lists() {
     units.erase(units.begin(), units.end());
     players.erase(players.begin(), players.end());

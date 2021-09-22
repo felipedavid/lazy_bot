@@ -58,6 +58,7 @@ struct Local_Player : public Player {
 
     using Player::Player;
     u64 get_guid();
+    float distance_to(Position pos);
 };
 
 struct Entity_Manager {
