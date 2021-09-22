@@ -14,25 +14,25 @@ enum Entity_Type {
 };
 
 struct Entity {
-    // We only need the pointer to the base of the entity object
-    // to obtein all info that we need.
-    u32 base_addr;
-
     // Offsets
     static const u32 type_offset = 0x14;
     static const u32 guid_offset = 0x30;
+
+    // We only need the pointer to the base of the entity object
+    // to obtein all info that we need.
+    u32 base_addr;
 
     Entity(u32 base_addr);
     u64 Entity::get_guid();
     Entity_Type Entity::get_type();
 };
 
-struct Unit : public Entity {
+struct Unit : Entity {
     // Units store their details in a separate memory location.
     // We can get a pointer to that at offset "0x8".
     static const u32 descriptor_ptr_offset = 0x8;
-    static const u32 health_offset = 0x58;
-    static const u32 name_offset = 0xB30; 
+    static const u32 health_offset         = 0x58;
+    static const u32 name_offset           = 0xB30; 
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
@@ -40,15 +40,32 @@ struct Unit : public Entity {
     char *get_name();
 };
 
-struct Entity_Manager {
-    std::vector<Unit> units;
+struct Player : Unit {
+    static const u32 name_base_offset   = 0xC0E230;
+    static const u32 next_name_offset   = 0xC;
+    static const u32 player_name_offset = 0x14;
 
+    using Unit::Unit;
+    char *get_name();
+    //Player(u32 base_addr) : Unit(base_addr) {};
+};
+
+struct Local_Player : Player {
+    using Player::Player;
+};
+
+struct Entity_Manager {
     // Offsets
     static const u32 entity_manager_addr = 0xB41414;
     static const u32 first_entity_offset = 0xac;
     static const u32 next_entity_offset  = 0x3c;
     static const u32 descriptor_offset   = 0x8;
     static const u32 entity_type_offset  = 0x14;
+    static const u64 entity_guid_offset  = 0x30;
+
+    std::vector<Unit> units;
+    std::vector<Player> players;
+    Local_Player local_player = 0;
 
     void populate_lists();
 };
