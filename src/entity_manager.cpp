@@ -26,6 +26,14 @@ char *Unit::get_name() {
     return (char *) read_u32(read_u32(base_addr + name_offset));
 }
 
+Position Unit::get_position() {
+    Position pos;
+    pos.x = read_float(base_addr + 0x9B8);
+    pos.y = read_float(base_addr + 0x9B8 + 0x4);
+    pos.z = read_float(base_addr + 0x9B8 + 0x8);
+    return pos;
+}
+
 char *Player::get_name() {
     u32 name_ptr = read_u32(name_base_offset); 
     for (;;) {
@@ -37,6 +45,12 @@ char *Player::get_name() {
         }
     }
     return (char *) name_ptr + player_name_offset;
+}
+
+// Just a wrapper for a client's function that returns the local player guid.
+// If the player is not logged in, zero is returned.
+u64 Local_Player::get_guid() {
+    return ((u64 (__stdcall*)())(get_player_guid_fun_ptr))();
 }
 
 void Entity_Manager::populate_lists() {
@@ -54,7 +68,7 @@ void Entity_Manager::populate_lists() {
             case ET_UNIT: units.push_back(Unit(current)); break;
             case ET_PLAYER: {
                 u64 player_guid = read_u64(current + entity_guid_offset);
-                if (player_guid == local_player_guid) {
+                if (player_guid == local_player.get_guid()) {
                     local_player.base_addr = current;
                 } else {
                     players.push_back(Player(current));

@@ -23,35 +23,41 @@ struct Entity {
     u32 base_addr;
 
     Entity(u32 base_addr);
-    u64 Entity::get_guid();
-    Entity_Type Entity::get_type();
+    u64 get_guid();
+    Entity_Type get_type();
 };
 
-struct Unit : Entity {
+struct Position {float x, y, z;};
+
+struct Unit : public Entity {
     // Units store their details in a separate memory location.
     // We can get a pointer to that at offset "0x8".
     static const u32 descriptor_ptr_offset = 0x8;
     static const u32 health_offset         = 0x58;
     static const u32 name_offset           = 0xB30; 
+    static const u32 position_offset       = 0x9B8;
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
     int get_health();
     char *get_name();
+    Position get_position();
 };
 
-struct Player : Unit {
+struct Player : public Unit {
     static const u32 name_base_offset   = 0xC0E230;
     static const u32 next_name_offset   = 0xC;
     static const u32 player_name_offset = 0x14;
 
     using Unit::Unit;
     char *get_name();
-    //Player(u32 base_addr) : Unit(base_addr) {};
 };
 
-struct Local_Player : Player {
+struct Local_Player : public Player {
+    static const u32 get_player_guid_fun_ptr = 0x00468550;
+
     using Player::Player;
+    u64 get_guid();
 };
 
 struct Entity_Manager {
