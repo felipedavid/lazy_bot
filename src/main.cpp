@@ -2,14 +2,22 @@
 #include <cstdio>
 
 #include "bot.h"
-#include "gui\gui.h"
 
 void entry_point(HMODULE instance) {
     FILE *dummy_file;
     AllocConsole();
     freopen_s(&dummy_file, "CONOUT$", "w", stdout);
 
-    start_gui(instance);
+    Bot bot;
+
+    while (true) {
+        if (GetAsyncKeyState(VK_ESCAPE)) break;
+
+        if (GetAsyncKeyState(VK_NUMPAD1)) {
+            bot.entity_manager.populate_lists();
+            bot.print_entity_list();
+        }
+    }
 
     fclose(dummy_file);
     FreeConsole();

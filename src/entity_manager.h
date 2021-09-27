@@ -1,4 +1,4 @@
-#include <vector>
+#include <unordered_map>
 
 #include "type.h"
 
@@ -70,8 +70,8 @@ struct Entity_Manager {
     static const u32 entity_type_offset  = 0x14;
     static const u64 entity_guid_offset  = 0x30;
 
-    std::vector<Unit> units;
-    std::vector<Player> players;
+    std::unordered_map<u64, Unit> units;
+    std::unordered_map<u64, Player> players;
     Local_Player local_player = 0;
 
     void populate_lists();

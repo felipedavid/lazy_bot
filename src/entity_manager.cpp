@@ -63,24 +63,25 @@ float Local_Player::distance_to(Position pos) {
 }
 
 void Entity_Manager::populate_lists() {
-    units.erase(units.begin(), units.end());
-    players.erase(players.begin(), players.end());
+    units.clear();
+    players.clear();
 
     // Get a pointer to the first entity of the linked list
     u32 current = read_u32(read_u32(entity_manager_addr) + first_entity_offset);
     u32 next;
     // Iterate over the linked list and populate our entity vectors
     while (current != 0 && (current & 1) == 0) {
-        
-        auto entity_type = (Entity_Type) read_u32(current + entity_type_offset);
-        switch (entity_type) {
-            case ET_UNIT: units.push_back(Unit(current)); break;
+        auto type = (Entity_Type) read_u32(current + entity_type_offset);
+        u64 guid = read_u64(current + entity_guid_offset);
+        switch (type) {
+            case ET_UNIT: 
+                units.insert({guid, Unit(current)}); 
+                break;
             case ET_PLAYER: {
-                u64 player_guid = read_u64(current + entity_guid_offset);
-                if (player_guid == local_player.get_guid()) {
+                if (guid == local_player.get_guid()) {
                     local_player.base_addr = current;
                 } else {
-                    players.push_back(Player(current));
+                    players.insert({guid, Player(current)});
                 }
             } break;
         }

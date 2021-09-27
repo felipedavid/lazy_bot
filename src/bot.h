@@ -5,5 +5,5 @@ struct Bot {
     Entity_Manager entity_manager;
 
     void toggle_running_state();
-    void print_visible_objects();
+    void print_entity_list();
 };
