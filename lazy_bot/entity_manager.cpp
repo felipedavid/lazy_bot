@@ -6,12 +6,12 @@ Entity::Entity(u32 base_addr) {
     this->base_addr = base_addr;
 }
 
-u64 Entity::get_guid() { 
-    return read_u64(base_addr + guid_offset); 
+u64 Entity::get_guid() {
+    return read_u64(base_addr + guid_offset);
 }
 
-Entity_Type Entity::get_type() { 
-    return (Entity_Type) read_u32(base_addr + type_offset); 
+Entity_Type Entity::get_type() {
+    return (Entity_Type)read_u32(base_addr + type_offset);
 }
 
 u32 Unit::get_descriptor_ptr() {
@@ -22,8 +22,8 @@ int Unit::get_health() {
     return read_int(get_descriptor_ptr() + health_offset);
 }
 
-char *Unit::get_name() {
-    return (char *) read_u32(read_u32(base_addr + name_offset));
+char* Unit::get_name() {
+    return (char*)read_u32(read_u32(base_addr + name_offset));
 }
 
 Position Unit::get_position() {
@@ -34,23 +34,24 @@ Position Unit::get_position() {
     return pos;
 }
 
-char *Player::get_name() {
-    u32 name_ptr = read_u32(name_base_offset); 
+char* Player::get_name() {
+    u32 name_ptr = read_u32(name_base_offset);
     for (;;) {
         u64 next_guid = read_u64(name_ptr + next_name_offset);
         if (next_guid != get_guid()) {
             name_ptr = read_u32(name_ptr);
-        } else {
+        }
+        else {
             break;
         }
     }
-    return (char *) name_ptr + player_name_offset;
+    return (char*)name_ptr + player_name_offset;
 }
 
 // Just a wrapper for a client's function that returns the local player guid.
 // If the player is not logged in, zero is returned.
 u64 Local_Player::get_guid() {
-    return ((u64 (__stdcall*)())(get_player_guid_fun_ptr))();
+    return ((u64(__stdcall*)())(get_player_guid_fun_ptr))();
 }
 
 float Local_Player::distance_to(Position pos) {
@@ -71,19 +72,20 @@ void Entity_Manager::populate_lists() {
     u32 next;
     // Iterate over the linked list and populate our entity vectors
     while (current != 0 && (current & 1) == 0) {
-        auto type = (Entity_Type) read_u32(current + entity_type_offset);
+        auto type = (Entity_Type)read_u32(current + entity_type_offset);
         u64 guid = read_u64(current + entity_guid_offset);
         switch (type) {
-            case ET_UNIT: 
-                units.insert({guid, Unit(current)}); 
-                break;
-            case ET_PLAYER: {
-                if (guid == local_player.get_guid()) {
-                    local_player.base_addr = current;
-                } else {
-                    players.insert({guid, Player(current)});
-                }
-            } break;
+        case ET_UNIT:
+            units.insert({ guid, Unit(current) });
+            break;
+        case ET_PLAYER: {
+            if (guid == local_player.get_guid()) {
+                local_player.base_addr = current;
+            }
+            else {
+                players.insert({ guid, Player(current) });
+            }
+        } break;
         }
 
         next = read_u32(current + next_entity_offset);

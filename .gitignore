@@ -4,3 +4,4 @@ bin/
 *.pdb
 *.dll
 *.ilk
+Debug/	
