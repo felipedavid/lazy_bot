@@ -1,3 +1,5 @@
 #pragma once
 
-void bot_loop();
+#include "menu.h"
+
+void bot_loop(Menu *menu);

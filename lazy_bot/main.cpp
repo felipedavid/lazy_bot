@@ -9,7 +9,9 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx9.h"
 
-#include "bot.h"
+#include "menu.h"
+
+Menu bot_menu;
 
 typedef long(__stdcall* EndScene)(LPDIRECT3DDEVICE9);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
@@ -36,32 +38,21 @@ void InitImGui(LPDIRECT3DDEVICE9 pDevice)
 bool init = false;
 long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 {
-	if (!init)
-	{
+	if (!init) {
 		InitImGui(pDevice);
 		init = true;
 	}
+	
+	if (GetAsyncKeyState(VK_END) & 1) bot_menu.show = !bot_menu.show;
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("Lazy Bot");
-    
-    static bool log_is_up = false;
-    if (ImGui::Button("Log") && !log_is_up) {
-        AllocConsole();
-        FILE* file;
-        freopen_s(&file, "CONOUT$", "w", stdout);
-        log_is_up = true;
-    }
-    if (ImGui::Button("Start")) {
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot_loop, NULL, 0, NULL);
-    }
-	ImGui::End();
+    bot_menu.draw();
 
 	ImGui::EndFrame();
-	ImGui::Render();
+    ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 
 	return oEndScene(pDevice);
@@ -69,7 +60,7 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
-	if (GetKeyState(VK_END) == 1) {
+	if (bot_menu.show) {
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 		return true;
 	}

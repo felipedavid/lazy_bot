@@ -12,7 +12,7 @@ void Entity_Manager::populate_lists() {
 
     while (current != 0 && (current & 1) == 0) {
         auto guid = read<u64>(current + 0xC0);
-        entities.insert({guid, Entity{current, type}});
+        entities.insert({guid, Entity{current}});
 
         next = read<u32>(current + 0x3c);  
         if (current == next) break;
