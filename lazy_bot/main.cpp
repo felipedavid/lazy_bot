@@ -1,11 +1,22 @@
-#include "includes.h"
+#include <Windows.h>
+#include <d3d9.h>
+#include <d3dx9.h>
+#include <cstdio>
+
+#include "kiero/kiero.h"
+#include "kiero/minhook/include/MinHook.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx9.h"
+
 #include "bot.h"
+
+typedef long(__stdcall* EndScene)(LPDIRECT3DDEVICE9);
+typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
 #ifdef _WIN64
 #define GWL_WNDPROC GWLP_WNDPROC
 #endif
-
-Bot bot;
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -35,8 +46,19 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	bot.Draw("Lazy Bot");
-	bot.AddLog("Hi");
+	ImGui::Begin("Lazy Bot");
+    
+    static bool log_is_up = false;
+    if (ImGui::Button("Log") && !log_is_up) {
+        AllocConsole();
+        FILE* file;
+        freopen_s(&file, "CONOUT$", "w", stdout);
+        log_is_up = true;
+    }
+    if (ImGui::Button("Start")) {
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot_loop, NULL, 0, NULL);
+    }
+	ImGui::End();
 
 	ImGui::EndFrame();
 	ImGui::Render();
@@ -47,8 +69,10 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
-	if (true && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+	if (GetKeyState(VK_END) == 1) {
+		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 		return true;
+	}
 
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
@@ -59,10 +83,10 @@ BOOL CALLBACK EnumWindowsCallback(HWND handle, LPARAM lParam)
 	GetWindowThreadProcessId(handle, &wndProcId);
 
 	if (GetCurrentProcessId() != wndProcId)
-		return TRUE; // skip to next window
+		return TRUE;
 
 	window = handle;
-	return FALSE; // window found abort search
+	return FALSE;
 }
 
 HWND GetProcessWindow()

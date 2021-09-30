@@ -5,3 +5,5 @@ bin/
 *.dll
 *.ilk
 Debug/	
+lazy_bot/Debug/
+.vs/

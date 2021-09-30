@@ -98,9 +98,6 @@
     <ClInclude Include="kiero\minhook\src\trampoline.h">
       <Filter>kiero</Filter>
     </ClInclude>
-    <ClInclude Include="includes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
