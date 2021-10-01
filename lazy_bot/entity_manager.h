@@ -2,6 +2,7 @@
 #include <unordered_map>
 
 #include "type.h"
+#include "game.h"
 
 enum Entity_Type {
     ET_NONE = 0,  
@@ -46,7 +47,7 @@ struct Unit : public Entity {
 };
 
 struct Player : public Unit {
-    static const u32 name_base_offset   = 0xC0E230;
+    static const u32 name_base_offset   = 0xB30;
     static const u32 next_name_offset   = 0xC;
     static const u32 player_name_offset = 0x14;
 
@@ -64,16 +65,12 @@ struct Local_Player : public Player {
 
 struct Entity_Manager {
     // Offsets
-    static const u32 client_connection_offset = 0x00C79CE0;
-    static const u32 entity_manager_offset = 0x2ED0;
-    static const u32 first_entity_offset = 0xac;
-    static const u32 next_entity_offset  = 0x3c;
     static const u32 entity_type_offset  = 0x14;
-    static const u64 entity_guid_offset  = 0xC0;
 
-    std::unordered_map<u64, Unit> units;
-    std::unordered_map<u64, Player> players;
+    static std::unordered_map<u64, Unit> units;
+    static std::unordered_map<u64, Player> players;
     Local_Player local_player = 0;
 
+    static int process_entity(int filter, u64 guid);
     void populate_lists();
 };

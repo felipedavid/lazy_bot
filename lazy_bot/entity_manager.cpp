@@ -1,8 +1,10 @@
 #include <cstdio>
 
 #include "utils.h"
-
 #include "entity_manager.h"
+
+std::unordered_map<u64, Unit> Entity_Manager::units;
+std::unordered_map<u64, Player> Entity_Manager::players;
 
 Entity::Entity(u32 base_addr) {
     this->base_addr = base_addr;
@@ -55,33 +57,22 @@ u64 Local_Player::get_guid() {
     return ((u64 (__stdcall*)())(get_player_guid_fun_ptr))();
 }
 
+// Callback for "Game::enumarate_visible_entities"
+int Entity_Manager::process_entity(int filter, u64 guid) {
+    u32 base_addr = Game::get_entity_ptr(guid);
+    auto type = read<Entity_Type>(base_addr + entity_type_offset);
+
+    switch(type) {
+        case ET_UNIT: units.insert({guid, base_addr});
+        case ET_PLAYER: players.insert({guid, base_addr});
+    }
+
+    return 1;
+}
+
 void Entity_Manager::populate_lists() {
     units.erase(units.begin(), units.end());
     players.erase(players.begin(), players.end());
 
-    u32 current = read<u32>(read<u32>(read<u32>(client_connection_offset) + entity_manager_offset) + first_entity_offset);
-    //u32 current = read<u32>(client_connection_offset) + entity_manager_offset;
-    //current = read<u32>(current + first_entity_offset);
-    u32 next = current;
-
-    while (current != 0 && (current & 1) == 0) {
-        auto guid = read<u64>(current + entity_guid_offset);
-        auto type = read<Entity_Type>(current + entity_type_offset);
-        switch (type) {
-            case ET_UNIT: 
-                units.insert({guid, Unit(current)}); 
-                break;
-            case ET_PLAYER: {
-                //if (guid == local_player.get_guid()) {
-                //    local_player.base_addr = current;
-                //} else {
-                    players.insert({guid, Player(current)});
-                //}
-            } break;
-        }
-
-        next = read<u32>(current + next_entity_offset);  
-        if (current == next) break;
-        current = next;  
-    }
+    Game::enumerate_visible_entities(process_entity, 0);
 }
