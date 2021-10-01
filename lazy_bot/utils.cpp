@@ -1,1 +1,15 @@
 #include "utils.h"
+
+const char *entity_type_to_str(Entity_Type type) {
+    switch(type) {
+        case ET_NONE:      return "None";
+        case ET_ITEM:      return "Item";
+        case ET_CONTAINER: return "Container";
+        case ET_UNIT:      return "Unit";
+        case ET_PLAYER:    return "Player";
+        case ET_GAMEOBJ:   return "GameObject";
+        case ET_DYNOBJ:    return "DynamicObject";
+        case ET_CORPSE:    return "Corpse";
+    }
+    return "Undefined";
+}
