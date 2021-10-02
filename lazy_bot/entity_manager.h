@@ -47,7 +47,7 @@ struct Unit : public Entity {
 };
 
 struct Player : public Unit {
-    static const u32 name_base_offset   = 0xB30;
+    static const u32 name_base_offset   = 0xC0E230;
     static const u32 next_name_offset   = 0xC;
     static const u32 player_name_offset = 0x14;
 
@@ -56,7 +56,7 @@ struct Player : public Unit {
 };
 
 struct Local_Player : public Player {
-    static const u32 get_player_guid_fun_ptr = 0x00468550; // TODO: update this
+    static const u32 get_player_guid_fun_ptr = 0x00468550;
 
     using Player::Player;
     u64 get_guid();

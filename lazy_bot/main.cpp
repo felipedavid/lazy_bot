@@ -102,6 +102,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			attached = true;
 		}
 	} while (!attached);
+
 	return TRUE;
 }
 
