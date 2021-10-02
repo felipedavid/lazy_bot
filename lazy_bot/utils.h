@@ -7,10 +7,15 @@ extern Menu bot_menu;
 
 template <typename T>
 T read(u32 addr) { 
-    try {return *(T*)addr; } 
-    catch (const char *e) {
-        bot_menu.add_log(e);
+    T value = (T) 0;
+    try {
+        value = *(T*)addr; 
+    } catch (...) {
+        char buf[256];
+        sprintf_s(buf, "[!] Could not read value at 0x%x", addr);
+        bot_menu.add_log(buf);
     }
+    return value;
 }
 
 const char *entity_type_to_str(Entity_Type type);

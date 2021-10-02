@@ -58,7 +58,7 @@ u64 Local_Player::get_guid() {
 }
 
 // Callback for "Game::enumarate_visible_entities"
-int Entity_Manager::process_entity(int filter, u64 guid) {
+int Entity_Manager::process_entity(u32 thiss, int filter, u64 guid) {
     u32 base_addr = Game::get_entity_ptr(guid);
     auto type = read<Entity_Type>(base_addr + entity_type_offset);
 

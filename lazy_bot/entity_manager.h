@@ -71,6 +71,6 @@ struct Entity_Manager {
     static std::unordered_map<u64, Player> players;
     Local_Player local_player = 0;
 
-    static int process_entity(int filter, u64 guid);
+    static int __fastcall process_entity(u32 thiss, int filter, u64 guid);
     void populate_lists();
 };
