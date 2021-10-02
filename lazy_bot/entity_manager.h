@@ -61,6 +61,7 @@ struct Local_Player : public Player {
     using Player::Player;
     u64 get_guid();
     float distance_to(Vec3 pos);
+    void click_to_move(Vec3 pos);
 };
 
 struct Entity_Manager {

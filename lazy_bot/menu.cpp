@@ -8,7 +8,7 @@ void Menu::draw() {
 
 		{
 			if (ImGui::Button("Test")) {
-				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)bot_loop, this, 0, NULL);
+				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)test, this, 0, NULL);
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Clear Logs")) {

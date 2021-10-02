@@ -52,6 +52,14 @@ char *Player::get_name() {
 // If the player is not logged in, zero is returned.
 u64 Local_Player::get_guid() { return Game::get_player_guid(); }
 
+// Wrapper around game function
+void Local_Player::click_to_move(Vec3 pos) {
+    // 0x4 == move click type
+    u64 interact_guid_ptr = 0;
+    Vec3 *p = &pos;
+    Game::click_to_move(base_addr, base_addr, CT_MOVE, &interact_guid_ptr, (u32)p, 2);
+}
+
 // Callback for "Game::enumarate_visible_entities"
 int Entity_Manager::process_entity(void *thiss, int filter, u64 guid) {
     u32 base_addr = Game::get_entity_ptr(guid);
