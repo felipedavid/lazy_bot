@@ -6,6 +6,10 @@
 #include "utils.h"
 
 void bot_loop(Menu *menu) {
+    if (!Game::get_player_guid()) {
+        menu->add_log("Please, log in.\n");
+        return;
+    }
     char log[256];
 
     Entity_Manager entity_manager;
@@ -14,8 +18,15 @@ void bot_loop(Menu *menu) {
     int i = 1;
     for (auto& entity : entity_manager.units) {
         Unit &e = entity.second; 
-        sprintf_s(log, "Entity %d\nBase addr: 0x%x\nType: %s\nHealth: %d\nGuid: %llu\n\n", 
-            i, e.base_addr, entity_type_to_str(e.get_type()), e.get_health(), entity.first);
+        sprintf_s(log, "Entity %d\nBase addr: 0x%x\nType: %s\nHealth: %d\nGuid: %llu\nName: %s\n\n", 
+            i, e.base_addr, entity_type_to_str(e.get_type()), e.get_health(), entity.first, e.get_name());
+        menu->add_log(log);
+        i++;
+    }
+    for (auto& entity : entity_manager.players) {
+        Player &e = entity.second; 
+        sprintf_s(log, "Entity %d\nBase addr: 0x%x\nType: %s\nHealth: %d\nGuid: %llu\nName: %s\n\n",
+            i, e.base_addr, entity_type_to_str(e.get_type()), e.get_health(), entity.first, e.get_name());
         menu->add_log(log);
         i++;
     }

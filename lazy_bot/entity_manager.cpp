@@ -5,6 +5,7 @@
 
 std::unordered_map<u64, Unit> Entity_Manager::units;
 std::unordered_map<u64, Player> Entity_Manager::players;
+Local_Player Entity_Manager::local_player = 0;
 
 Entity::Entity(u32 base_addr) {
     this->base_addr = base_addr;
@@ -53,18 +54,22 @@ char *Player::get_name() {
 
 // Just a wrapper for a client's function that returns the local player guid.
 // If the player is not logged in, zero is returned.
-u64 Local_Player::get_guid() {
-    return ((u64 (__stdcall*)())(get_player_guid_fun_ptr))();
-}
+u64 Local_Player::get_guid() { return Game::get_player_guid(); }
 
 // Callback for "Game::enumarate_visible_entities"
-int Entity_Manager::process_entity(u32 thiss, int filter, u64 guid) {
+int Entity_Manager::process_entity(void *thiss, int filter, u64 guid) {
     u32 base_addr = Game::get_entity_ptr(guid);
     auto type = read<Entity_Type>(base_addr + entity_type_offset);
 
     switch(type) {
-        case ET_UNIT: units.insert({guid, base_addr});
-        case ET_PLAYER: players.insert({guid, base_addr});
+        case ET_UNIT: units.insert({guid, base_addr}); break;
+        case ET_PLAYER: {
+            if (guid == local_player.get_guid()) { 
+                local_player.base_addr = base_addr;
+            } else {
+                players.insert({guid, base_addr});
+            }
+        } break;
     }
 
     return 1;
