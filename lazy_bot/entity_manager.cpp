@@ -31,12 +31,8 @@ char *Unit::get_name() {
     return (char *) read<u32>(read<u32>(base_addr + name_offset));
 }
 
-Position Unit::get_position() {
-    Position pos;
-    pos.x = read<f32>(base_addr + 0x9B8);
-    pos.y = read<f32>(base_addr + 0x9B8 + 0x4);
-    pos.z = read<f32>(base_addr + 0x9B8 + 0x8);
-    return pos;
+Vec3 Unit::get_position() {
+    return read<Vec3>(base_addr + position_offset);
 }
 
 char *Player::get_name() {

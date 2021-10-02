@@ -29,7 +29,7 @@ struct Entity {
     Entity_Type get_type();
 };
 
-struct Position {float x, y, z;};
+struct Vec3 {float x, y, z;};
 
 struct Unit : public Entity {
     // Units store their details in a separate memory location.
@@ -43,7 +43,7 @@ struct Unit : public Entity {
     u32 get_descriptor_ptr();
     int get_health();
     char *get_name();
-    Position get_position();
+    Vec3 get_position();
 };
 
 struct Player : public Unit {
@@ -60,7 +60,7 @@ struct Local_Player : public Player {
 
     using Player::Player;
     u64 get_guid();
-    float distance_to(Position pos);
+    float distance_to(Vec3 pos);
 };
 
 struct Entity_Manager {
