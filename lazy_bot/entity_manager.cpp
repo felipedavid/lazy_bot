@@ -60,6 +60,16 @@ void Local_Player::click_to_move(Vec3 pos) {
     Game::click_to_move(base_addr, base_addr, CT_MOVE, &interact_guid_ptr, (u32)p, 2);
 }
 
+
+float Local_Player::distance_to(Vec3 pos) {
+    Vec3 me_position = get_position();
+    float delta_x = me_position.x - pos.x;
+    float delta_y = me_position.y - pos.y;
+    float delta_z = me_position.z - pos.z;
+
+    return (float)sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
+}
+
 // Callback for "Game::enumarate_visible_entities"
 int Entity_Manager::process_entity(void *thiss, int filter, u64 guid) {
     u32 base_addr = Game::get_entity_ptr(guid);
