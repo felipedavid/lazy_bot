@@ -5,3 +5,4 @@ _enumerate_visible_entities Game::enumerate_visible_entities =
 _get_entity_ptr Game::get_entity_ptr = (_get_entity_ptr) 0x00464870;
 _get_player_guid Game::get_player_guid = (_get_player_guid) 0x00468550;
 _click_to_move Game::click_to_move = (_click_to_move) 0x00611130;
+_run_lua Game::run_lua = (_run_lua) 0x00704CD0;

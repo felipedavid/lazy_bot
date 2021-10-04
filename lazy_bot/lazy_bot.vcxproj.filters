@@ -75,6 +75,9 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kiero\minhook\src\buffer.h">
@@ -144,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hacks.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

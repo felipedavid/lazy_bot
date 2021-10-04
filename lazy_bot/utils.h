@@ -11,3 +11,4 @@ T read(u32 addr) {
 }
 
 const char *entity_type_to_str(Entity_Type type);
+void write_to_memory(char *dst, char *src, int size);

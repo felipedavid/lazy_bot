@@ -1,3 +1,4 @@
+#include "windows.h"
 #include "utils.h"
 
 const char *entity_type_to_str(Entity_Type type) {
@@ -12,4 +13,11 @@ const char *entity_type_to_str(Entity_Type type) {
         case ET_CORPSE:    return "Corpse";
     }
     return "Undefined";
+}
+
+void write_to_memory(char *dst, char *src, int size) {
+    DWORD oldprotect;
+	VirtualProtect(dst, size, PAGE_EXECUTE_READWRITE, &oldprotect);
+    memcpy(dst, src, size);
+    VirtualProtect(dst, size, oldprotect, &oldprotect);
 }

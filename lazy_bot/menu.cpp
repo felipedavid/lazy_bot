@@ -1,6 +1,8 @@
 #include <windows.h>
 #include "menu.h"
 #include "bot.h"
+#include "hacks.h"
+#include "game.h"
 
 void Menu::draw() {
 	if (show) {
@@ -10,6 +12,14 @@ void Menu::draw() {
 			if (ImGui::Button("Test")) {
 				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)test, this, 0, NULL);
 			}
+			ImGui::SameLine();
+            if (ImGui::Button("Unlock Lua")) {
+                unlock_lua();
+            }
+			ImGui::SameLine();
+            if (ImGui::Button("Jump")) {
+                Game::run_lua("Jump()", "Unused");
+            }
 			ImGui::SameLine();
 			if (ImGui::Button("Clear Logs")) {
 				log_buffer.clear();

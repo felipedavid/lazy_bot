@@ -98,7 +98,8 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>C:\tools\Injector.exe --process-name wow.exe --inject C:\work\lazy_bot\Debug\lazy_bot.dll</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,6 +147,7 @@
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="entity_manager.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="hacks.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -166,6 +168,7 @@
     <ClInclude Include="bot.h" />
     <ClInclude Include="entity_manager.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="hacks.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx9.h" />
