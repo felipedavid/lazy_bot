@@ -60,6 +60,21 @@ void Local_Player::click_to_move(Vec3 pos) {
     Game::click_to_move(base_addr, base_addr, CT_MOVE, &interact_guid_ptr, (u32)p, 2);
 }
 
+void Local_Player::click_to_stop() {
+    u64 interact_guid_ptr = 0;
+    Vec3 pos = get_position();
+    Game::click_to_move(base_addr, base_addr, CT_NONE, &interact_guid_ptr, (u32)&pos, 2);
+}
+
+Unit Local_Player::select_closest_enemy(std::unordered_map <u64, Unit> *units) {
+    Unit enemy = units->begin()->second;
+    for (auto unit : *units) {
+        if (distance_to(enemy.get_position()) >
+            distance_to(unit.second.get_position())) 
+            enemy = unit.second;
+    }
+    return enemy;
+}
 
 float Local_Player::distance_to(Vec3 pos) {
     Vec3 me_position = get_position();
@@ -68,6 +83,47 @@ float Local_Player::distance_to(Vec3 pos) {
     float delta_z = me_position.z - pos.z;
 
     return (float)sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
+}
+
+void Local_Player::cast_spell(const char *spell_name) {
+    char lua_code[256];
+    snprintf(lua_code, sizeof(lua_code), "CastSpellByName('%s')", spell_name);
+    Game::run_lua(lua_code, "Nothing");
+}
+
+void Local_Player::set_target(u64 guid) {
+    Game::set_target(guid);
+}
+
+u64 Local_Player::get_target_guid() {
+    static const u32 target_offset = 0x40;
+    return read<u64>(get_descriptor_ptr() + target_offset);
+}
+
+void Local_Player::update() {
+    Unit enemy = select_closest_enemy(&Entity_Manager::units);
+    switch (state) {
+        case GRIND_STATE: { // Look for closest unit.
+            bot_menu.add_log("Looking for enemy...");
+            enemy = select_closest_enemy(&Entity_Manager::units);
+        } break;
+        case MOVE_STATE: {
+            if (distance_to(enemy.get_position()) > 5.0) {
+                bot_menu.add_log("Moving to enemy...");
+                click_to_move(enemy.get_position());
+            } else {
+                click_to_stop();
+                cast_spell("Attack");
+                state = GRIND_STATE;
+            }
+        } break;
+        case COMBAT_STATE: {
+            bot_menu.add_log("In combat...");
+            if (enemy.get_health() <= 0) {
+                state = GRIND_STATE;
+            }
+        } break;
+    }
 }
 
 // Callback for "Game::enumarate_visible_entities"

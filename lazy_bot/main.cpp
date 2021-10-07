@@ -65,6 +65,13 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		return true;
 	}
 
+	// Run code on the main thread
+	if (uMsg == WM_USER) {
+		typedef void (*_procedure)();
+		_procedure procedure = (_procedure)wParam;
+		procedure();
+	}
+
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 

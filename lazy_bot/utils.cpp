@@ -21,3 +21,7 @@ void write_to_memory(char *dst, char *src, int size) {
     memcpy(dst, src, size);
     VirtualProtect(dst, size, oldprotect, &oldprotect);
 }
+
+void run_procedure_on_main_thread(void* procedure) {
+    SendMessage(FindWindow(NULL, "World of Warcraft"), WM_USER, (WPARAM)procedure, 0);
+}

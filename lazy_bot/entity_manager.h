@@ -55,13 +55,27 @@ struct Player : public Unit {
     char *get_name();
 };
 
+enum State {
+    NONE_STATE,
+    GRIND_STATE,
+    MOVE_STATE,
+    COMBAT_STATE,
+};
+
 struct Local_Player : public Player {
     static const u32 get_player_guid_fun_ptr = 0x00468550;
+    State state = NONE_STATE;
 
     using Player::Player;
     u64 get_guid();
     float distance_to(Vec3 pos);
     void click_to_move(Vec3 pos);
+    void click_to_stop();
+    void cast_spell(const char *spell_name);
+    void set_target(u64 guid);
+    u64 get_target_guid();
+    Unit select_closest_enemy(std::unordered_map <u64, Unit> *units);
+    void update();
 };
 
 struct Entity_Manager {
