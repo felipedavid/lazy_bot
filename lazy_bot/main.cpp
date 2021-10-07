@@ -59,18 +59,18 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 }
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-
-	if (bot_menu.show) {
-		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
-		return true;
-	}
-
 	// Run code on the main thread
 	if (uMsg == WM_USER) {
 		typedef void (*_procedure)();
 		_procedure procedure = (_procedure)wParam;
 		procedure();
 	}
+
+	if (bot_menu.show) {
+		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+		return true;
+	}
+
 
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }

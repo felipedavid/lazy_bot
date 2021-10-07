@@ -23,5 +23,6 @@ void write_to_memory(char *dst, char *src, int size) {
 }
 
 void run_procedure_on_main_thread(void* procedure) {
-    SendMessage(FindWindow(NULL, "World of Warcraft"), WM_USER, (WPARAM)procedure, 0);
+    HWND window_handle = FindWindow(NULL, "World of Warcraft");
+    SendMessage(window_handle, WM_USER, (WPARAM)procedure, 0);
 }

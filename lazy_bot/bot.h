@@ -10,6 +10,5 @@ struct Bot {
 
     Bot();
     static void __cdecl update();
+    static void __cdecl main_loop();
 };
-
-void test(Menu *menu);

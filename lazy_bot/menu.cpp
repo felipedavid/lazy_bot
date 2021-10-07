@@ -9,12 +9,18 @@ void Menu::draw() {
 		ImGui::Begin(title);
 
 		{
-			if (!Bot::running && ImGui::Button("Start")) {
-                Bot::running = true;
-				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Bot::update, NULL, 0, NULL);
+			if (!Bot::running) {
+                if (ImGui::Button("Start")) {
+                    Bot::running = true;
+                    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Bot::main_loop, NULL, 0, NULL);
+                }
 			} else if (ImGui::Button("Stop")) {
                 Bot::running = false;
             }
+			ImGui::SameLine();
+			if (ImGui::Button("Clear logs")) {
+				log_buffer.clear();
+			}
 		}
 
 		ImGui::Separator();

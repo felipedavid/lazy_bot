@@ -69,10 +69,11 @@ void Local_Player::click_to_stop() {
 Unit Local_Player::select_closest_enemy(std::unordered_map <u64, Unit> *units) {
     Unit enemy = units->begin()->second;
     for (auto unit : *units) {
-        if (distance_to(enemy.get_position()) >
+        if ((unit.second.get_health() > 0) && distance_to(enemy.get_position()) >
             distance_to(unit.second.get_position())) 
             enemy = unit.second;
     }
+    Game::set_target(enemy.get_guid());
     return enemy;
 }
 
@@ -101,24 +102,28 @@ u64 Local_Player::get_target_guid() {
 }
 
 void Local_Player::update() {
-    Unit enemy = select_closest_enemy(&Entity_Manager::units);
+    static Unit enemy = select_closest_enemy(&Entity_Manager::units);
     switch (state) {
-        case GRIND_STATE: { // Look for closest unit.
-            bot_menu.add_log("Looking for enemy...");
+        case GRIND_STATE: {
+            bot_menu.add_log("Looking for enemy...\n");
             enemy = select_closest_enemy(&Entity_Manager::units);
+            if (enemy.base_addr != 0) {
+                state = MOVE_STATE;
+            }
         } break;
         case MOVE_STATE: {
             if (distance_to(enemy.get_position()) > 5.0) {
-                bot_menu.add_log("Moving to enemy...");
+                bot_menu.add_log("Moving to enemy...\n");
                 click_to_move(enemy.get_position());
             } else {
                 click_to_stop();
                 cast_spell("Attack");
-                state = GRIND_STATE;
+                cast_spell("Heroic Strike");
+                state = COMBAT_STATE;
             }
         } break;
         case COMBAT_STATE: {
-            bot_menu.add_log("In combat...");
+            bot_menu.add_log("In combat...\n");
             if (enemy.get_health() <= 0) {
                 state = GRIND_STATE;
             }
