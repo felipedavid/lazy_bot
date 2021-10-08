@@ -44,6 +44,7 @@ struct Unit : public Entity {
     int get_health();
     char *get_name();
     Vec3 get_position();
+    float get_facing_direction();
 };
 
 struct Player : public Unit {

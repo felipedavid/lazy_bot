@@ -1,9 +1,6 @@
 #pragma once
 #include "type.h"
 #include "entity_manager.h"
-#include "menu.h"
-
-extern Menu bot_menu;
 
 template <typename T>
 T read(u32 addr) { 

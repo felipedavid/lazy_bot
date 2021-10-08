@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="entity_manager.cpp" />
+    <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="hacks.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -161,12 +162,12 @@
     <ClCompile Include="kiero\minhook\src\hook.c" />
     <ClCompile Include="kiero\minhook\src\trampoline.c" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
     <ClInclude Include="entity_manager.h" />
+    <ClInclude Include="event_handler.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="hacks.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -186,7 +187,6 @@
     <ClInclude Include="kiero\minhook\src\hde\table32.h" />
     <ClInclude Include="kiero\minhook\src\hde\table64.h" />
     <ClInclude Include="kiero\minhook\src\trampoline.h" />
-    <ClInclude Include="menu.h" />
     <ClInclude Include="type.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

@@ -9,9 +9,9 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx9.h"
 
-#include "menu.h"
+#include "bot.h"
 
-Menu bot_menu;
+Bot bot;
 
 typedef long(__stdcall* EndScene)(LPDIRECT3DDEVICE9);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
@@ -42,17 +42,17 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 		InitImGui(pDevice);
 		init = true;
 	}
-	
-	if (GetAsyncKeyState(VK_END) & 1) bot_menu.show = !bot_menu.show;
+
+	if (GetAsyncKeyState(VK_END) & 1) bot.show_menu = !bot.show_menu;
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-    bot_menu.draw();
+	bot.draw_menu();
 
 	ImGui::EndFrame();
-    ImGui::Render();
+	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 
 	return oEndScene(pDevice);
@@ -66,7 +66,7 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		procedure();
 	}
 
-	if (bot_menu.show) {
+	if (bot.show_menu) {
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 		return true;
 	}
@@ -101,7 +101,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	{
 		if (kiero::init(kiero::RenderType::D3D9) == kiero::Status::Success)
 		{
-			kiero::bind(42, (void**)& oEndScene, hkEndScene);
+			kiero::bind(42, (void**)&oEndScene, hkEndScene);
 			do
 				window = GetProcessWindow();
 			while (window == NULL);

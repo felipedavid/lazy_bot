@@ -2,6 +2,9 @@
 
 #include "utils.h"
 #include "entity_manager.h"
+#include "bot.h"
+
+extern Bot bot;
 
 std::unordered_map<u64, Unit> Entity_Manager::units;
 std::unordered_map<u64, Player> Entity_Manager::players;
@@ -33,6 +36,10 @@ char *Unit::get_name() {
 
 Vec3 Unit::get_position() {
     return read<Vec3>(base_addr + position_offset);
+}
+
+float Unit::get_facing_direction() {
+    return read<float>(base_addr + 0x1C);
 }
 
 char *Player::get_name() {
@@ -105,7 +112,7 @@ void Local_Player::update() {
     static Unit enemy = select_closest_enemy(&Entity_Manager::units);
     switch (state) {
         case GRIND_STATE: {
-            bot_menu.add_log("Looking for enemy...\n");
+            bot.add_log("Looking for enemy...\n");
             enemy = select_closest_enemy(&Entity_Manager::units);
             if (enemy.base_addr != 0) {
                 state = MOVE_STATE;
@@ -113,7 +120,7 @@ void Local_Player::update() {
         } break;
         case MOVE_STATE: {
             if (distance_to(enemy.get_position()) > 5.0) {
-                bot_menu.add_log("Moving to enemy...\n");
+                bot.add_log("Moving to enemy...\n");
                 click_to_move(enemy.get_position());
             } else {
                 click_to_stop();
@@ -123,7 +130,7 @@ void Local_Player::update() {
             }
         } break;
         case COMBAT_STATE: {
-            bot_menu.add_log("In combat...\n");
+            bot.add_log("In combat...\n");
             if (enemy.get_health() <= 0) {
                 state = GRIND_STATE;
             }

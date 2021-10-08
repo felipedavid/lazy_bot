@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="kiero\minhook\src\buffer.c">
       <Filter>kiero</Filter>
     </ClCompile>
@@ -69,13 +66,16 @@
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="event_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,13 +143,13 @@
     <ClInclude Include="utils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="hacks.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="event_handler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
