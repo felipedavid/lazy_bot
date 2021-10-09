@@ -14,6 +14,7 @@ typedef void (__fastcall *_click_to_move)(u32 thiss, u32 player_ptr, u32 click_t
 typedef void (__fastcall *_run_lua)(const char *lua_code, const char *whatever);
 typedef void (__stdcall *_set_target)(u64 guid);
 typedef void (__fastcall *_right_click_unit)(u32 unit_base_addr, u32 unit_base_addr2, u32 auto_loot);
+typedef u32 (__fastcall *_get_item_cache_entry)(u32 base_ptr, u32 base_ptr2, u32 item_id, u64 *guid, u32 x, u32 y, u32 z); // base_ptr = 0x00C0E2A0
 
 struct Game {
     static _enumerate_visible_entities enumerate_visible_entities;
@@ -23,4 +24,6 @@ struct Game {
     static _run_lua run_lua;
     static _set_target set_target;
     static _right_click_unit right_click_unit;
+    static _get_item_cache_entry get_item_cache_entry;
+    static u32 get_item_cache_entry_wrapper(u32 item_id);
 };

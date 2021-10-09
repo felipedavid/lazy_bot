@@ -3,6 +3,7 @@
 #include <cstdio>
 
 #include "event_handler.h"
+#include "looting.h"
 
 char* event_name;
 const uint32_t whatever_fun_ptr = 0x7040D0;
@@ -45,6 +46,8 @@ void unhook_event_signal() {
 
 void process_event(char* event_name) {
     if(!strcmp(event_name, "LOOT_OPENED")) {
-        bot.add_log(event_name);
+        bot.add_log("Loot:");
+        Loot_Frame loot_frame;
+        loot_frame.init();
     }
 }

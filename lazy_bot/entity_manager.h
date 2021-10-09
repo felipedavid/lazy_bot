@@ -66,16 +66,8 @@ struct Player : public Unit {
     char *get_name();
 };
 
-enum State {
-    NONE_STATE,
-    GRIND_STATE,
-    MOVE_STATE,
-    COMBAT_STATE,
-};
-
 struct Local_Player : public Player {
     static const u32 get_player_guid_fun_ptr = 0x00468550;
-    State state = NONE_STATE;
 
     using Player::Player;
     u64 get_guid();
