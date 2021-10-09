@@ -8,5 +8,5 @@ T read(u32 addr) {
 }
 
 const char *entity_type_to_str(Entity_Type type);
-void write_to_memory(char *dst, char *src, int size);
+void write_to_memory(u8 *dst, u8 *src, int size);
 void run_procedure_on_main_thread(void* procedure);

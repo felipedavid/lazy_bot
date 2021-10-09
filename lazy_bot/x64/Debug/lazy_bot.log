@@ -1,0 +1,114 @@
+﻿  bot.cpp
+  entity_manager.cpp
+C:\work\lazybot\lazy_bot\entity_manager.cpp(34,66): warning C4312: 'type cast': conversion from 'T' to 'char *' of greater size
+          with
+          [
+              T=u32
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(55,30): warning C4312: 'type cast': conversion from 'u32' to 'char *' of greater size
+C:\work\lazybot\lazy_bot\entity_manager.cpp(67,82): warning C4311: 'type cast': pointer truncation from 'Vec3 *' to 'u32'
+C:\work\lazybot\lazy_bot\entity_manager.cpp(67,82): warning C4302: 'type cast': truncation from 'Vec3 *' to 'u32'
+C:\work\lazybot\lazy_bot\entity_manager.cpp(73,85): warning C4311: 'type cast': pointer truncation from 'Vec3 *' to 'u32'
+C:\work\lazybot\lazy_bot\entity_manager.cpp(73,85): warning C4302: 'type cast': truncation from 'Vec3 *' to 'u32'
+C:\work\lazybot\lazy_bot\utils.h(7,1): warning C4312: 'type cast': conversion from 'u32' to 'T *' of greater size
+          with
+          [
+              T=u64
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(18): message : see reference to function template instantiation 'T read<u64>(u32)' being compiled
+          with
+          [
+              T=u64
+          ]
+C:\work\lazybot\lazy_bot\utils.h(7,1): warning C4312: 'type cast': conversion from 'u32' to 'T *' of greater size
+          with
+          [
+              T=Entity_Type
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(22): message : see reference to function template instantiation 'T read<Entity_Type>(u32)' being compiled
+          with
+          [
+              T=Entity_Type
+          ]
+C:\work\lazybot\lazy_bot\utils.h(7,1): warning C4312: 'type cast': conversion from 'u32' to 'T *' of greater size
+          with
+          [
+              T=u32
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(26): message : see reference to function template instantiation 'T read<u32>(u32)' being compiled
+          with
+          [
+              T=u32
+          ]
+C:\work\lazybot\lazy_bot\utils.h(7,1): warning C4312: 'type cast': conversion from 'u32' to 'T *' of greater size
+          with
+          [
+              T=int
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(30): message : see reference to function template instantiation 'T read<int>(u32)' being compiled
+          with
+          [
+              T=int
+          ]
+C:\work\lazybot\lazy_bot\utils.h(7,1): warning C4312: 'type cast': conversion from 'u32' to 'T *' of greater size
+          with
+          [
+              T=Vec3
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(38): message : see reference to function template instantiation 'T read<Vec3>(u32)' being compiled
+          with
+          [
+              T=Vec3
+          ]
+C:\work\lazybot\lazy_bot\utils.h(7,1): warning C4312: 'type cast': conversion from 'u32' to 'T *' of greater size
+          with
+          [
+              T=float
+          ]
+C:\work\lazybot\lazy_bot\entity_manager.cpp(42): message : see reference to function template instantiation 'T read<float>(u32)' being compiled
+          with
+          [
+              T=float
+          ]
+  event_handler.cpp
+C:\work\lazybot\lazy_bot\event_handler.cpp(11,12): error C2485: 'naked': unrecognized extended attribute
+C:\work\lazybot\lazy_bot\event_handler.cpp(12,5): error C4235: nonstandard extension used: '__asm' keyword not supported on this architecture
+C:\work\lazybot\lazy_bot\event_handler.cpp(13,9): error C2065: 'call': undeclared identifier
+C:\work\lazybot\lazy_bot\event_handler.cpp(13,14): error C2146: syntax error: missing ';' before identifier 'whatever_fun_ptr'
+C:\work\lazybot\lazy_bot\event_handler.cpp(14,9): error C2146: syntax error: missing ';' before identifier 'pushad'
+C:\work\lazybot\lazy_bot\event_handler.cpp(14,9): error C2065: 'pushad': undeclared identifier
+C:\work\lazybot\lazy_bot\event_handler.cpp(15,9): error C2146: syntax error: missing ';' before identifier 'mov'
+C:\work\lazybot\lazy_bot\event_handler.cpp(15,9): error C2065: 'mov': undeclared identifier
+C:\work\lazybot\lazy_bot\event_handler.cpp(15,13): error C2146: syntax error: missing ';' before identifier 'event_name'
+C:\work\lazybot\lazy_bot\event_handler.cpp(15,25): error C2065: 'edi': undeclared identifier
+C:\work\lazybot\lazy_bot\event_handler.cpp(16,5): error C2143: syntax error: missing ';' before '}'
+C:\work\lazybot\lazy_bot\event_handler.cpp(17,49): warning C4312: 'type cast': conversion from 'uint32_t' to 'char *' of greater size
+C:\work\lazybot\lazy_bot\event_handler.cpp(19,5): error C4235: nonstandard extension used: '__asm' keyword not supported on this architecture
+C:\work\lazybot\lazy_bot\event_handler.cpp(20,9): error C2065: 'popad': undeclared identifier
+C:\work\lazybot\lazy_bot\event_handler.cpp(21,9): error C2146: syntax error: missing ';' before identifier 'jmp'
+C:\work\lazybot\lazy_bot\event_handler.cpp(21,9): error C2065: 'jmp': undeclared identifier
+C:\work\lazybot\lazy_bot\event_handler.cpp(21,13): error C2146: syntax error: missing ';' before identifier 'jump_back'
+C:\work\lazybot\lazy_bot\event_handler.cpp(22,5): error C2143: syntax error: missing ';' before '}'
+C:\work\lazybot\lazy_bot\event_handler.cpp(29,40): warning C4312: 'type cast': conversion from 'const uint32_t' to 'void *' of greater size
+C:\work\lazybot\lazy_bot\event_handler.cpp(30,30): warning C4312: 'type cast': conversion from 'const uint32_t' to 'uint8_t *' of greater size
+C:\work\lazybot\lazy_bot\event_handler.cpp(31,70): warning C4311: 'type cast': pointer truncation from 'void (__cdecl *)(void)' to 'uint32_t'
+C:\work\lazybot\lazy_bot\event_handler.cpp(31,70): warning C4302: 'type cast': truncation from 'void (__cdecl *)(void)' to 'uint32_t'
+C:\work\lazybot\lazy_bot\event_handler.cpp(32,40): warning C4312: 'type cast': conversion from 'const uint32_t' to 'void *' of greater size
+C:\work\lazybot\lazy_bot\event_handler.cpp(40,40): warning C4312: 'type cast': conversion from 'const uint32_t' to 'void *' of greater size
+C:\work\lazybot\lazy_bot\event_handler.cpp(42,40): warning C4312: 'type cast': conversion from 'uint32_t' to 'uint8_t *' of greater size
+C:\work\lazybot\lazy_bot\event_handler.cpp(44,40): warning C4312: 'type cast': conversion from 'const uint32_t' to 'void *' of greater size
+  game.cpp
+  hacks.cpp
+C:\work\lazybot\lazy_bot\hacks.cpp(5,49): error C2664: 'void write_to_memory(char *,char *,int)': cannot convert argument 1 from 'u8 *' to 'char *'
+C:\work\lazybot\lazy_bot\hacks.cpp(5,26): message : Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+C:\work\lazybot\lazy_bot\utils.h(11,6): message : see declaration of 'write_to_memory'
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_dx9.cpp
+  imgui_impl_win32.cpp
+  imgui_widgets.cpp
+  kiero.cpp
+  main.cpp
+  utils.cpp
+  Generating Code...

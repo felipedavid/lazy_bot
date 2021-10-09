@@ -15,7 +15,7 @@ const char *entity_type_to_str(Entity_Type type) {
     return "Undefined";
 }
 
-void write_to_memory(char *dst, char *src, int size) {
+void write_to_memory(u8 *dst, u8 *src, int size) {
     DWORD oldprotect;
 	VirtualProtect(dst, size, PAGE_EXECUTE_READWRITE, &oldprotect);
     memcpy(dst, src, size);

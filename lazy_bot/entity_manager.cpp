@@ -42,6 +42,10 @@ float Unit::get_facing_direction() {
     return read<float>(base_addr + 0x1C);
 }
 
+bool Unit::can_be_looted() {
+    return get_health() == 0 && read<u32>(get_descriptor_ptr() + dynamic_flags_offset) == CAN_BE_LOOTED;
+}
+
 char *Player::get_name() {
     u32 name_ptr = read<u32>(name_base_offset); 
     for (;;) {
@@ -106,36 +110,6 @@ void Local_Player::set_target(u64 guid) {
 u64 Local_Player::get_target_guid() {
     static const u32 target_offset = 0x40;
     return read<u64>(get_descriptor_ptr() + target_offset);
-}
-
-void Local_Player::update() {
-    static Unit enemy = select_closest_enemy(&Entity_Manager::units);
-    switch (state) {
-        case GRIND_STATE: {
-            bot.add_log("Looking for enemy...\n");
-            enemy = select_closest_enemy(&Entity_Manager::units);
-            if (enemy.base_addr != 0) {
-                state = MOVE_STATE;
-            }
-        } break;
-        case MOVE_STATE: {
-            if (distance_to(enemy.get_position()) > 5.0) {
-                bot.add_log("Moving to enemy...\n");
-                click_to_move(enemy.get_position());
-            } else {
-                click_to_stop();
-                cast_spell("Attack");
-                cast_spell("Heroic Strike");
-                state = COMBAT_STATE;
-            }
-        } break;
-        case COMBAT_STATE: {
-            bot.add_log("In combat...\n");
-            if (enemy.get_health() <= 0) {
-                state = GRIND_STATE;
-            }
-        } break;
-    }
 }
 
 // Callback for "Game::enumarate_visible_entities"

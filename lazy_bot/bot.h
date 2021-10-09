@@ -10,12 +10,12 @@ struct Bot {
 
     // Gui stuff
     bool show_menu = false;
-    ImGuiTextBuffer log_buffer;
-    bool scroll_to_bottom = false;
+    static ImGuiTextBuffer log_buffer;
+    static bool scroll_to_bottom;
 
     Bot();
     void draw_menu();
-    void add_log(const char *log_message);
+    static void add_log(const char *log_message);
     static void __cdecl update();
     static void __cdecl main_loop();
 };

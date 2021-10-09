@@ -31,6 +31,14 @@ struct Entity {
 
 struct Vec3 {float x, y, z;};
 
+enum Dynamic_Flag {
+    UNTOUCHED     =  0,
+    CAN_BE_LOOTED =  1,
+    IS_MARKED     =  2,
+    TAPPED        =  3,
+    TAPPED_BY_ME  =  4,
+};
+
 struct Unit : public Entity {
     // Units store their details in a separate memory location.
     // We can get a pointer to that at offset "0x8".
@@ -38,6 +46,7 @@ struct Unit : public Entity {
     static const u32 health_offset         = 0x58;
     static const u32 name_offset           = 0xB30; 
     static const u32 position_offset       = 0x9B8;
+    static const u32 dynamic_flags_offset  = 0x23C;
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
@@ -45,6 +54,7 @@ struct Unit : public Entity {
     char *get_name();
     Vec3 get_position();
     float get_facing_direction();
+    bool can_be_looted();
 };
 
 struct Player : public Unit {
@@ -76,7 +86,6 @@ struct Local_Player : public Player {
     void set_target(u64 guid);
     u64 get_target_guid();
     Unit select_closest_enemy(std::unordered_map <u64, Unit> *units);
-    void update();
 };
 
 struct Entity_Manager {

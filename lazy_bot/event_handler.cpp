@@ -1,4 +1,3 @@
-
 #include <windows.h>
 #include <cstdint>
 #include <cstdio>
@@ -33,8 +32,8 @@ void hook_event_signal() {
 }
 
 void unhook_event_signal() {
-    const uint32_t hook_location = 0x00703E73;
-    uint8_t original_code[5] = { 0xE8, 0x58, 0x2, 0x0, 0x0 };
+    const u32 hook_location = 0x00703E73;
+    u8 original_code[5] = { 0xE8, 0x58, 0x2, 0x0, 0x0 };
 
     DWORD old_protect;
     VirtualProtect((void*)hook_location, 5, PAGE_EXECUTE_READWRITE, &old_protect);
@@ -45,5 +44,7 @@ void unhook_event_signal() {
 }
 
 void process_event(char* event_name) {
-    bot.add_log(event_name);
+    if(!strcmp(event_name, "LOOT_OPENED")) {
+        bot.add_log(event_name);
+    }
 }

@@ -26,8 +26,7 @@ EndScene oEndScene = NULL;
 WNDPROC oWndProc;
 static HWND window = NULL;
 
-void InitImGui(LPDIRECT3DDEVICE9 pDevice)
-{
+void InitImGui(LPDIRECT3DDEVICE9 pDevice) {
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
@@ -36,8 +35,7 @@ void InitImGui(LPDIRECT3DDEVICE9 pDevice)
 }
 
 bool init = false;
-long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
-{
+long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice) {
 	if (!init) {
 		InitImGui(pDevice);
 		init = true;
@@ -71,12 +69,10 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		return true;
 	}
 
-
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-BOOL CALLBACK EnumWindowsCallback(HWND handle, LPARAM lParam)
-{
+BOOL CALLBACK EnumWindowsCallback(HWND handle, LPARAM lParam) {
 	DWORD wndProcId;
 	GetWindowThreadProcessId(handle, &wndProcId);
 
@@ -87,20 +83,16 @@ BOOL CALLBACK EnumWindowsCallback(HWND handle, LPARAM lParam)
 	return FALSE;
 }
 
-HWND GetProcessWindow()
-{
+HWND GetProcessWindow() {
 	window = NULL;
 	EnumWindows(EnumWindowsCallback, NULL);
 	return window;
 }
 
-DWORD WINAPI MainThread(LPVOID lpReserved)
-{
+DWORD WINAPI MainThread(LPVOID lpReserved) {
 	bool attached = false;
-	do
-	{
-		if (kiero::init(kiero::RenderType::D3D9) == kiero::Status::Success)
-		{
+	do {
+		if (kiero::init(kiero::RenderType::D3D9) == kiero::Status::Success) {
 			kiero::bind(42, (void**)&oEndScene, hkEndScene);
 			do
 				window = GetProcessWindow();
@@ -113,10 +105,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	return TRUE;
 }
 
-BOOL WINAPI DllMain(HMODULE hMod, DWORD dwReason, LPVOID lpReserved)
-{
-	switch (dwReason)
-	{
+BOOL WINAPI DllMain(HMODULE hMod, DWORD dwReason, LPVOID lpReserved) {
+	switch (dwReason) {
 	case DLL_PROCESS_ATTACH:
 		DisableThreadLibraryCalls(hMod);
 		CreateThread(nullptr, 0, MainThread, hMod, 0, nullptr);

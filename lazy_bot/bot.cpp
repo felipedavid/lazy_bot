@@ -9,6 +9,8 @@
 Entity_Manager Bot::entity_manager;
 Local_Player Bot::player = 0;
 bool Bot::running;
+bool Bot::scroll_to_bottom = false;
+ImGuiTextBuffer Bot::log_buffer;
 
 Bot::Bot() {
     unlock_lua();
@@ -27,7 +29,38 @@ void Bot::main_loop() {
 void Bot::update() {
     entity_manager.populate_lists();
     player.base_addr = entity_manager.local_player.base_addr;
-    player.update();
+
+    static Unit enemy = player.select_closest_enemy(&Entity_Manager::units);
+    switch (player.state) {
+        case GRIND_STATE: {
+            add_log("Looking for enemy...");
+            enemy = player.select_closest_enemy(&Entity_Manager::units);
+            if (enemy.base_addr != 0) {
+                player.state = MOVE_STATE;
+            }
+        } break;
+        case MOVE_STATE: {
+            if (player.distance_to(enemy.get_position()) > 5.0) {
+                add_log("Moving to enemy...");
+                player.click_to_move(enemy.get_position());
+            } else {
+                player.click_to_stop();
+                player.cast_spell("Attack");
+                player.cast_spell("Fireball");
+                player.state = COMBAT_STATE;
+            }
+        } break;
+        case COMBAT_STATE: {
+            add_log("In combat...");
+            if (enemy.get_health() == 0) {
+                if (enemy.can_be_looted()) {
+                    Game::right_click_unit(enemy.base_addr, enemy.base_addr, 1);
+                    Sleep(300);
+                }
+                player.state = GRIND_STATE;
+            }
+        } break;
+    }
 }
 
 void Bot::draw_menu() {
