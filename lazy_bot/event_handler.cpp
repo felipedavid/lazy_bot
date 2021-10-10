@@ -4,6 +4,7 @@
 
 #include "event_handler.h"
 #include "looting.h"
+#include "utils.h"
 
 char* event_name;
 const uint32_t whatever_fun_ptr = 0x7040D0;
@@ -14,7 +15,7 @@ __declspec(naked) void get_event_code_cave() {
         pushad
         mov event_name, edi
     }
-    event_name = (char*)(*(uint32_t*)event_name);
+    event_name = (char*)(read<u32>((u32)event_name));
     process_event(event_name);
     __asm {
         popad
@@ -24,30 +25,22 @@ __declspec(naked) void get_event_code_cave() {
 
 void hook_event_signal() {
     const uint32_t hook_location = 0x00703E73;
-
-    DWORD old_protect;
-    VirtualProtect((void*)hook_location, 5, PAGE_EXECUTE_READWRITE, &old_protect);
-    *(uint8_t*)hook_location = 0xE9; // jmp
-    *(uint32_t*)(hook_location + 1) = (uint32_t)&get_event_code_cave - ((uint32_t)hook_location + 5);
-    VirtualProtect((void*)hook_location, 5, old_protect, &old_protect);
+    u8 hook[5] = { 0xE9 };
+    *(u32*)(hook+1) = (u32)&get_event_code_cave - ((u32)hook_location + 5); // Computing relative address
+    write_to_memory((u8*)hook_location, hook, 5);
 }
 
 void unhook_event_signal() {
     const u32 hook_location = 0x00703E73;
     u8 original_code[5] = { 0xE8, 0x58, 0x2, 0x0, 0x0 };
-
-    DWORD old_protect;
-    VirtualProtect((void*)hook_location, 5, PAGE_EXECUTE_READWRITE, &old_protect);
-    for (int i = 0; i < sizeof(original_code); i++) {
-        *(uint8_t*)(hook_location + i) = original_code[i];
-    }
-    VirtualProtect((void*)hook_location, 5, old_protect, &old_protect);
+    write_to_memory((u8*)hook_location, original_code, 5);
 }
 
 void process_event(char* event_name) {
     if(!strcmp(event_name, "LOOT_OPENED")) {
-        bot.add_log("Loot:");
-        Loot_Frame loot_frame;
-        loot_frame.init();
+        bot.add_log("Loot opened.");
+        // For now, just use auto loot
+        //Loot_Frame loot_frame;
+        //loot_frame.init();
     }
 }
