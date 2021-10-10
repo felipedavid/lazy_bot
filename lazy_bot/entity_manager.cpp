@@ -46,6 +46,18 @@ bool Unit::can_be_looted() {
     return get_health() == 0 && read<u32>(get_descriptor_ptr() + dynamic_flags_offset) == CAN_BE_LOOTED;
 }
 
+int Unit::get_level() {
+    return read<int>(get_descriptor_ptr() + level_offset);
+}
+
+Unit_Type Unit::get_type() {
+    return Game::get_unit_type(base_addr);
+}
+
+Unit_Reaction Unit::get_reaction(u32 player_ptr) {
+    return Game::get_unit_reaction(base_addr, player_ptr);
+}
+
 char *Player::get_name() {
     u32 name_ptr = read<u32>(name_base_offset); 
     for (;;) {
@@ -80,9 +92,14 @@ void Local_Player::click_to_stop() {
 Unit Local_Player::select_closest_enemy(std::unordered_map <u64, Unit> *units) {
     Unit enemy = units->begin()->second;
     for (auto unit : *units) {
-        if ((unit.second.get_health() > 0) && distance_to(enemy.get_position()) >
-            distance_to(unit.second.get_position())) 
+        auto type = unit.get_type();
+        auto react = unit.get_reaction(base_addr);
+        if (type != UT_CRITTER && type != UT_NOT_SPECIFIED && type != UT_TOTEM &&
+            (react == UR_HOSTILE || react == UR_UNFRIENDLY || react == UR_NEUTRAL) &&
+            (unit.second.get_health() > 0) && (distance_to(enemy.get_position()) >
+            distance_to(unit.second.get_position()))) {
             enemy = unit.second;
+        }
     }
     Game::set_target(enemy.get_guid());
     return enemy;

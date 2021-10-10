@@ -9,8 +9,10 @@ _run_lua Game::run_lua = (_run_lua) 0x00704CD0;
 _set_target Game::set_target = (_set_target) 0x00493540;
 _right_click_unit Game::right_click_unit = (_right_click_unit) 0x0060BEA0;
 _get_item_cache_entry Game::get_item_cache_entry = (_get_item_cache_entry) 0x0055BA30;
+_get_unit_type Game::get_unit_type = (_get_unit_type) 0x00605570;
+_get_unit_reaction Game::get_unit_reaction = (_get_unit_reaction) 0x006061E0;
 
 u32 Game::get_item_cache_entry_wrapper(u32 item_id) {
     u64 guid = 0;
-    return get_item_cache_entry(0x00C0E2A0, 0x00C0E2A0, item_id, &guid, 0, 0, 0);
+    return get_item_cache_entry(0x00C0E2A0, item_id, (u32)&guid, 0, 0, 0);
 }

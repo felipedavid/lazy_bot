@@ -39,6 +39,31 @@ enum Dynamic_Flag {
     TAPPED_BY_ME  =  4,
 };
 
+enum Unit_Type {
+    UT_BEAST         = 1,
+    UT_DRAGONKIN     = 2,
+    UT_DEMON         = 3,
+    UT_ELEMENTAL     = 4,
+    UT_GIANT         = 5,
+    UT_UNDEAD        = 6,
+    UT_HUMANOID      = 7,
+    UT_CRITTER       = 8,
+    UT_MECHANICAL    = 9,
+    UT_NOT_SPECIFIED = 10,
+    UT_TOTEM         = 11,
+};
+
+enum Unit_Reaction {
+    UR_HATED,
+    UR_HOSTILE,
+    UR_UNFRIENDLY,
+    UR_NEUTRAL,
+    UR_FRIENDLY,
+    UR_HONORED,
+    UR_REVERED,
+    UR_EXALED,
+};
+
 struct Unit : public Entity {
     // Units store their details in a separate memory location.
     // We can get a pointer to that at offset "0x8".
@@ -47,6 +72,7 @@ struct Unit : public Entity {
     static const u32 name_offset           = 0xB30; 
     static const u32 position_offset       = 0x9B8;
     static const u32 dynamic_flags_offset  = 0x23C;
+    static const u32 level_offset          = 0x88;
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
@@ -55,6 +81,9 @@ struct Unit : public Entity {
     Vec3 get_position();
     float get_facing_direction();
     bool can_be_looted();
+    int get_level();
+    Unit_Type get_type();
+    Unit_Reaction get_reaction(u32 player_ptr);
 };
 
 struct Player : public Unit {

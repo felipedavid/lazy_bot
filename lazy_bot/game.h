@@ -1,5 +1,6 @@
 #pragma once
 #include "type.h"
+#include "entity_manager.h"
 
 // Needed as argument for "click_to_move" function
 enum Click_Type {
@@ -14,7 +15,9 @@ typedef void (__fastcall *_click_to_move)(u32 thiss, u32 player_ptr, u32 click_t
 typedef void (__fastcall *_run_lua)(const char *lua_code, const char *whatever);
 typedef void (__stdcall *_set_target)(u64 guid);
 typedef void (__fastcall *_right_click_unit)(u32 unit_base_addr, u32 unit_base_addr2, u32 auto_loot);
-typedef u32 (__fastcall *_get_item_cache_entry)(u32 base_ptr, u32 base_ptr2, u32 item_id, u64 *guid, u32 x, u32 y, u32 z); // base_ptr = 0x00C0E2A0
+typedef u32 (__fastcall *_get_item_cache_entry)(u32 base_ptr, u32 item_id, u32 guid, u32 x, u32 y, char z); // base_ptr = 0x00C0E2A0
+typedef Unit_Type (__fastcall *_get_unit_type)(u32 unit_base_addr);
+typedef Unit_Reaction (__fastcall *_get_unit_reaction)(u32 unit_base_addr, u32 player_base_addr);
 
 struct Game {
     static _enumerate_visible_entities enumerate_visible_entities;
@@ -25,5 +28,8 @@ struct Game {
     static _set_target set_target;
     static _right_click_unit right_click_unit;
     static _get_item_cache_entry get_item_cache_entry;
+    static _get_unit_type get_unit_type;
+    static _get_unit_reaction get_unit_reaction;
+
     static u32 get_item_cache_entry_wrapper(u32 item_id);
 };
