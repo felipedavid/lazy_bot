@@ -50,12 +50,12 @@ int Unit::get_level() {
     return read<int>(get_descriptor_ptr() + level_offset);
 }
 
-Unit_Type Unit::get_type() {
-    return Game::get_unit_type(base_addr);
+Creature_Type Unit::get_type() {
+    return (Creature_Type) Game::get_unit_type(base_addr);
 }
 
-Unit_Reaction Unit::get_reaction(u32 player_ptr) {
-    return Game::get_unit_reaction(base_addr, player_ptr);
+Creature_Reaction Unit::get_reaction(u32 player_ptr) {
+    return (Creature_Reaction) Game::get_unit_reaction(base_addr, player_ptr);
 }
 
 char *Player::get_name() {
@@ -92,8 +92,8 @@ void Local_Player::click_to_stop() {
 Unit Local_Player::select_closest_enemy(std::unordered_map <u64, Unit> *units) {
     Unit enemy = units->begin()->second;
     for (auto unit : *units) {
-        auto type = unit.get_type();
-        auto react = unit.get_reaction(base_addr);
+        auto type = unit.second.get_type();
+        auto react = unit.second.get_reaction(base_addr);
         if (type != UT_CRITTER && type != UT_NOT_SPECIFIED && type != UT_TOTEM &&
             (react == UR_HOSTILE || react == UR_UNFRIENDLY || react == UR_NEUTRAL) &&
             (unit.second.get_health() > 0) && (distance_to(enemy.get_position()) >

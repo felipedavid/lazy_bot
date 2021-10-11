@@ -39,7 +39,7 @@ enum Dynamic_Flag {
     TAPPED_BY_ME  =  4,
 };
 
-enum Unit_Type {
+enum Creature_Type {
     UT_BEAST         = 1,
     UT_DRAGONKIN     = 2,
     UT_DEMON         = 3,
@@ -53,7 +53,7 @@ enum Unit_Type {
     UT_TOTEM         = 11,
 };
 
-enum Unit_Reaction {
+enum Creature_Reaction {
     UR_HATED,
     UR_HOSTILE,
     UR_UNFRIENDLY,
@@ -82,8 +82,8 @@ struct Unit : public Entity {
     float get_facing_direction();
     bool can_be_looted();
     int get_level();
-    Unit_Type get_type();
-    Unit_Reaction get_reaction(u32 player_ptr);
+    Creature_Type get_type();
+    Creature_Reaction get_reaction(u32 player_ptr);
 };
 
 struct Player : public Unit {
