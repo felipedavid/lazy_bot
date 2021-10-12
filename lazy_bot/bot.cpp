@@ -80,6 +80,10 @@ void Bot::draw_menu() {
 			if (ImGui::Button("Clear logs")) {
 				log_buffer.clear();
 			}
+            ImGui::SameLine();
+            if (ImGui::Button("Test")) {
+                test();
+            }
 		}
 
 		ImGui::Separator();

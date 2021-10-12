@@ -30,6 +30,18 @@ int Unit::get_health() {
     return read<int>(get_descriptor_ptr() + health_offset);
 }
 
+int Unit::get_max_health() {
+    return read<int>(get_descriptor_ptr() + max_health_offset);
+}
+
+int Unit::get_health_percentage() {
+    return read<int>(get_health() / get_max_health() * 100);
+}
+
+int Unit::get_rage() {
+    return read<int>(get_descriptor_ptr() + rage_offset) / 10;
+}
+
 char *Unit::get_name() {
     return (char *) read<u32>(read<u32>(base_addr + name_offset));
 }
@@ -55,7 +67,7 @@ Creature_Type Unit::get_type() {
 }
 
 Creature_Reaction Unit::get_reaction(u32 player_ptr) {
-    return (Creature_Reaction) Game::get_unit_reaction(base_addr, player_ptr);
+    return (Creature_Reaction) Game::get_unit_reaction(base_addr, base_addr, player_ptr);
 }
 
 char *Player::get_name() {
@@ -127,6 +139,14 @@ void Local_Player::set_target(u64 guid) {
 u64 Local_Player::get_target_guid() {
     static const u32 target_offset = 0x40;
     return read<u64>(get_descriptor_ptr() + target_offset);
+}
+
+void Local_Player::refresh_spells() {
+    spells.erase(spells.begin(), spells.end());
+    for (int *s_id = player_spells_base; *s_id != 0; s_id++) {
+        char *name = get_spell_name(s_id);
+        spells[name] = s_id;
+    }
 }
 
 // Callback for "Game::enumarate_visible_entities"

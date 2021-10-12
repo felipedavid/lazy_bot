@@ -69,14 +69,19 @@ struct Unit : public Entity {
     // We can get a pointer to that at offset "0x8".
     static const u32 descriptor_ptr_offset = 0x8;
     static const u32 health_offset         = 0x58;
+    static const u32 max_health_offset     = 0x70;
     static const u32 name_offset           = 0xB30; 
     static const u32 position_offset       = 0x9B8;
     static const u32 dynamic_flags_offset  = 0x23C;
     static const u32 level_offset          = 0x88;
+    static const u32 rage_offset           = 0x60;
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
     int get_health();
+    int get_max_health();
+    int get_health_percentage();
+    int get_rage();
     char *get_name();
     Vec3 get_position();
     float get_facing_direction();
@@ -97,6 +102,7 @@ struct Player : public Unit {
 
 struct Local_Player : public Player {
     static const u32 get_player_guid_fun_ptr = 0x00468550;
+    std::unordered_map<char *, u32> spells;
 
     using Player::Player;
     u64 get_guid();
@@ -107,6 +113,7 @@ struct Local_Player : public Player {
     void set_target(u64 guid);
     u64 get_target_guid();
     Unit select_closest_enemy(std::unordered_map <u64, Unit> *units);
+    void refresh_spells();
 };
 
 struct Entity_Manager {
