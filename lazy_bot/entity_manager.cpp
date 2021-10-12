@@ -143,10 +143,10 @@ u64 Local_Player::get_target_guid() {
 
 void Local_Player::refresh_spells() {
     spells.erase(spells.begin(), spells.end());
-    for (int *s_id = player_spells_base; *s_id != 0; s_id++) {
-        char *name = get_spell_name(s_id);
-        spells[name] = s_id;
-    }
+    //for (int *s_id = (int*) player_spells_base_addr; *s_id != 0; s_id++) {
+    //    char *name = get_spell_name(s_id);
+    //    spells[name] = *s_id;
+    //}
 }
 
 // Callback for "Game::enumarate_visible_entities"

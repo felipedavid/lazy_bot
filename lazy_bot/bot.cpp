@@ -28,10 +28,16 @@ void Bot::main_loop() {
 }
 
 void Bot::update() {
+    static Vec3 prev_pos;
     entity_manager.populate_lists();
     player.base_addr = entity_manager.local_player.base_addr;
 
     static Unit enemy = player.select_closest_enemy(&Entity_Manager::units);
+    static u64 prev_enemy = enemy.get_guid();
+    if (enemy.get_guid() != prev_enemy) {
+        prev_enemy = enemy.get_guid();
+        prev_pos = player.get_position();
+    }
     switch (state) {
         case GRIND_STATE: {
             add_log("Looking for enemy...");
@@ -44,23 +50,41 @@ void Bot::update() {
             if (player.distance_to(enemy.get_position()) > 35.0) {
                 add_log("Moving to enemy...");
                 player.click_to_move(enemy.get_position());
-            } else {
-                player.click_to_stop();
-                player.cast_spell("Auto Shot");
+            } else  if (player.distance_to(enemy.get_position()) < 5) {
+                player.cast_spell("Attack");
                 state = COMBAT_STATE;
+            } else {
+                if (player.get_position().x == prev_pos.x && player.get_position().y == prev_pos.y) 
+                    player.click_to_move(enemy.get_position());
+                else {
+                    player.click_to_stop();
+                    player.cast_spell("Auto Shot");
+                    state = COMBAT_STATE;
+                }
             }
         } break;
         case COMBAT_STATE: {
-            add_log("In combat...");
             if (enemy.get_health() == 0) {
                 if (enemy.can_be_looted()) {
-                    Game::right_click_unit(enemy.base_addr, enemy.base_addr, 0);
-                    Sleep(300);
+                    add_log("Looting...");
+                    Game::right_click_unit(enemy.base_addr, enemy.base_addr, 1);
+                    break;
+                } else {
+                    state = GRIND_STATE;
                 }
-                state = GRIND_STATE;
+            }
+            add_log("In combat...");
+            if (enemy.get_health() > 0 && player.distance_to(enemy.get_position()) < 5) {
+                state = MOVE_STATE;
             }
         } break;
     }
+}
+
+void Bot::test() {
+    entity_manager.populate_lists();
+    player.base_addr = entity_manager.local_player.base_addr;
+    player.refresh_spells();
 }
 
 void Bot::draw_menu() {

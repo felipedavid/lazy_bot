@@ -23,6 +23,7 @@ struct Bot {
 
     Bot();
     void draw_menu();
+    static void test();
     static void add_log(const char *log_message);
     static void __cdecl update();
     static void __cdecl main_loop();
