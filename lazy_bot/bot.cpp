@@ -84,7 +84,14 @@ void Bot::update() {
 void Bot::test() {
     entity_manager.populate_lists();
     player.base_addr = entity_manager.local_player.base_addr;
-    player.refresh_spells();
+    char buf[64];
+    sprintf_s(buf, "is frost buff on? %d\n", player.has_buff("Frost Armor"));
+    add_log(buf);
+    //auto buffs = player.get_buffs();
+    //for (int buff_id : buffs) {
+    //    sprintf_s(buf, 64, "%d", buff_id);
+    //    add_log(buf);
+    //0x1E0}
 }
 
 void Bot::draw_menu() {

@@ -62,17 +62,31 @@ int Unit::get_level() {
     return read<int>(get_descriptor_ptr() + level_offset);
 }
 
-std::vector<u32> Unit::get_buffs() {
-    std::vector<u32> buffs_ids(10, 0);
+//std::vector<u32> Unit::get_buff_ids() {
+//    std::vector<u32> buff_ids(10, 0);
+//
+//    u32 current_buff_offset = buffs_base_offset;
+//    for (int i = 0; i < 10; i++) {
+//        u32 buff_id = read<u32>(get_descriptor_ptr() + current_buff_offset);
+//        if (buff_id) buff_ids[i] = buff_id;
+//        current_buff_offset += 4;
+//    }
+//    return buff_ids;
+//}
 
+bool Unit::has_buff(const char *buff_name) {
     u32 current_buff_offset = buffs_base_offset;
     for (int i = 0; i < 10; i++) {
         u32 buff_id = read<u32>(get_descriptor_ptr() + current_buff_offset);
-        if (buff_id) buffs_ids.push_back(buff_id);
+        if (!buff_id) continue;
+
+        u32 spell_ptr = read<u32>(read<u32>(spells_base_addr) + buff_id * 4);
+        char *spell_name = (char *) read<u32>(spell_ptr + spell_name_offset);
+        if(!strcmp(buff_name, spell_name)) return true;
+
         current_buff_offset += 4;
     }
-
-    return buffs_ids;
+    return false;
 }
 
 Creature_Type Unit::get_type() {
