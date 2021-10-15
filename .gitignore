@@ -7,4 +7,5 @@ bin/
 Debug/	
 Release/
 lazy_bot/Debug/
+injector/Debug/
 .vs/
