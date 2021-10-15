@@ -75,6 +75,7 @@ struct Unit : public Entity {
     static const u32 dynamic_flags_offset  = 0x23C;
     static const u32 level_offset          = 0x88;
     static const u32 rage_offset           = 0x60;
+    static const u32 buffs_base_offset     = 0xBC; 
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
@@ -89,6 +90,7 @@ struct Unit : public Entity {
     int get_level();
     Creature_Type get_type();
     Creature_Reaction get_reaction(u32 player_ptr);
+    std::vector<u32> get_buffs();
 };
 
 struct Player : public Unit {

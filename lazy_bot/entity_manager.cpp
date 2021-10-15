@@ -62,6 +62,19 @@ int Unit::get_level() {
     return read<int>(get_descriptor_ptr() + level_offset);
 }
 
+std::vector<u32> Unit::get_buffs() {
+    std::vector<u32> buffs_ids(10, 0);
+
+    u32 current_buff_offset = buffs_base_offset;
+    for (int i = 0; i < 10; i++) {
+        u32 buff_id = read<u32>(get_descriptor_ptr() + current_buff_offset);
+        if (buff_id) buffs_ids.push_back(buff_id);
+        current_buff_offset += 4;
+    }
+
+    return buffs_ids;
+}
+
 Creature_Type Unit::get_type() {
     return (Creature_Type) Game::get_unit_type(base_addr);
 }
