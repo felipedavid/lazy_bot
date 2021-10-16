@@ -54,14 +54,14 @@ enum Creature_Type {
 };
 
 enum Creature_Reaction {
-    UR_HATED,
-    UR_HOSTILE,
-    UR_UNFRIENDLY,
-    UR_NEUTRAL,
-    UR_FRIENDLY,
-    UR_HONORED,
-    UR_REVERED,
-    UR_EXALED,
+    CR_HATED,
+    CR_HOSTILE,
+    CR_UNFRIENDLY,
+    CR_NEUTRAL,
+    CR_FRIENDLY,
+    CR_HONORED,
+    CR_REVERED,
+    CR_EXALED,
 };
 
 struct Unit : public Entity {
@@ -76,8 +76,7 @@ struct Unit : public Entity {
     static const u32 level_offset          = 0x88;
     static const u32 rage_offset           = 0x60;
     static const u32 buffs_base_offset     = 0xBC; 
-    static const u32 spells_base_addr      = 0x00C0D788;
-    static const u32 spell_name_offset     = 0x1E0;
+    static const u32 debuffs_base_offset   = 0x13C; 
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
@@ -92,8 +91,9 @@ struct Unit : public Entity {
     int get_level();
     Creature_Type get_type();
     Creature_Reaction get_reaction(u32 player_ptr);
+    std::vector<u32> get_buff_ids();
+    std::vector<u32> get_debuff_ids();
     bool has_buff(const char *buff_name);
-    //std::vector<u32> get_buff_ids();
 };
 
 struct Player : public Unit {
@@ -106,10 +106,10 @@ struct Player : public Unit {
 };
 
 struct Local_Player : public Player {
-    static const u32 get_player_guid_fun_ptr = 0x00468550;
-    static const u32 player_spells_base_addr = 0x00C0D788;
+    static const u32 get_player_guid_fun_ptr = 0x468550;
+    static const u32 player_spells_base_addr = 0xB700F0;;
 
-    std::unordered_map<char *, u32> spells;
+    std::unordered_map<const char *, u32> spells;
 
     using Player::Player;
     u64 get_guid();

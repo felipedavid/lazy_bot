@@ -62,29 +62,40 @@ int Unit::get_level() {
     return read<int>(get_descriptor_ptr() + level_offset);
 }
 
-//std::vector<u32> Unit::get_buff_ids() {
-//    std::vector<u32> buff_ids(10, 0);
-//
-//    u32 current_buff_offset = buffs_base_offset;
-//    for (int i = 0; i < 10; i++) {
-//        u32 buff_id = read<u32>(get_descriptor_ptr() + current_buff_offset);
-//        if (buff_id) buff_ids[i] = buff_id;
-//        current_buff_offset += 4;
-//    }
-//    return buff_ids;
-//}
+std::vector<u32> Unit::get_buff_ids() {
+    std::vector<u32> buff_ids(10, 0);
 
-bool Unit::has_buff(const char *buff_name) {
     u32 current_buff_offset = buffs_base_offset;
     for (int i = 0; i < 10; i++) {
         u32 buff_id = read<u32>(get_descriptor_ptr() + current_buff_offset);
-        if (!buff_id) continue;
+        if (buff_id == 0) break; 
 
-        u32 spell_ptr = read<u32>(read<u32>(spells_base_addr) + buff_id * 4);
-        char *spell_name = (char *) read<u32>(spell_ptr + spell_name_offset);
-        if(!strcmp(buff_name, spell_name)) return true;
-
+        buff_ids[i] = buff_id;
         current_buff_offset += 4;
+    }
+    return buff_ids;
+}
+
+std::vector<u32> Unit::get_debuff_ids() {
+    std::vector<u32> debuff_ids(16, 0);
+
+    u32 current_debuff_offset = debuffs_base_offset;
+    for (int i = 0; i < 16; i++) {
+        u32 debuff_id = read<u32>(get_descriptor_ptr() + current_debuff_offset);
+        if (debuff_id == 0) break;
+
+        debuff_ids[i] = debuff_id;
+        current_debuff_offset += 4;
+    }
+    return debuff_ids;
+}
+
+bool Unit::has_buff(const char *buff_name) {
+    auto ids = get_buff_ids();
+    for (auto id : ids) {
+        if (id && !strcmp(buff_name, get_spell_name(id))) {
+            return true;
+        }
     }
     return false;
 }
@@ -134,7 +145,7 @@ Unit Local_Player::select_closest_enemy(std::unordered_map <u64, Unit> *units) {
         auto type = unit.second.get_type();
         auto react = unit.second.get_reaction(base_addr);
         if (type != UT_CRITTER && type != UT_NOT_SPECIFIED && type != UT_TOTEM &&
-            (react == UR_HOSTILE || react == UR_UNFRIENDLY || react == UR_NEUTRAL) &&
+            (react == CR_HOSTILE || react == CR_UNFRIENDLY || react == CR_NEUTRAL) &&
             (unit.second.get_health() > 0) && (distance_to(enemy.get_position()) >
             distance_to(unit.second.get_position()))) {
             enemy = unit.second;
@@ -170,10 +181,10 @@ u64 Local_Player::get_target_guid() {
 
 void Local_Player::refresh_spells() {
     spells.erase(spells.begin(), spells.end());
-    //for (int *s_id = (int*) player_spells_base_addr; *s_id != 0; s_id++) {
-    //    char *name = get_spell_name(s_id);
-    //    spells[name] = *s_id;
-    //}
+    for (u32 *s_id = (u32*) player_spells_base_addr, i = 0; *s_id != 0 && i < 1024; s_id++) {
+        const char *name = get_spell_name(*s_id);
+        spells[name] = *s_id;
+    }
 }
 
 // Callback for "Game::enumarate_visible_entities"

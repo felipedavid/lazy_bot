@@ -15,6 +15,16 @@ const char *entity_type_to_str(Entity_Type type) {
     return "Undefined";
 }
 
+const char *get_spell_name(u32 spell_id) {
+    static const u32 spells_base_addr = 0xC0D788;
+    static const u32 spell_name_offset = 0x1E0;
+
+    if (spell_id == 0) return "Empty";
+
+    u32 spell_ptr = read<u32>(read<u32>(spells_base_addr) + spell_id * 4);
+    return (const char *)read<u32>(spell_ptr + spell_name_offset);
+}
+
 void write_to_memory(u8 *dst, u8 *src, int size) {
     DWORD oldprotect;
 	VirtualProtect(dst, size, PAGE_EXECUTE_READWRITE, &oldprotect);
