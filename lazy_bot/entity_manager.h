@@ -72,9 +72,10 @@ struct Unit : public Entity {
     static const u32 max_health_offset     = 0x70;
     static const u32 name_offset           = 0xB30; 
     static const u32 position_offset       = 0x9B8;
-    static const u32 dynamic_flags_offset  = 0x23C;
     static const u32 level_offset          = 0x88;
     static const u32 rage_offset           = 0x60;
+    static const u32 mana_offset           = 0x5C;
+    static const u32 dynamic_flags_offset  = 0x23C;
     static const u32 buffs_base_offset     = 0xBC; 
     static const u32 debuffs_base_offset   = 0x13C; 
 
@@ -89,6 +90,7 @@ struct Unit : public Entity {
     float get_facing_direction();
     bool can_be_looted();
     int get_level();
+    int get_mana();
     Creature_Type get_type();
     Creature_Reaction get_reaction(u32 player_ptr);
     std::vector<u32> get_buff_ids();
@@ -121,6 +123,7 @@ struct Local_Player : public Player {
     u64 get_target_guid();
     Unit select_closest_enemy(std::unordered_map <u64, Unit> *units);
     void refresh_spells();
+    bool is_spell_ready(const char *spell_name, int spell_rank);
 };
 
 struct Entity_Manager {

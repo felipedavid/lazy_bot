@@ -62,6 +62,10 @@ int Unit::get_level() {
     return read<int>(get_descriptor_ptr() + level_offset);
 }
 
+int Unit::get_mana() {
+    return read<int>(get_descriptor_ptr() + mana_offset);
+}
+
 std::vector<u32> Unit::get_buff_ids() {
     std::vector<u32> buff_ids(10, 0);
 
@@ -185,6 +189,14 @@ void Local_Player::refresh_spells() {
         const char *name = get_spell_name(*s_id);
         spells[name] = *s_id;
     }
+}
+
+// TODO: Properly check spells rank
+bool Local_Player::is_spell_ready(const char *spell_name, int spell_rank) {
+    // TODO: Comparison of C strings don't work as I assumed, fix this.
+    if (spells.find(spell_name) == spells.end()) return false;
+
+    return Game::is_spell_ready(spells[spell_name]);
 }
 
 // Callback for "Game::enumarate_visible_entities"

@@ -31,6 +31,7 @@ void Bot::update() {
     static Vec3 prev_pos;
     entity_manager.populate_lists();
     player.base_addr = entity_manager.local_player.base_addr;
+    player.refresh_spells();
 
     static Unit enemy = player.select_closest_enemy(&Entity_Manager::units);
     static u64 prev_enemy = enemy.get_guid();
@@ -47,7 +48,11 @@ void Bot::update() {
             }
         } break;
         case MOVE_STATE: {
-            if (player.distance_to(enemy.get_position()) > 35.0) {
+            if (!player.has_buff("Frost Armor") && player.get_mana() > 60 && 
+                player.is_spell_ready("Frost Armor", 0)) {
+                player.cast_spell("Frost Armor");
+            }
+            if (player.distance_to(enemy.get_position()) > 20.0) {
                 add_log("Moving to enemy...");
                 player.click_to_move(enemy.get_position());
             } else  if (player.distance_to(enemy.get_position()) < 5) {
@@ -58,12 +63,16 @@ void Bot::update() {
                     player.click_to_move(enemy.get_position());
                 else {
                     player.click_to_stop();
-                    player.cast_spell("Auto Shot");
                     state = COMBAT_STATE;
                 }
             }
         } break;
         case COMBAT_STATE: {
+            if (player.get_mana() > 30 && player.is_spell_ready("Fireball", 0)) {
+                player.cast_spell("Fireball");
+            } else if (player.is_spell_ready("Attack", 0)) {
+                player.cast_spell("Attack");
+            }
             if (enemy.get_health() == 0) {
                 if (enemy.can_be_looted()) {
                     add_log("Looting...");
