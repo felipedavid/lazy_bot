@@ -111,7 +111,7 @@ struct Local_Player : public Player {
     static const u32 get_player_guid_fun_ptr = 0x468550;
     static const u32 player_spells_base_addr = 0xB700F0;;
 
-    std::unordered_map<const char *, u32> spells;
+    std::unordered_map<std::string, u32> spells;
 
     using Player::Player;
     u64 get_guid();

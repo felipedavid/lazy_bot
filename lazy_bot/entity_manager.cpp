@@ -187,14 +187,13 @@ void Local_Player::refresh_spells() {
     spells.erase(spells.begin(), spells.end());
     for (u32 *s_id = (u32*) player_spells_base_addr, i = 0; *s_id != 0 && i < 1024; s_id++) {
         const char *name = get_spell_name(*s_id);
-        spells[name] = *s_id;
+        spells[std::string(name)] = *s_id;
     }
 }
 
 // TODO: Properly check spells rank
 bool Local_Player::is_spell_ready(const char *spell_name, int spell_rank) {
-    // TODO: Comparison of C strings don't work as I assumed, fix this.
-    if (spells.find(spell_name) == spells.end()) return false;
+    if (spells.find(std::string(spell_name)) == spells.end()) return false;
 
     return Game::is_spell_ready(spells[spell_name]);
 }

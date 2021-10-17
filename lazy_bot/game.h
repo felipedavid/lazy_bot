@@ -18,7 +18,8 @@ typedef void (__fastcall *_right_click_unit)(u32 unit_base_addr, u32 unit_base_a
 typedef u32 (__fastcall *_get_item_cache_entry)(u32 base_ptr, u32 item_id, u32 guid, u32 x, u32 y, char z); // base_ptr = 0x00C0E2A0
 typedef int (__fastcall *_get_unit_type)(u32 unit_base_addr);
 typedef int (__fastcall *_get_unit_reaction)(u32 unit_base_addr, u32 unit_base_addr2, u32 player_base_addr);
-typedef void (__fastcall *_get_spell_cooldown)(u32 spell_cooldown_base, 
+typedef void (__fastcall *_get_spell_cooldown)(u32 spell_cooldown_base1,
+                                               u32 spell_cooldown_base2, 
                                                u32 spell_id, 
                                                u32 unused1, 
                                                u32 *cooldown_duration,

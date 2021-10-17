@@ -21,6 +21,6 @@ u32 Game::get_item_cache_entry_wrapper(u32 item_id) {
 bool Game::is_spell_ready(u32 spell_id) {
     const static u32 get_spell_cooldown_base = 0x00CECAEC;
     u32 cooldown = 0;
-    get_spell_cooldown(get_spell_cooldown_base, spell_id, 0, &cooldown, 0, 0);
+    get_spell_cooldown(get_spell_cooldown_base, get_spell_cooldown_base, spell_id, 0, &cooldown, 0, 0);
     return cooldown == 0;
 }

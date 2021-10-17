@@ -96,7 +96,7 @@ void Bot::test() {
 
     player.refresh_spells();
     for (auto &spell : player.spells) {
-        add_log(spell.first);
+        add_log(spell.first.c_str());
     }
 }
 
