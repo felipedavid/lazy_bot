@@ -38,7 +38,7 @@ void unhook_event_signal() {
 
 void process_event(char* event_name) {
     if(!strcmp(event_name, "LOOT_OPENED")) {
-        //bot.add_log("Loot opened.");
+        //bot.log("Loot opened.");
         // For now, just use auto loot
         //Loot_Frame loot_frame;
         //loot_frame.init();

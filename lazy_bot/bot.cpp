@@ -41,7 +41,7 @@ void Bot::update() {
     }
     switch (state) {
         case GRIND_STATE: {
-            add_log("Looking for enemy...");
+            log("Looking for enemy...");
             enemy = player.select_closest_enemy(&Entity_Manager::units);
             if (enemy.base_addr != 0) {
                 state = MOVE_STATE;
@@ -53,7 +53,7 @@ void Bot::update() {
                 player.cast_spell("Frost Armor");
             }
             if (player.distance_to(enemy.get_position()) > 20.0) {
-                add_log("Moving to enemy...");
+                log("Moving to enemy...");
                 player.click_to_move(enemy.get_position());
             } else  if (player.distance_to(enemy.get_position()) < 5) {
                 player.cast_spell("Attack");
@@ -68,6 +68,9 @@ void Bot::update() {
             }
         } break;
         case COMBAT_STATE: {
+            u64 whatever;
+            Vec3 p = player.get_position();
+            Game::click_to_move(player.base_addr, player.base_addr, CT_FACE, &whatever, (u32)&p, 2);
             if (player.get_mana() > 30 && player.is_spell_ready("Fireball", 0)) {
                 player.cast_spell("Fireball");
             } else if (player.is_spell_ready("Attack", 0)) {
@@ -75,14 +78,14 @@ void Bot::update() {
             }
             if (enemy.get_health() == 0) {
                 if (enemy.can_be_looted()) {
-                    add_log("Looting...");
+                    log("Looting...");
                     Game::right_click_unit(enemy.base_addr, enemy.base_addr, 1);
                     break;
                 } else {
                     state = GRIND_STATE;
                 }
             }
-            add_log("In combat...");
+            log("In combat...");
             if (enemy.get_health() > 0 && player.distance_to(enemy.get_position()) < 5) {
                 state = MOVE_STATE;
             }
@@ -93,11 +96,18 @@ void Bot::update() {
 void Bot::test() {
     entity_manager.populate_lists();
     player.base_addr = entity_manager.local_player.base_addr;
+    Vec3 tar_pos = player.select_closest_enemy(&entity_manager.units).get_position();
 
-    player.refresh_spells();
-    for (auto &spell : player.spells) {
-        add_log(spell.first.c_str());
-    }
+    char buf[64];
+    sprintf_s(buf, 64, "Player's facing direction: %.2f", player.get_facing_direction());
+    log(buf);
+    sprintf_s(buf, 64, "Should be facing: %.2f\n", player.get_facing_for_position(tar_pos));
+    log(buf);
+    //if (!player.is_facing(tar_pos)) {
+    //    log("[!] Player is not facing target!");
+    //} else {
+    //    log("[*] Player is facing target!");
+    //}
 }
 
 void Bot::draw_menu() {
@@ -139,7 +149,7 @@ void Bot::draw_menu() {
 	}
 }
 
-void Bot::add_log(const char *log_message) {
+void Bot::log(const char *log_message) {
     log_buffer.append(log_message);
     log_buffer.append("\n");
     scroll_to_bottom = true;

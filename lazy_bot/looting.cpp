@@ -11,7 +11,7 @@ void Loot_Frame::init() {
         u32 item_id = read<u32>(loot_frame_base_addr + slot * 0x1c);
         if (item_id == 0) break;
         char *item_name = (char*) read<u32>(Game::get_item_cache_entry_wrapper(item_id))+0x8;
-        bot.add_log(item_name);
+        bot.log(item_name);
         items.push_back(Loot_Item{item_id, slot});
     }
 }

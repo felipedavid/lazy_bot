@@ -72,6 +72,7 @@ struct Unit : public Entity {
     static const u32 max_health_offset     = 0x70;
     static const u32 name_offset           = 0xB30; 
     static const u32 position_offset       = 0x9B8;
+    static const u32 facing_offset         = 0x9C4;
     static const u32 level_offset          = 0x88;
     static const u32 rage_offset           = 0x60;
     static const u32 mana_offset           = 0x5C;
@@ -124,6 +125,8 @@ struct Local_Player : public Player {
     Unit select_closest_enemy(std::unordered_map <u64, Unit> *units);
     void refresh_spells();
     bool is_spell_ready(const char *spell_name, int spell_rank);
+    float get_facing_for_position(Vec3 pos);
+    bool is_facing(Vec3 pos);
 };
 
 struct Entity_Manager {

@@ -4,6 +4,7 @@
 
 // Needed as argument for "click_to_move" function
 enum Click_Type {
+    CT_FACE = 0x2,
     CT_MOVE = 0x4,
     CT_NONE = 0xD,
 };
@@ -25,6 +26,13 @@ typedef void (__fastcall *_get_spell_cooldown)(u32 spell_cooldown_base1,
                                                u32 *cooldown_duration,
                                                u32 unused2,
                                                u32 unused3);
+typedef void (__fastcall *_set_facing)(u32 player_base, u32 player_set_facing_ptr, float facing);
+typedef int (__fastcall *_send_movement_update)(u32 player_base, 
+                                                u32 player_base2, 
+                                                u32 timestamp, 
+                                                int opcode, 
+                                                float unused1, 
+                                                float unused2);
 
 struct Game {
     static _enumerate_visible_entities enumerate_visible_entities;
@@ -38,6 +46,8 @@ struct Game {
     static _get_unit_type get_unit_type;
     static _get_unit_reaction get_unit_reaction;
     static _get_spell_cooldown get_spell_cooldown;
+    static _set_facing set_facing;
+    static _send_movement_update send_movement_update;
 
     static u32 get_item_cache_entry_wrapper(u32 item_id);
     static bool is_spell_ready(u32 spell_id);
