@@ -136,14 +136,13 @@ u64 Local_Player::get_guid() { return Game::get_player_guid(); }
 void Local_Player::click_to_move(Vec3 pos) {
     // 0x4 == move click type
     u64 interact_guid_ptr = 0;
-    Vec3 *p = &pos;
-    Game::click_to_move(base_addr, base_addr, CT_MOVE, &interact_guid_ptr, (u32)p, 2);
+    Game::click_to_move(base_addr, base_addr, CT_MOVE, &interact_guid_ptr, &pos, 2);
 }
 
 void Local_Player::click_to_stop() {
     u64 interact_guid_ptr = 0;
     Vec3 pos = get_position();
-    Game::click_to_move(base_addr, base_addr, CT_NONE, &interact_guid_ptr, (u32)&pos, 2);
+    Game::click_to_move(base_addr, base_addr, CT_NONE, &interact_guid_ptr, &pos, 2);
 }
 
 Unit Local_Player::select_closest_enemy(std::unordered_map <u64, Unit> *units) {
@@ -222,6 +221,11 @@ float Local_Player::get_facing_for_position(Vec3 pos) {
 
 bool Local_Player::is_facing(Vec3 pos) {
     return (get_facing_for_position(pos) - get_facing_direction()) < 0.3f;
+}
+
+void Local_Player::face_entity(u64 guid) {
+    auto p = get_position();
+    Game::click_to_move(base_addr, base_addr, CT_FACE_TARGET, &guid, &p, 2);
 }
 
 // Callback for "Game::enumarate_visible_entities"

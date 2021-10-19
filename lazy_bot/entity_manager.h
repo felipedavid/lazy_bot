@@ -29,8 +29,6 @@ struct Entity {
     Entity_Type get_type();
 };
 
-struct Vec3 {float x, y, z;};
-
 enum Dynamic_Flag {
     UNTOUCHED     =  0,
     CAN_BE_LOOTED =  1,
@@ -127,6 +125,7 @@ struct Local_Player : public Player {
     bool is_spell_ready(const char *spell_name, int spell_rank);
     float get_facing_for_position(Vec3 pos);
     bool is_facing(Vec3 pos);
+    void face_entity(u64 guid);
 };
 
 struct Entity_Manager {

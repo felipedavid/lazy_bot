@@ -23,7 +23,7 @@ void Bot::main_loop() {
     state = GRIND_STATE;
     while (running) {
         run_procedure_on_main_thread((void*)Bot::update);
-        Sleep(700);
+        Sleep(300);
     }
 }
 
@@ -43,6 +43,7 @@ void Bot::update() {
         case GRIND_STATE: {
             log("Looking for enemy...");
             enemy = player.select_closest_enemy(&Entity_Manager::units);
+            player.face_entity(enemy.get_guid());
             if (enemy.base_addr != 0) {
                 state = MOVE_STATE;
             }
@@ -68,9 +69,6 @@ void Bot::update() {
             }
         } break;
         case COMBAT_STATE: {
-            u64 whatever;
-            Vec3 p = player.get_position();
-            Game::click_to_move(player.base_addr, player.base_addr, CT_FACE, &whatever, (u32)&p, 2);
             if (player.get_mana() > 30 && player.is_spell_ready("Fireball", 0)) {
                 player.cast_spell("Fireball");
             } else if (player.is_spell_ready("Attack", 0)) {
@@ -78,9 +76,12 @@ void Bot::update() {
             }
             if (enemy.get_health() == 0) {
                 if (enemy.can_be_looted()) {
-                    log("Looting...");
-                    Game::right_click_unit(enemy.base_addr, enemy.base_addr, 1);
-                    break;
+                    if (player.distance_to(enemy.get_position()) > 5) {
+                        player.click_to_move(enemy.get_position());
+                    } else {
+                        log("Looting...");
+                        Game::right_click_unit(enemy.base_addr, enemy.base_addr, 1);
+                    }
                 } else {
                     state = GRIND_STATE;
                 }
