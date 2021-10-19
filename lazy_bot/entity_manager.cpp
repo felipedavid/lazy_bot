@@ -200,29 +200,6 @@ bool Local_Player::is_spell_ready(const char *spell_name, int spell_rank) {
     return Game::is_spell_ready(spells[spell_name]);
 }
 
-// Returns which the correct angle to face the specified position
-// TODO: Apparently, that is something wrong with the math. Fix it.
-float Local_Player::get_facing_for_position(Vec3 pos) {
-    float target_x = pos.x;
-    float player_x = get_position().x;
-    float target_y = pos.y;
-    float player_y = get_position().y;
-    
-    float atan2X = (player_x - target_x);
-    float atan2Y = (player_y - target_y);
-    
-    double angle = atan2(atan2X, atan2Y);
-    if( angle < 0.0f )
-        angle += M_PI * 2.0f;
-    else if(angle > M_PI * 2.0f )
-        angle -= M_PI * 2.0f;
-    return (float)angle;
-}
-
-bool Local_Player::is_facing(Vec3 pos) {
-    return (get_facing_for_position(pos) - get_facing_direction()) < 0.3f;
-}
-
 void Local_Player::face_entity(u64 guid) {
     auto p = get_position();
     Game::click_to_move(base_addr, base_addr, CT_FACE_TARGET, &guid, &p, 2);

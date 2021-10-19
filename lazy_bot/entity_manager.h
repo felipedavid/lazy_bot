@@ -123,8 +123,6 @@ struct Local_Player : public Player {
     Unit select_closest_enemy(std::unordered_map <u64, Unit> *units);
     void refresh_spells();
     bool is_spell_ready(const char *spell_name, int spell_rank);
-    float get_facing_for_position(Vec3 pos);
-    bool is_facing(Vec3 pos);
     void face_entity(u64 guid);
 };
 
