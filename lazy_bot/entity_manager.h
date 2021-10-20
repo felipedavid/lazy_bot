@@ -77,6 +77,7 @@ struct Unit : public Entity {
     static const u32 dynamic_flags_offset  = 0x23C;
     static const u32 buffs_base_offset     = 0xBC; 
     static const u32 debuffs_base_offset   = 0x13C; 
+    static const u32 current_spellcast_offset = 0xC8C;
 
     using Entity::Entity;
     u32 get_descriptor_ptr();
@@ -95,6 +96,7 @@ struct Unit : public Entity {
     std::vector<u32> get_buff_ids();
     std::vector<u32> get_debuff_ids();
     bool has_buff(const char *buff_name);
+    bool is_casting();
 };
 
 struct Player : public Unit {
@@ -124,6 +126,8 @@ struct Local_Player : public Player {
     void refresh_spells();
     bool is_spell_ready(const char *spell_name, int spell_rank);
     void face_entity(u64 guid);
+    void try_use_ability(const char *name, int rage_required, bool extra_condition);
+    void try_use_ability(const char *name, int rage_required);
 };
 
 struct Entity_Manager {

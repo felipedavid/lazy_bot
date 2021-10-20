@@ -50,11 +50,7 @@ void Bot::update() {
             }
         } break;
         case MOVE_STATE: {
-            if (!player.has_buff("Frost Armor") && player.get_mana() > 60 && 
-                player.is_spell_ready("Frost Armor", 0)) {
-                player.cast_spell("Frost Armor");
-            }
-            if (player.distance_to(enemy.get_position()) > 20.0) {
+            if (player.distance_to(enemy.get_position()) > 5.0) {
                 log("Moving to enemy...");
                 player.click_to_move(enemy.get_position());
             } else {
@@ -67,17 +63,10 @@ void Bot::update() {
             }
         } break;
         case COMBAT_STATE: {
-            if (player.get_mana() > 30 && player.is_spell_ready("Fireball", 0)) {
-                player.cast_spell("Fireball");
-            } else if (player.get_mana() <= 30 && player.is_spell_ready("Attack", 0)) {
-                if (player.distance_to(enemy.get_position()) > 5) {
-                    player.click_to_move(enemy.get_position());
-                }
-                else {
-                    player.face_entity(enemy.get_guid());
-                    player.cast_spell("Attack");
-                }
-            }
+            player.try_use_ability("War Stomp", 0);
+            player.try_use_ability("Heroic Strike", 30);
+            player.try_use_ability("Attack", 0);
+
             if (enemy.get_health() == 0) {
                 if (enemy.can_be_looted()) {
                     if (player.distance_to(enemy.get_position()) > 5) {

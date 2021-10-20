@@ -107,6 +107,10 @@ bool Unit::has_buff(const char *buff_name) {
     return false;
 }
 
+bool Unit::is_casting() {
+    return (bool) read<u32>(base_addr + current_spellcast_offset);
+}
+
 Creature_Type Unit::get_type() {
     return (Creature_Type) Game::get_unit_type(base_addr);
 }
@@ -203,6 +207,18 @@ bool Local_Player::is_spell_ready(const char *spell_name, int spell_rank) {
 void Local_Player::face_entity(u64 guid) {
     auto p = get_position();
     Game::click_to_move(base_addr, base_addr, CT_FACE_TARGET, &guid, &p, 2);
+}
+
+void Local_Player::try_use_ability(const char *name, int rage_required, bool extra_condition) {
+    if (extra_condition && is_spell_ready(name, 0) && !is_casting() && get_rage() >= rage_required) {
+        cast_spell(name);
+    }
+}
+
+void Local_Player::try_use_ability(const char *name, int rage_required) {
+    if (is_spell_ready(name, 0) && !is_casting() && get_rage() >= rage_required) {
+        cast_spell(name);
+    }
 }
 
 // Callback for "Game::enumarate_visible_entities"
