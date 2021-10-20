@@ -27,6 +27,7 @@ void Bot::main_loop() {
     }
 }
 
+// This mess is temporary. Just for testing.
 void Bot::update() {
     static Vec3 prev_pos;
     entity_manager.populate_lists();
@@ -56,9 +57,6 @@ void Bot::update() {
             if (player.distance_to(enemy.get_position()) > 20.0) {
                 log("Moving to enemy...");
                 player.click_to_move(enemy.get_position());
-            } else  if (player.distance_to(enemy.get_position()) < 5) {
-                player.cast_spell("Attack");
-                state = COMBAT_STATE;
             } else {
                 if (player.get_position().x == prev_pos.x && player.get_position().y == prev_pos.y) 
                     player.click_to_move(enemy.get_position());
@@ -71,8 +69,14 @@ void Bot::update() {
         case COMBAT_STATE: {
             if (player.get_mana() > 30 && player.is_spell_ready("Fireball", 0)) {
                 player.cast_spell("Fireball");
-            } else if (player.is_spell_ready("Attack", 0)) {
-                player.cast_spell("Attack");
+            } else if (player.get_mana() <= 30 && player.is_spell_ready("Attack", 0)) {
+                if (player.distance_to(enemy.get_position()) > 5) {
+                    player.click_to_move(enemy.get_position());
+                }
+                else {
+                    player.face_entity(enemy.get_guid());
+                    player.cast_spell("Attack");
+                }
             }
             if (enemy.get_health() == 0) {
                 if (enemy.can_be_looted()) {
@@ -97,18 +101,6 @@ void Bot::update() {
 void Bot::test() {
     entity_manager.populate_lists();
     player.base_addr = entity_manager.local_player.base_addr;
-    Vec3 tar_pos = player.select_closest_enemy(&entity_manager.units).get_position();
-
-    char buf[64];
-    sprintf_s(buf, 64, "Player's facing direction: %.2f", player.get_facing_direction());
-    log(buf);
-    sprintf_s(buf, 64, "Should be facing: %.2f\n", player.get_facing_for_position(tar_pos));
-    log(buf);
-    //if (!player.is_facing(tar_pos)) {
-    //    log("[!] Player is not facing target!");
-    //} else {
-    //    log("[*] Player is facing target!");
-    //}
 }
 
 void Bot::draw_menu() {
