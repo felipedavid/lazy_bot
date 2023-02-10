@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <stdio.h>
+#include "fishing.h"
 #include "common.h"
 
 void start(HMODULE h) {
@@ -13,7 +14,7 @@ void start(HMODULE h) {
             break;
         }
         if (GetAsyncKeyState(VK_HOME) & 1) {
-            log_entities(); 
+            pulse();
         }
         Sleep(100);
     }

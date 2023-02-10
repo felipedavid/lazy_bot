@@ -20,3 +20,4 @@ typedef u32 bool;
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 #define read_u32(addr) (*(u32*)(addr))
+#define read_u64(addr) (*(u64*)(addr))
