@@ -1,22 +1,46 @@
 #include "logger.h"
 #include "entity_manager.h"
 
-Entity *entities;
+Player local_player;
+Game_Object *game_objs;
+
+Entity_Type get_type(Entity ent) {
+    return (Entity_Type) read_u32(ent + ENT_TYPE);
+}
+
+u32 get_descriptor(Entity ent) {
+    return read_u32(ent + ENT_DESCRIPTOR);
+}
+
+u64 get_guid(Entity ent) {
+    return read_u64(get_descriptor(ent));
+}
+
+i32 get_display_id(Entity ent) {
+    return read_u32(get_descriptor(ent) + GAME_OBJ_DISPLAY_ID);
+}
+
+u64 get_creator_guid(Entity ent) {
+    return read_u64(get_descriptor(ent) + GAME_OBJ_CREATED_BY);
+}
 
 void populate_entities() {
-    buf_clear(entities);
+    buf_clear(game_objs);
 
     Entity ent;
     u32 client_conn = read_u32(CLIENT_CONNECTION);
     u32 entity_manager = read_u32(client_conn + ENTITY_MANAGER);
-    ent.base_addr = read_u32(entity_manager + FIRST_ENTITY);
-    ent.type = (Entity_Type) read_u32(ent.base_addr + ENT_TYPE);
+    ent = read_u32(entity_manager + FIRST_ENTITY);
 
-    while (ent.base_addr && ((ent.base_addr & 1) == 0)) {
-        buf_push(entities, ent);
+    while (ent && ((ent & 1) == 0)) {
+        switch (get_type(ent)) {
+        case ET_PLAYER:
+            local_player = ent;
+            break;
+        case ET_GAME_OBJ: buf_push(game_objs, ent); break;
+        }
 
-        ent.base_addr = read_u32(ent.base_addr + NEXT_ENTITY);
-        ent.type = (Entity_Type) read_u32(ent.base_addr + ENT_TYPE);
+        ent = read_u32(ent + NEXT_ENTITY);
     }
 }
 
@@ -33,12 +57,11 @@ const char *entity_type_str[] = {
 
 void log_entities() {
     populate_entities();
-    for (int i = 0; i < buf_len(entities); i++) {
-        Entity ent = entities[i];
-        Entity_Type type = ent.type;
+    for (int i = 0; i < buf_len(game_objs); i++) {
+        Entity ent = game_objs[i];
 
         log_info("Entity %d", i);
-        log_info("Base addr: 0x%x", ent.base_addr);
-        log_info("Type: %s\n", entity_type_str[type]);
+        log_info("Base addr: 0x%x", ent);
+        log_info("Type: %s\n", entity_type_str[get_type(ent)]);
     }
 }
