@@ -1,6 +1,7 @@
 #include "game_info.h"
 #include "entity_manager.h"
 #include "logger.h"
+#include "function_wrappers.h"
 
 extern Player local_player;
 extern Game_Object *game_objs;
@@ -24,19 +25,17 @@ void pulse() {
     populate_entities();
     Game_Object bobber = 0;
 
-    if (is_casting(local_player, SPELL_ID_FISHING)) {
-        log_info("Fishing...");
-    } else {
-        log_info("Not fishing..");
+    if (!is_casting(local_player, SPELL_ID_FISHING)) {
+        cast_spell(SPELL_ID_FISHING);
     }
 
     // Find player bobber
     for (int i = 0; i < buf_len(game_objs); i++) {
         if (is_fishing_bobber(game_objs[i]) && created_by_local_player(game_objs[i])) {
-            log_info("Found bobber!");
             bobber = game_objs[i];
             if (is_bobber_splashing(bobber)) {
-                log_info("Looting...\n")
+                interact(bobber);
+                log_info("Looting...\n");
             }
             break;
         }
