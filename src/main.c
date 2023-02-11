@@ -33,13 +33,20 @@ void start(HMODULE h) {
     HWND wnd = FindWindowA(NULL, "World of Warcraft");
     old_wnd_proc = (WNDPROC)SetWindowLongPtr(wnd, GWL_WNDPROC, (LONG_PTR)new_wnd_proc);
 
+    bool running = false;
     while (TRUE) {
         if (GetAsyncKeyState(VK_END) & 1) {
             break;
         }
+
         if (GetAsyncKeyState(VK_HOME) & 1) {
+            running = !running;
+        }
+
+        if (running) {
             run_on_main_thread(pulse);
         }
+
         Sleep(100);
     }
 

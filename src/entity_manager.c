@@ -28,6 +28,10 @@ bool is_casting(Unit unit, u32 spell_id) {
     return read_u32(unit + UNIT_CHANNEL_ID) == spell_id;
 }
 
+bool created_by(Entity creator, Entity obj) {
+    return get_creator_guid(obj) == get_guid(creator);
+}
+
 void populate_entities() {
     buf_clear(game_objs);
 

@@ -28,5 +28,7 @@ u32 get_descriptor(Entity ent);
 u64 get_guid(Entity ent);
 i32 get_display_id(Entity ent);
 u64 get_creator_guid(Entity ent);
+bool is_casting(Unit unit, u32 spell_id);
+bool created_by(Entity creator, Entity obj);
 void populate_entities();
 void log_entities();
