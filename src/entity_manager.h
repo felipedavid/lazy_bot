@@ -7,7 +7,7 @@ typedef enum {
     ET_NONE       = 0,
     ET_ITEM       = 1,
     ET_CONTAINER  = 2,
-    ET_NPC        = 3,
+    ET_UNIT       = 3,
     ET_PLAYER     = 4,
     ET_GAME_OBJ   = 5,
     ET_DYN_OBJ    = 6,
@@ -17,7 +17,7 @@ typedef enum {
 typedef u32 Entity;
 typedef Entity Item;
 typedef Entity Container;
-typedef Entity NPC;
+typedef Entity Unit;
 typedef Entity Player;
 typedef Entity Game_Object;
 typedef Entity Dynamic_Object;

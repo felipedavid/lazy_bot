@@ -24,6 +24,10 @@ u64 get_creator_guid(Entity ent) {
     return read_u64(get_descriptor(ent) + GAME_OBJ_CREATED_BY);
 }
 
+bool is_casting(Unit unit, u32 spell_id) {
+    return read_u32(unit + UNIT_CHANNEL_ID) == spell_id;
+}
+
 void populate_entities() {
     buf_clear(game_objs);
 
@@ -35,7 +39,9 @@ void populate_entities() {
     while (ent && ((ent & 1) == 0)) {
         switch (get_type(ent)) {
         case ET_PLAYER:
-            local_player = ent;
+            if (get_guid(ent) == read_u64(LOCAL_PLAYER_GUID)) {
+                local_player = ent;
+            }
             break;
         case ET_GAME_OBJ: buf_push(game_objs, ent); break;
         }
@@ -48,7 +54,7 @@ const char *entity_type_str[] = {
     [ET_NONE]      = "None",
     [ET_ITEM]      = "Item",
     [ET_CONTAINER] = "Container",
-    [ET_NPC]       = "NPC",
+    [ET_UNIT]       = "NPC",
     [ET_PLAYER]    = "Player",
     [ET_GAME_OBJ]  = "GameObject",
     [ET_DYN_OBJ]   = "DynamicObject",
