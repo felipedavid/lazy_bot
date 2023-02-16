@@ -12,3 +12,8 @@ set linker_flags=/link user32.lib kernel32.lib
 
 echo "Building %assembly%..."
 cl %compiler_flags% %c_filenames% /Fe:bin\%assembly%.dll %linker_flags%
+
+del *.obj
+del *.pdb
+
+go build -o ../bin/master.exe -C master/ ./cmd/web
