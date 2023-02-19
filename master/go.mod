@@ -1,6 +1,6 @@
 module github.com/felipedavid/lazy_bot/master
 
-go 1.20
+go 1.19
 
 require (
 	github.com/Microsoft/go-winio v0.6.0 // indirect
