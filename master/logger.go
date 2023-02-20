@@ -8,7 +8,8 @@ import (
 )
 
 type logger struct {
-	conn net.Conn
+	listener net.Listener
+	conn     net.Conn
 }
 
 func newLogger() (*logger, error) {
@@ -29,7 +30,8 @@ func newLogger() (*logger, error) {
 	}
 
 	return &logger{
-		conn: conn,
+		listener: listener,
+		conn:     conn,
 	}, nil
 }
 
@@ -39,7 +41,12 @@ func (l *logger) start() {
 		buf := make([]byte, 5000)
 		_, err := l.conn.Read(buf)
 		if err != nil {
-			break
+			fmt.Println("Waiting for worker connection...")
+			l.conn, err = l.listener.Accept()
+			if err != nil {
+				break
+			}
+			continue
 		}
 		fmt.Println(string(buf))
 	}

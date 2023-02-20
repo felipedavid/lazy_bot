@@ -2,7 +2,8 @@
 #include "common.h"
 
 typedef enum {
-    opStart = 0,
-} Operation_Type;
+    evStart = 0,
+    evListEntities = 1,
+} Event_Type;
 
 void listen_to_master();

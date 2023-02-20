@@ -7,10 +7,6 @@ func main() {
 	//}
 	//defer bot.close()
 
-	log, err := newLogger()
-	if err != nil {
-		panic(err)
-	}
-
+	log, _ := newLogger()
 	log.start()
 }

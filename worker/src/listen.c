@@ -1,4 +1,5 @@
 #include "listen.h"
+#include "logger.h"
 #include "bot.h"
 
 #include <windows.h>
@@ -13,12 +14,15 @@ void listen_to_master() {
 	}
 
 	u32 bytes_read;
-	char command[1024];
-	while (ReadFile(pipe, command, sizeof(command)-1, &bytes_read, NULL)) {
-        Operation_Type op = command[0];
-        switch (op) {
-        case opStart:
+	char event[1024];
+	while (ReadFile(pipe, event, sizeof(event)-1, &bytes_read, NULL)) {
+        Event_Type ev = event[0];
+        // I could probably use a table of function pointers instead of this ugly switch
+        switch (ev) {
+        case evStart:
             bot.running = true;
+        case evListEntities:
+            LINFO("Populate entity list and send info to master");
         }
     }
 
