@@ -35,10 +35,12 @@ func newLogger() (*logger, error) {
 
 func (l *logger) start() {
 	fmt.Println("Starting to listen")
-	var buf []byte
-	_, err := l.conn.Read(buf)
-	if err != nil {
-		panic(err)
+	for {
+		buf := make([]byte, 5000)
+		_, err := l.conn.Read(buf)
+		if err != nil {
+			break
+		}
+		fmt.Println(string(buf))
 	}
-	fmt.Println(buf)
 }
