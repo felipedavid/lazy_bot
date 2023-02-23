@@ -1,4 +1,7 @@
 *.obj
 *.pdb
 *.exe
+patches.h
+patches.c
+offsets.h
 bin/
