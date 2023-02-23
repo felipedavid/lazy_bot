@@ -22,7 +22,7 @@ b32 DllMain(HINSTANCE inst, u32 reason, void *reserved) {
 		ConsoleSetHotKey(KEY_END);
 
 		ConsoleWrite("Registering new commands", C_YELLOW);
-		ConsoleCommandRegister("unload", (void*)unload, 4, 0);
+		ConsoleCommandRegister("unload", (void*)unload, CT_DEBUG, "Unloads the injected dll");
 
 		ConsoleWrite("Applying essential patches", C_YELLOW);
 		apply_essential_patches();
@@ -30,6 +30,9 @@ b32 DllMain(HINSTANCE inst, u32 reason, void *reserved) {
 	case DLL_PROCESS_DETACH: {
 		ConsoleWrite("Removing patches", C_YELLOW);
 		remove_essential_patches();
+
+		ConsoleWrite("Unregistering commands", C_YELLOW);
+		ConsoleCommandUnregister("unload");
 	} break;
 	}
 	return true;

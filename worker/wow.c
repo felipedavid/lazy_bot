@@ -4,3 +4,4 @@
 _ConsoleWrite ConsoleWrite = (_ConsoleWrite) CONSOLEWRITE_FUN_PTR;
 _ConsoleSetHotKey ConsoleSetHotKey = (_ConsoleSetHotKey) CONSOLESETHOTKEY_FUN_PTR;
 _ConsoleCommandRegister ConsoleCommandRegister = (_ConsoleCommandRegister) CONSOLECOMMANDREGISTER_FUN_PTR;
+_ConsoleCommandUnregister ConsoleCommandUnregister = (_ConsoleCommandUnregister) CONSOLECOMMANDUNREGISTER_FUN_PTR;
