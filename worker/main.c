@@ -3,10 +3,12 @@
 
 #include "def.h"
 #include "wow.h"
+#include "patches.h"
 
 // TODO @(felipe): There is some kinda of check that don't allow
 // commands to execute functions outside of wow's .text section.
 // Find this check and patch it
+// Patch: 0x63CE70
 void __fastcall saysomething(char *cmd, char *args) {
 	ConsoleWrite("Please work!!!", C_RED);
 }
@@ -18,6 +20,9 @@ void setup(HMODULE module) {
 
 	ConsoleWrite("Registering commands", C_YELLOW);
 	ConsoleCommandRegister("sayhi", (void*)saysomething, 4, 0);
+
+	ConsoleWrite("Applying essential patches", C_YELLOW);
+	apply_essential_patches();
 
 	while (true) {
 		if (GetAsyncKeyState(VK_HOME) & 1) {
