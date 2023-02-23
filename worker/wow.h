@@ -8,6 +8,8 @@ typedef enum {
 	C_YELLOW = 4,
 } Console_Text_Color;
 typedef void(__fastcall* _ConsoleWrite)(char *msg, Console_Text_Color color);
+typedef void(* _ConsoleWriteA)(char *msg, Console_Text_Color color, ...);
+typedef void(* _ConsolePrintf)(char *msg, ...);
 
 typedef enum {
 	KEY_END = 523,
@@ -29,6 +31,8 @@ typedef int(__fastcall* _ConsoleCommandRegister)(char *cmd, void *callback, Comm
 typedef int(__fastcall* _ConsoleCommandUnregister)(char *cmd);
 
 _ConsoleWrite ConsoleWrite;
+_ConsoleWriteA ConsoleWriteA;
+_ConsolePrintf ConsolePrintf;
 _ConsoleSetHotKey ConsoleSetHotKey;
 _ConsoleCommandRegister ConsoleCommandRegister;
 _ConsoleCommandUnregister ConsoleCommandUnregister;

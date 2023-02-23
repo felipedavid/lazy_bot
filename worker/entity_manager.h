@@ -17,3 +17,6 @@ typedef struct {
 	u32 addr;
 	Entity_Type type;
 } Entity;
+
+void log_entity_list();
+void populate_entity_list();
