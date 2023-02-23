@@ -13,7 +13,6 @@ typedef long long int i64;
 typedef float f32;
 typedef double f64;
 
-typedef u32 bool;
-
+typedef u32 b32;
 #define true 1
 #define false 0
