@@ -7,7 +7,7 @@ for /R %%f in (*.c) do (
 )
 
 set assembly=bot
-set compiler_flags=/LD /Zi
+set compiler_flags=/LD
 set linker_flags=/link user32.lib kernel32.lib
 
 echo "Building %assembly%..."
