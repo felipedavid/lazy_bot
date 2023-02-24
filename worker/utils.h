@@ -21,6 +21,7 @@ typedef struct {
 
 #define buf_push(ptr, x) (buf__makefit(ptr, 1), (ptr)[buf__header(ptr)->len++] = (x))
 #define buf_free(ptr) ((ptr) ? free(buf__header(ptr)), (ptr) = NULL : 0)
+#define buf_clear(ptr) ((ptr) ? buf__header(ptr)->len = 0 : 0)
 
 void *buf__grow(void *ptr, size_t least_cap, size_t elem_size);
 void buf_test();
