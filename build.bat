@@ -1,6 +1,10 @@
 @echo off
 setlocal EnableDelayedExpansion
 
+if not exist bin\ (
+	mkdir bin
+)
+
 set c_filenames=
 for /R %%f in (*.c) do (
     set c_filenames=!c_filenames! %%f
