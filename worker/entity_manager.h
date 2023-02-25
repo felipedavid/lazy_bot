@@ -12,11 +12,13 @@ typedef enum {
 	ET_CORPSE,
 } Entity_Type;
 
-typedef struct {
-	u64 guid;
-	u32 addr;
-	Entity_Type type;
-} Entity;
+typedef struct PositionAS {
+	float x, y, z;
+} Position;
+
+typedef u32 Entity;
 
 void log_entity_list();
 void populate_entity_list();
+inline u64 get_guid(Entity ent);
+inline Entity_Type get_type(Entity ent);

@@ -20,21 +20,26 @@ const char *etype_str[] = {
 void log_entity_list() {
 	for (int i = 0; i < buf_len(entity_list); i++) {
 		Entity ent = entity_list[i];
-		ConsolePrintf("Addr: 0x%x, Guid: %llu, Type: %s", ent.addr, ent.guid, etype_str[ent.type]);
+		ConsolePrintf("Addr: 0x%x, Guid: %llu, Type: %s", ent, get_guid(ent), etype_str[get_type(ent)]);
 	}
 }
 
 void populate_entity_list() {
 	buf_clear(entity_list);
-	auto ent_mgr = read_u32(ENTITY_MANAGER_PTR);
-	auto ent = read_u32(ent_mgr + FIRST_ENTITY);
+
+	u32 ent_mgr = read_u32(ENTITY_MANAGER_PTR);
+	Entity ent = read_u32(ent_mgr + FIRST_ENTITY);
 
 	while (ent && ((ent & 1) == 0)) {
-		Entity_Type type = read_u32(ent + ENTITY_TYPE);
-		u64 guid = read_u32(ent + ENTITY_GUID);
-
-		buf_push(entity_list, ((Entity){guid, ent, type}));
-
+		buf_push(entity_list, ent);
 		ent = read_u32(ent + NEXT_ENTITY);
 	}
+}
+
+u64 get_guid(Entity ent) {
+	return read_u64(ent + ENTITY_GUID);
+}
+
+Entity_Type get_type(Entity ent) {
+	return (Entity_Type) read_u32(ent + ENTITY_TYPE);
 }
