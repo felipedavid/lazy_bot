@@ -48,4 +48,4 @@ _Spell_C_CastSpell Spell_C_CastSpell;
 
 #define enable_console() write_u32(CONSOLE_FLAG, 1)
 #define set_console_size(size) write_f32(CONSOLE_SIZE, size)
-#define toggle_console() write_u32(CONSOLE_VISIBLE, !read_u32(CONSOLE_VISIBLE))
+#define toggle_console() write_u32(CONSOLE_ACTIVE, !read_u32(CONSOLE_ACTIVE))
