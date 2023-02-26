@@ -5,13 +5,14 @@
 #include "wow.h"
 #include "patches.h"
 #include "commands.h"
+#include "logger.h"
 
 HMODULE module;
 
 void setup_console() {
-	ConsoleWrite("Remapping console key to End", C_YELLOW);
+	log_warning("Remapping console key to END");
 	ConsoleSetHotKey(KEY_END);
-	ConsoleWrite("Registering new commands", C_YELLOW);
+	log_warning("Registering new commands");
 	register_commands();
 
 	enable_console();
@@ -24,18 +25,18 @@ b32 DllMain(HINSTANCE inst, u32 reason, void *reserved) {
 
 	switch (reason) {
 	case DLL_PROCESS_ATTACH: {
-		ConsoleWrite("DLL loaded!", C_RED);
-		ConsoleWrite("Applying essential patches", C_YELLOW);
+		log_warning("DLL loaded!");
+		log_warning("Applying essential patches");
 		apply_essential_patches();
 		setup_console();
 	} break;
 	case DLL_PROCESS_DETACH: {
-		ConsoleWrite("Unloding dll!", C_RED);
+		log_warning("Unloding dll!");
 
-		ConsoleWrite("Removing patches", C_YELLOW);
+		log_warning("Removing patches");
 		remove_essential_patches();
 
-		ConsoleWrite("Unregistering commands", C_YELLOW);
+		log_warning("Unregistering commands");
 		unregister_commands();
 	} break;
 	}

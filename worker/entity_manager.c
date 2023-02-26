@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "offsets.h"
 #include "entity_manager.h"
+#include "logger.h"
 
 Entity active_player;
 Entity *entity_list;
@@ -21,7 +22,7 @@ const char *etype_str[] = {
 void log_entity_list() {
 	for (int i = 0; i < buf_len(entity_list); i++) {
 		Entity ent = entity_list[i];
-		ConsolePrintf("Addr: 0x%x, Guid: %llu, Type: %s", ent, get_guid(ent), etype_str[get_type(ent)]);
+		log_info("Addr: 0x%x, Guid: %llu, Type: %s", ent, get_guid(ent), etype_str[get_type(ent)]);
 	}
 }
 
