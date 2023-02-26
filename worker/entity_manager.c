@@ -1,4 +1,3 @@
-#include "wow.h"
 #include "mem.h"
 #include "utils.h"
 #include "offsets.h"
@@ -19,10 +18,18 @@ const char *etype_str[] = {
 	[ET_CORPSE]    = "Corpse",
 };
 
+void log_entity(Entity ent) {
+	log_info("Addr: 0x%x, Guid: %llu, Type: %s", ent, get_guid(ent), etype_str[get_type(ent)]);
+}
+
+void log_game_object(Entity ent) {
+	log_info("Addr: 0x%x, Guid: %llu, Type: %s, Creator: %llu, Display: %d", 
+		ent, get_guid(ent), etype_str[get_type(ent)], get_creator_guid(ent), get_display_id(ent));
+}
+
 void log_entity_list() {
 	for (int i = 0; i < buf_len(entity_list); i++) {
-		Entity ent = entity_list[i];
-		log_info("Addr: 0x%x, Guid: %llu, Type: %s", ent, get_guid(ent), etype_str[get_type(ent)]);
+		log_entity(entity_list[i]);
 	}
 }
 
@@ -48,6 +55,33 @@ u64 get_guid(Entity ent) {
 
 Entity_Type get_type(Entity ent) {
 	return (Entity_Type) read_u32(ent + ENTITY_TYPE);
+}
+
+Spell_ID get_casting_spell(Entity ent) {
+	return (Spell_ID) read_u32(ent + CASTINGSPELL_ID);
+}
+
+u8 *get_descriptor(Entity ent) {
+	return (u8 *)read_u32(ent + ENTITY_GUID);
+}
+
+u64 get_creator_guid(Entity ent) {
+	return read_u64(get_descriptor(ent) + ENTITY_CREATOR_GUID);
+}
+
+Display_ID get_display_id(Entity ent) {
+	return (Display_ID) read_u32(get_descriptor(ent) + ENTITY_DISPLAY_ID);
+}
+
+const char *get_name(Entity ent) {
+	auto type = get_type(ent);
+	switch (type) {
+	case ET_UNIT:
+		return (const char *) read_pointer(read_pointer(ent + UNIT_NAME));
+	default:
+		log_error("Not able to get name of objects of type %s\n", etype_str[type]);
+	}
+	return "<nil>";
 }
 
 b32 is_active_player(Entity ent) {

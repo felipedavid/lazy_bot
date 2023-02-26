@@ -46,6 +46,10 @@ _ConsoleCommandRegister ConsoleCommandRegister;
 _ConsoleCommandUnregister ConsoleCommandUnregister;
 _Spell_C_CastSpell Spell_C_CastSpell;
 
+typedef enum {
+	DISPLAY_ID_BOBBER = 668
+} Display_ID;
+
 #define enable_console() write_u32(CONSOLE_FLAG, 1)
 #define set_console_size(size) write_f32(CONSOLE_SIZE, size)
 #define toggle_console() write_u32(CONSOLE_ACTIVE, !read_u32(CONSOLE_ACTIVE))
