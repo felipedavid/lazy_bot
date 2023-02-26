@@ -30,9 +30,16 @@ typedef enum {
 typedef int(__fastcall* _ConsoleCommandRegister)(char *cmd, void *callback, Command_Type type, char *help_msg);
 typedef int(__fastcall* _ConsoleCommandUnregister)(char *cmd);
 
+typedef enum {
+	FISHING = 7620,
+} Spell_ID;
+// I should reverse to check what each parameter does
+typedef b32(__fastcall* _Spell_C_CastSpell)(u32 spell_id, u32, u32, u32);
+
 _ConsoleWrite ConsoleWrite;
 _ConsoleWriteA ConsoleWriteA;
 _ConsolePrintf ConsolePrintf;
 _ConsoleSetHotKey ConsoleSetHotKey;
 _ConsoleCommandRegister ConsoleCommandRegister;
 _ConsoleCommandUnregister ConsoleCommandUnregister;
+_Spell_C_CastSpell Spell_C_CastSpell;

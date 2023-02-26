@@ -4,6 +4,7 @@
 #include "offsets.h"
 #include "entity_manager.h"
 
+Entity active_player;
 Entity *entity_list;
 
 const char *etype_str[] = {
@@ -27,12 +28,16 @@ void log_entity_list() {
 void populate_entity_list() {
 	buf_clear(entity_list);
 
-	u32 ent_mgr = read_u32(ENTITY_MANAGER_PTR);
-	Entity ent = read_u32(ent_mgr + FIRST_ENTITY);
+	u8 *ent_mgr = read_pointer(ENTITY_MANAGER_PTR);
+	Entity ent = read_pointer(ent_mgr + FIRST_ENTITY);
 
-	while (ent && ((ent & 1) == 0)) {
-		buf_push(entity_list, ent);
-		ent = read_u32(ent + NEXT_ENTITY);
+	while (ent && (((u32)ent & 1) == 0)) {
+		if (is_active_player(ent)) {
+			active_player = ent;
+		} else {
+			buf_push(entity_list, ent);
+		}
+		ent = read_pointer(ent + NEXT_ENTITY);
 	}
 }
 
@@ -42,4 +47,10 @@ u64 get_guid(Entity ent) {
 
 Entity_Type get_type(Entity ent) {
 	return (Entity_Type) read_u32(ent + ENTITY_TYPE);
+}
+
+b32 is_active_player(Entity ent) {
+	u8 *entity_manager = read_pointer(ENTITY_MANAGER_PTR);
+	u64 active_player_guid = read_u64(entity_manager + LOCAL_PLAYER_GUID);
+	return get_guid(ent) == active_player_guid;
 }

@@ -12,13 +12,12 @@ typedef enum {
 	ET_CORPSE,
 } Entity_Type;
 
-typedef struct PositionAS {
-	float x, y, z;
-} Position;
+typedef struct {float x, y, z;} Vec3;
 
-typedef u32 Entity;
+typedef u8* Entity;
 
 void log_entity_list();
 void populate_entity_list();
 inline u64 get_guid(Entity ent);
 inline Entity_Type get_type(Entity ent);
+inline b32 is_active_player(Entity ent);
