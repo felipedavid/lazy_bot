@@ -1,5 +1,7 @@
 #pragma once
 #include "def.h"
+#include "offsets.h"
+#include "mem.h"
 
 typedef enum {
 	C_WHITE  = 1,
@@ -43,3 +45,7 @@ _ConsoleSetHotKey ConsoleSetHotKey;
 _ConsoleCommandRegister ConsoleCommandRegister;
 _ConsoleCommandUnregister ConsoleCommandUnregister;
 _Spell_C_CastSpell Spell_C_CastSpell;
+
+#define enable_console() write_u32(CONSOLE_FLAG, 1)
+#define set_console_size(size) write_f32(CONSOLE_SIZE, size)
+#define toggle_console() write_u32(CONSOLE_VISIBLE, !read_u32(CONSOLE_VISIBLE))

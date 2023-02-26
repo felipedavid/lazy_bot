@@ -1,5 +1,4 @@
 #include "wow.h"
-#include "offsets.h"
 
 _ConsoleWrite ConsoleWrite = (_ConsoleWrite) CONSOLEWRITE_FUN_PTR;
 _ConsoleWriteA ConsoleWriteA = (_ConsoleWriteA) CONSOLEWRITEA_FUN_PTR;

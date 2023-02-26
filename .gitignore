@@ -2,6 +2,7 @@
 *.pdb
 *.exe
 *.ilk
+tags
 patches.c
 offsets.h
 bin/
