@@ -57,20 +57,22 @@ Entity_Type get_type(Entity ent) {
 	return (Entity_Type) read_u32(ent + ENTITY_TYPE);
 }
 
-Spell_ID get_casting_spell(Entity ent) {
-	return (Spell_ID) read_u32(ent + CASTINGSPELL_ID);
+u32 get_casting_spell(Entity ent) {
+	return read_u32(ent + CASTINGSPELL_ID);
 }
 
 u8 *get_descriptor(Entity ent) {
-	return (u8 *)read_u32(ent + ENTITY_GUID);
+	return read_pointer(ent + ENTITY_DESCRIPTOR);
 }
 
 u64 get_creator_guid(Entity ent) {
-	return read_u64(get_descriptor(ent) + ENTITY_CREATOR_GUID);
+	u8 *descriptor = get_descriptor(ent);
+	return read_u64(descriptor + ENTITY_CREATOR_GUID);
 }
 
-Display_ID get_display_id(Entity ent) {
-	return (Display_ID) read_u32(get_descriptor(ent) + ENTITY_DISPLAY_ID);
+u32 get_display_id(Entity ent) {
+	u8 *descriptor = get_descriptor(ent);
+	return read_u32(descriptor + ENTITY_DISPLAY_ID);
 }
 
 const char *get_name(Entity ent) {
