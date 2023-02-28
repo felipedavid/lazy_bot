@@ -6,3 +6,5 @@ tags
 patches.c
 offsets.h
 bin/
+/worker/.vs/worker
+/worker/Debug
