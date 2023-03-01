@@ -2,20 +2,25 @@
 #include "defs.h"
 
 enum Object_Type {
-	ENTITY_TYPE_NONE,
-	ENTITY_TYPE_ITEM,
-	ENTITY_TYPE_CONTAINER,
-	ENTITY_TYPE_UNIT,
-	ENTITY_TYPE_PLAYER,
-	ENTITY_TYPE_GAMEOBJ,
-	ENTITY_TYPE_DYNOBJ,
-	ENTITY_TYPE_CORPSE,
+	OBJECT_TYPE_NONE,
+	OBJECT_TYPE_ITEM,
+	OBJECT_TYPE_CONTAINER,
+	OBJECT_TYPE_UNIT,
+	OBJECT_TYPE_PLAYER,
+	OBJECT_TYPE_GAME_OBJECT,
+	OBJECT_TYPE_GAME_DYNAMIC_OBJECT,
+	OBJECT_TYPE_CORPSE,
 };
 
-struct Object {
-	u32 ptr;
-	unsigned long long guid;
+struct WoW_Object {
+	pointer ptr;
+	u64 guid;
 	Object_Type type;
 };
 
-void populate_objs();
+struct Object_Manager {
+	WoW_Object objs[1024];
+	size_t len = 0;
+
+	void refresh();
+};

@@ -1,5 +1,6 @@
-#include "pch.h"
 #include "wow.h"
+#include "offsets.h"
 
-_ConsolePrintf ConsolePrintf = (_ConsolePrintf)0x653900;
-_ConsoleCommandRegister ConsoleCommandRegister = (_ConsoleCommandRegister) 0x654C90;
+namespace WoW {
+	_ConsolePrintf ConsolePrintf = (_ConsolePrintf) CONSOLEPRINTF_FUN_PTR;
+}
