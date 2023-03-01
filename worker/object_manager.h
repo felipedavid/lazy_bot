@@ -1,4 +1,5 @@
 #pragma once
+#include "vector"
 #include "defs.h"
 
 enum Object_Type {
@@ -13,14 +14,12 @@ enum Object_Type {
 };
 
 struct WoW_Object {
-	pointer ptr;
+	u8 *ptr;
 	u64 guid;
 	Object_Type type;
 };
 
 struct Object_Manager {
-	WoW_Object objs[1024];
-	size_t len = 0;
-
+	std::vector<WoW_Object> objs;
 	void refresh();
 };

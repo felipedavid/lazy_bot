@@ -14,4 +14,6 @@
 #define read_f32(ptr) (*(f32*)(ptr))
 #define read_f64(ptr) (*(f64*)(ptr))
 
-#define read_pointer(ptr) (*(pointer*)(ptr))
+#define read_pointer(ptr) (*(u8**)(ptr))
+
+void mem_write(u8* dst, u8* src, size_t len);

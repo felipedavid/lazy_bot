@@ -1,5 +1,4 @@
 #pragma once
-#include "stdint.h"
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -15,7 +14,3 @@ typedef float f32;
 typedef double f64;
 
 typedef i32 b32;
-#define true  1
-#define false 0
-
-typedef uintptr_t pointer;

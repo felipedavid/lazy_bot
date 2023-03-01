@@ -19,12 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="commands.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mem.cpp" />
     <ClCompile Include="object_manager.cpp" />
     <ClCompile Include="object_manager.h" />
     <ClCompile Include="wow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="commands.h" />
     <ClInclude Include="defs.h" />
     <ClInclude Include="mem.h" />
     <ClInclude Include="offsets.h" />
