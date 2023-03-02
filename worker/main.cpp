@@ -3,9 +3,37 @@
 #include "mem.h"
 #include "commands.h"
 #include "wow.h"
+#include "fisher.h"
 
-HMODULE module_handle;
 Object_Manager obj_mgr;
+Fisher fisher;
+HMODULE module_handle;
+HWND window_handle;
+
+BOOL CALLBACK enum_windows_callback(HWND handle, LPARAM lParam) {
+	DWORD wnd_proc_id;
+	GetWindowThreadProcessId(handle, &wnd_proc_id);
+
+	if (GetCurrentProcessId() != wnd_proc_id) return TRUE;
+
+	window_handle = handle;
+	return FALSE; // window found abort search
+}
+
+HWND get_process_window() {
+	window_handle = NULL;
+	EnumWindows(enum_windows_callback, NULL);
+	return window_handle;
+}
+
+WNDPROC orig_wndproc;
+LRESULT __stdcall WndProc(const HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param) {
+	if (fisher.on) {
+		fisher.pulse();
+	}
+
+	return CallWindowProc(orig_wndproc, h_wnd, msg, w_param, l_param);
+}
 
 BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
 	module_handle = module;
@@ -13,12 +41,11 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
 	case DLL_PROCESS_ATTACH: {
 		WoW::ConsolePrintf("Dll injected!");
 
-		u8 arr[] = {0x45};
-		mem_write((u8*)0x6571D1, arr, 1);
+		WoW::ConsolePrintf("Hooking wndproc");
+		window_handle = get_process_window();
+		orig_wndproc = (WNDPROC)SetWindowLongPtr(window_handle, GWL_WNDPROC, (LONG_PTR)WndProc);
 
-		WoW::ConsoleCommandRegister("objs", objs, 0, 0, 0);
-		WoW::ConsoleCommandRegister("unload", unload, 0, 0, 0);
-		WoW::ConsoleCommandRegister("sayhi", sayhi, 0, 0, 0);
+		setup_commands();
 	} break;
 	case DLL_PROCESS_DETACH:
 		WoW::ConsolePrintf("Dll unloaded!");

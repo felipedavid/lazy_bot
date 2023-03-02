@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="commands.cpp" />
+    <ClCompile Include="fisher.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mem.cpp" />
     <ClCompile Include="object_manager.cpp" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClInclude Include="commands.h" />
     <ClInclude Include="defs.h" />
+    <ClInclude Include="fisher.h" />
     <ClInclude Include="mem.h" />
     <ClInclude Include="offsets.h" />
     <ClInclude Include="wow.h" />
