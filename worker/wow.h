@@ -1,55 +1,49 @@
 #pragma once
-#include "def.h"
-#include "offsets.h"
-#include "mem.h"
+#include "defs.h"
 
-typedef enum {
-	C_WHITE  = 1,
-	C_GREY   = 2,
-	C_RED    = 3,
-	C_YELLOW = 4,
-} Console_Text_Color;
-typedef void(__fastcall* _ConsoleWrite)(char *msg, Console_Text_Color color);
-typedef void(* _ConsoleWriteA)(char *msg, Console_Text_Color color, ...);
-typedef void(* _ConsolePrintf)(char *msg, ...);
+enum SpellID {
+	SPELLID_FISHING = 7620,
+};
 
-typedef enum {
-	KEY_END = 523,
-} Console_Key_Code; 
-typedef void(__fastcall* _ConsoleSetHotKey)(Console_Key_Code key);
+enum GameObject_DisplayID {
+	GO_DISPLAYID_NONE = 0,
+	GO_DISPLAYID_BOBBER = 668,
+};
 
-typedef enum {
-	CT_DEBUG = 0,
-	CT_GRAPHICS = 1,
-	CT_CONSOLE = 2,
-	CT_COMBAT = 3,
-	CT_GAME = 4,
-	CT_DEFAULT = 5,
-	CT_NET = 6,
-	CT_SOUND = 7,
-	CT_GM = 8,
-} Command_Type;
-typedef int(__fastcall* _ConsoleCommandRegister)(char *cmd, void *callback, Command_Type type, char *help_msg);
-typedef int(__fastcall* _ConsoleCommandUnregister)(char *cmd);
+// from: https://github.com/TrinityCore/TrinityCore/blob/master/src/server/game/Miscellaneous/SharedDefines.h
+enum GameObject_Flags {
+	GO_FLAG_IN_USE                                  = 0x00000001, // disables interaction while animated
+	GO_FLAG_LOCKED                                  = 0x00000002, // require key, spell, event, etc to be opened. Makes "Locked" appear in tooltip
+	GO_FLAG_INTERACT_COND                           = 0x00000004, // cannot interact (condition to interact - requires GO_DYNFLAG_LO_ACTIVATE to enable interaction clientside)
+	GO_FLAG_TRANSPORT                               = 0x00000008, // any kind of transport? Object can transport (elevator, boat, car)
+	GO_FLAG_NOT_SELECTABLE                          = 0x00000010, // not selectable even in GM mode
+	GO_FLAG_NODESPAWN                               = 0x00000020, // never despawn, typically for doors, they just change state
+	GO_FLAG_AI_OBSTACLE                             = 0x00000040, // makes the client register the object in something called AIObstacleMgr, unknown what it does
+	GO_FLAG_FREEZE_ANIMATION                        = 0x00000080,
 
-typedef enum {
-	FISHING = 7620,
-} Spell_ID;
-// I should reverse to check what each parameter does
-typedef b32(__fastcall* _Spell_C_CastSpell)(u32 spell_id, u32, u32, u32);
+	// for object types GAMEOBJECT_TYPE_GARRISON_BUILDING, GAMEOBJECT_TYPE_GARRISON_PLOT and GAMEOBJECT_TYPE_PHASEABLE_MO flag bits 8 to 12 are used as WMOAreaTable::NameSetID
+	GO_FLAG_DAMAGED                                 = 0x00000200,
+	GO_FLAG_DESTROYED                               = 0x00000400,
 
-_ConsoleWrite ConsoleWrite;
-_ConsoleWriteA ConsoleWriteA;
-_ConsolePrintf ConsolePrintf;
-_ConsoleSetHotKey ConsoleSetHotKey;
-_ConsoleCommandRegister ConsoleCommandRegister;
-_ConsoleCommandUnregister ConsoleCommandUnregister;
-_Spell_C_CastSpell Spell_C_CastSpell;
+	GO_FLAG_IGNORE_CURRENT_STATE_FOR_USE_SPELL      = 0x00004000, // Allows casting use spell without checking current state (opening open gameobjects, unlocking unlocked gameobjects and closing closed gameobjects)
+	GO_FLAG_INTERACT_DISTANCE_IGNORES_MODEL         = 0x00008000, // Client completely ignores model bounds for interaction distance check
+	GO_FLAG_IGNORE_CURRENT_STATE_FOR_USE_SPELL_EXCEPT_UNLOCKED = 0x00040000, // Allows casting use spell without checking current state except unlocking unlocked gamobjets (opening open gameobjects and closing closed gameobjects)
+	GO_FLAG_INTERACT_DISTANCE_USES_TEMPLATE_MODEL   = 0x00080000, // client checks interaction distance from model sent in SMSG_QUERY_GAMEOBJECT_RESPONSE instead of GAMEOBJECT_DISPLAYID
+	GO_FLAG_MAP_OBJECT                              = 0x00100000, // pre-7.0 model loading used to be controlled by file extension (wmo vs m2)
+	GO_FLAG_IN_MULTI_USE                            = 0x00200000, // GO_FLAG_IN_USE equivalent for objects usable by multiple players
+	GO_FLAG_LOW_PRIORITY_SELECTION                  = 0x04000000, // client will give lower cursor priority to this object when multiple objects overlap
+};
 
-typedef enum {
-	DISPLAY_ID_BOBBER = 668
-} Display_ID;
+namespace WoW {
+	typedef const char *(*_ConsolePrintf)(const char* format, ...); 
+	typedef const char *(*_ConsoleCommandRegister)(const char *format, void *callback, int a1, int a2, int a3); 
+	typedef int(__cdecl *_Spell_C_CastSpell)(SpellID spell, int a2, int a3, int a4, int a5, int a6, int a7, int a8); 
+	typedef u8 *(*_ClntObjMgrObjectPtr)(u64 guid, int obj_type_mask); 
+	typedef int (__fastcall *_CGGameObject_C__OnRightClick)(void *thiss);
 
-#define enable_console() write_u32(CONSOLE_FLAG, 1)
-#define set_console_size(size) write_f32(CONSOLE_SIZE, size)
-#define toggle_console() write_u32(CONSOLE_ACTIVE, !read_u32(CONSOLE_ACTIVE))
+	extern _ConsolePrintf ConsolePrintf;
+	extern _ConsoleCommandRegister ConsoleCommandRegister;
+	extern _Spell_C_CastSpell Spell_C_CastSpell;
+	extern _ClntObjMgrObjectPtr ClntObjMgrObjectPtr;
+	extern _CGGameObject_C__OnRightClick CGGameObject_C__OnRightClick;
+}

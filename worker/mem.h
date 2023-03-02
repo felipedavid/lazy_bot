@@ -1,10 +1,19 @@
 #pragma once
-#include "def.h"
+#include "defs.h"
 
-void mem_write(void *dst, void *src, u32 len);
+#define read_u8(ptr)  (*(u8*)(ptr))
+#define read_u16(ptr) (*(u16*)(ptr))
+#define read_u32(ptr) (*(u32*)(ptr))
+#define read_u64(ptr) (*(u64*)(ptr))
 
-#define read_u32(addr) (*(u32 *)(addr))
-#define read_u64(addr) (*(u64 *)(addr))
-#define read_pointer(addr) (*(u8 **)(addr))
-#define write_u32(addr, x) (*(u32*)(addr) = (x))
-#define write_f32(addr, x) (*(f32*)(addr) = (x))
+#define read_i8(ptr)  (*(i8*)(ptr))
+#define read_i16(ptr) (*(i16*)(ptr))
+#define read_i32(ptr) (*(i32*)(ptr))
+#define read_i64(ptr) (*(i64*)(ptr))
+
+#define read_f32(ptr) (*(f32*)(ptr))
+#define read_f64(ptr) (*(f64*)(ptr))
+
+#define read_pointer(ptr) (*(u8**)(ptr))
+
+void mem_write(u8* dst, u8* src, size_t len);

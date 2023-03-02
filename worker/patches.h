@@ -1,15 +1,23 @@
 #pragma once
-#include "def.h"
+#include "defs.h"
+#include "vector"
 
-typedef struct {
-	u32 addr;
-	u32 len;
-	u8 *payload;
-	u8 *original;
-	b32 applied;
-} Patch;
+struct Patch {
+	b32 enabled = false;
+	u8 payload[64];
+	u8 original[64];
+	u8 *addr;
+	size_t len;
 
-void apply_patch(Patch *p);
-void remove_patch(Patch *p);
-void apply_essential_patches();
-void remove_essential_patches();
+	Patch(u8 *addr, u8* payload, size_t len);
+	void enable();
+	void disable();
+};
+
+struct Patch_Manager {
+	std::vector<Patch> dev_patches; // patches to make the development easier
+
+	Patch_Manager();
+	void apply_dev_patches();
+	void disable_dev_patches();
+};

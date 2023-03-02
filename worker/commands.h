@@ -1,4 +1,7 @@
 #pragma once
 
-void register_commands();
-void unregister_commands();
+void unload();
+void sayhi();
+void objs();
+void test();
+void setup_commands();
