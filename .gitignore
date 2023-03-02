@@ -8,3 +8,5 @@ offsets.h
 bin/
 /worker/.vs/worker
 /worker/Debug
+/worker/offsets.h
+/worker/offsets.h
