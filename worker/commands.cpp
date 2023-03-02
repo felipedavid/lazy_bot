@@ -15,8 +15,8 @@ void sayhi() {
 }
 
 void objs() {
-	obj_mgr.refresh();
-	for (auto obj : obj_mgr.objs) {
+	obj_mgr.pulse();
+	for (auto obj : obj_mgr.game_objects) {
 		WoW::ConsolePrintf("Ptr: 0x%x, Type: %d, GUID: %llu", obj.ptr, obj.type, obj.guid);
 	}
 }
