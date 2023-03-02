@@ -1,4 +1,5 @@
 #pragma once
+#include "defs.h"
 
 enum SpellID {
 	SPELLID_FISHING = 7620,
@@ -37,8 +38,12 @@ namespace WoW {
 	typedef const char *(*_ConsolePrintf)(const char* format, ...); 
 	typedef const char *(*_ConsoleCommandRegister)(const char *format, void *callback, int a1, int a2, int a3); 
 	typedef int(__cdecl *_Spell_C_CastSpell)(SpellID spell, int a2, int a3, int a4, int a5, int a6, int a7, int a8); 
+	typedef u8 *(*_ClntObjMgrObjectPtr)(u64 guid, int obj_type_mask); 
+	typedef int (__fastcall *_CGGameObject_C__OnRightClick)(void *thiss);
 
 	extern _ConsolePrintf ConsolePrintf;
 	extern _ConsoleCommandRegister ConsoleCommandRegister;
 	extern _Spell_C_CastSpell Spell_C_CastSpell;
+	extern _ClntObjMgrObjectPtr ClntObjMgrObjectPtr;
+	extern _CGGameObject_C__OnRightClick CGGameObject_C__OnRightClick;
 }
