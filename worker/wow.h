@@ -1,5 +1,9 @@
 #pragma once
 
+enum SpellID {
+	SPELLID_FISHING = 7620,
+};
+
 enum GameObject_DisplayID {
 	GO_DISPLAYID_NONE = 0,
 	GO_DISPLAYID_BOBBER = 668,
@@ -32,6 +36,9 @@ enum GameObject_Flags {
 namespace WoW {
 	typedef const char *(*_ConsolePrintf)(const char* format, ...); 
 	typedef const char *(*_ConsoleCommandRegister)(const char *format, void *callback, int a1, int a2, int a3); 
+	typedef int(__cdecl *_Spell_C_CastSpell)(SpellID spell, int a2, int a3, int a4, int a5, int a6, int a7, int a8); 
+
 	extern _ConsolePrintf ConsolePrintf;
 	extern _ConsoleCommandRegister ConsoleCommandRegister;
+	extern _Spell_C_CastSpell Spell_C_CastSpell;
 }

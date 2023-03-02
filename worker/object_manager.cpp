@@ -33,7 +33,7 @@ void Object_Manager::pulse() {
 	me.guid = read_u64(obj_mgr + LOCAL_PLAYER_GUID);
 
 	while (obj_ptr && ((u32)obj_ptr & 1) == 0) {
-		auto type = read_u32(obj_ptr + OBJECT_TYPE);
+		auto type = (Object_Type) read_u32(obj_ptr + OBJECT_TYPE);
 		auto guid = read_u64(read_pointer(obj_ptr + OBJECT_DESCRIPTOR));
 
 		switch (type) {
@@ -42,8 +42,10 @@ void Object_Manager::pulse() {
 			break;
 		case OBJECT_TYPE_PLAYER:
 			if (guid == me.guid) {
-				me.ptrggj
+				me.ptr = obj_ptr;
+				me.descriptors_field = read_pointer(obj_ptr + OBJECT_DESCRIPTOR);
 			}
+			break;
 		}
 		obj_ptr = read_pointer(obj_ptr + NEXT_OBJECT);
 	}

@@ -16,7 +16,10 @@ void sayhi() {
 
 void objs() {
 	obj_mgr.pulse();
+	WoW::ConsolePrintf("Game objects:");
 	for (auto obj : obj_mgr.game_objects) {
 		WoW::ConsolePrintf("Ptr: 0x%x, Type: %d, GUID: %llu", obj.ptr, obj.type, obj.guid);
 	}
+	WoW::ConsolePrintf("Local player:");
+	WoW::ConsolePrintf("Ptr: 0x%x, Type: %d, GUID: %llu", obj_mgr.me.ptr, obj_mgr.me.type, obj_mgr.me.guid);
 }
