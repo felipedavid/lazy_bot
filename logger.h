@@ -7,9 +7,9 @@ enum Log_Level {
 	LOG_TYPE_INFO,
 };
 
-void log(Log_Level lvl, const char* fmt, ...);
+void log_output(Log_Level lvl, const char* fmt, ...);
 
-#define log_fatal(fmt, ...) log(LOG_TYPE_FATAL, fmt, ##__VA_ARGS__)
-#define log_error(fmt, ...) log(LOG_TYPE_ERROR, fmt, ##__VA_ARGS__)
-#define log_info(fmt, ...)  log(LOG_TYPE_INFO, fmt, ##__VA_ARGS__)
-#define log_warn(fmt, ...)  log(LOG_TYPE_WARNING, fmt, ##__VA_ARGS__)
+#define log_fatal(msg, ...) log_output(LOG_TYPE_FATAL, msg, __VA_ARGS__);
+#define log_error(msg, ...) log_output(LOG_TYPE_ERROR, msg, __VA_ARGS__);
+#define log_warn(msg, ...)  log_output(LOG_TYPE_WARNING, msg, __VA_ARGS__);
+#define log_info(msg, ...)  log_output(LOG_TYPE_INFO, msg, __VA_ARGS__);

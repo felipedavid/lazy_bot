@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "wow.h"
 #include "memory.h"
+#include "object_manager.h"
 
 HWND window_handle;
 HMODULE module_handle;
@@ -28,16 +29,23 @@ HWND get_process_window() {
 WNDPROC orig_wndproc;
 LRESULT __stdcall WndProc(const HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param) {
 	if (msg == WM_USER) {
-        log_info("Pulsing ç:");
+		typedef void(*_callback)(); 
+        auto callback = (_callback)w_param;
+        callback();
 	}
 
 	return CallWindowProc(orig_wndproc, h_wnd, msg, w_param, l_param);
 }
 
+Object_Manager object_manager;
+
+void pulse() {
+}
+
 void pulse_cycle() {
     int sleep_time = 100;
     for (;;) {
-        SendMessage(window_handle, WM_USER, 0, 0);
+        SendMessage(window_handle, WM_USER, (WPARAM)pulse, 0);
 
         auto cvar = WoW::CVar__Lookup("sleep_time");
         if (cvar) {
@@ -57,6 +65,11 @@ void unload_command() {
     CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)FreeLibrary, module_handle, 0, NULL);
 }
 
+void objects_command() {
+    object_manager.populate_objects();
+    object_manager.log();
+}
+
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
     module_handle = hModule;
     switch (ul_reason_for_call) {
@@ -65,6 +78,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
         write_memory<u8>((u8*)0x6571D1, 0x45);
 
+        WoW::ConsoleCommandRegister("objects", objects_command, 0, 0, 0);
         WoW::ConsoleCommandRegister("fish", fish_command, 0, 0, 0);
         WoW::ConsoleCommandRegister("unload", unload_command, 0, 0, 0);
 

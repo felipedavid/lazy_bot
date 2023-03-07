@@ -12,7 +12,7 @@ const char* log_level_str[] = {
 	"INFO",
 };
 
-void log(Log_Level lvl, const char* fmt, ...) {
+void log_output(Log_Level lvl, const char* fmt, ...) {
 	static char buf1[24000];
 	static char buf2[24000];
 

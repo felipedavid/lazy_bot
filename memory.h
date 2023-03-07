@@ -7,7 +7,7 @@ template<typename T>
 T read_memory(u8 *addr) {
 	if (IsBadReadPtr((LPVOID)addr, 0)) {
 		log_fatal("Trying to read from bad pointer: 0x%x", addr);
-		return 0;
+		return (T)0;
 	}
 	return *(T *)addr;
 }
