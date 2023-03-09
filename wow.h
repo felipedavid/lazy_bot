@@ -15,6 +15,7 @@ namespace WoW {
 	typedef u32 (__fastcall *_CGGameObject_C__OnRightClick)(void *thiss);
 	typedef u32 *(__cdecl *_CVar__Register)(const char *name, const char *help, u32 a3, const char *value, void *callback, u32 a6, char a7, u32 a8, char a9);
 	typedef CVar *(__cdecl *_CVar__Lookup)(const char *var_name);
+	typedef void (__cdecl *_ConsoleWrite)(const char *str, int color);
 
 	extern _ConsolePrintf ConsolePrintf;
 	extern _ConsoleCommandRegister ConsoleCommandRegister;
@@ -24,4 +25,5 @@ namespace WoW {
 	extern _CGGameObject_C__OnRightClick CGGameObject_C__OnRightClick;
 	extern _CVar__Register CVar__Register;
 	extern _CVar__Lookup CVar__Lookup;
+	extern _ConsoleWrite ConsoleWrite;
 }

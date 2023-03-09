@@ -11,4 +11,5 @@ namespace WoW {
 	_CGGameObject_C__OnRightClick CGGameObject_C__OnRightClick = (_CGGameObject_C__OnRightClick)CGGAMEOBJECT_C__ONRIGHTCLICK_FUN_PTR;
 	_CVar__Register CVar__Register = (_CVar__Register)CVAR__REGISTER_FUN_PTR;
 	_CVar__Lookup CVar__Lookup = (_CVar__Lookup)CVAR__LOOKUP_FUN_PTR;
+	_ConsoleWrite ConsoleWrite = (_ConsoleWrite) CONSOLEWRITE_FUN_PTR;
 }

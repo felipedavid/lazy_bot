@@ -32,6 +32,7 @@ void WoW_Object::log() {
 	log_info("Type: %s", object_type_str[type]);
 	log_info("Guid: %llu", guid);
 	log_info("Pointer: 0x%x\n", ptr);
+	WoW::ConsoleWrite(" ", 0);
 }
 
 void WoW_GameObject::pulse() {
@@ -46,7 +47,7 @@ void WoW_Unit::log() {
 	log_info("Guid: %llu", guid);
 	log_info("Pointer: 0x%x", ptr);
 	log_info("Position: X=%f Y=%f Z=%f", position.x, position.y, position.z);
-	log_info(" ");
+	WoW::ConsoleWrite(" ", 0);
 }
 
 void WoW_Unit::pulse() {

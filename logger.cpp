@@ -12,6 +12,13 @@ const char* log_level_str[] = {
 	"INFO",
 };
 
+int log_level_colors[] = {
+	3,
+	3,
+	4,
+	0,
+};
+
 void log_output(Log_Level lvl, const char* fmt, ...) {
 	static char buf1[24000];
 	static char buf2[24000];
@@ -22,6 +29,5 @@ void log_output(Log_Level lvl, const char* fmt, ...) {
 	va_end(args);
 
 	sprintf_s(buf2, sizeof(buf2), "[%s] %s", log_level_str[lvl], buf1);
-	// TODO: Use ConsoleWrite to give some colors to the console logs :v
-	WoW::ConsolePrintf(buf2);
+	WoW::ConsoleWrite(buf2, log_level_colors[lvl]);
 }
