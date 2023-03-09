@@ -2,6 +2,10 @@
 #include "defs.h"
 #include "map"
 
+struct Vec3 {
+	f32 x, y, z;
+};
+
 enum Object_Type {
 	OBJECT_TYPE_NONE,
 	OBJECT_TYPE_ITEM,
@@ -18,6 +22,7 @@ struct WoW_Object {
 	u64 guid;
 	u8 *descriptors;
 	Object_Type type;
+	b32 valid;
 
 	void init(u8 *ptr, u64 guid, Object_Type type);
 	b32 is_valid();
@@ -25,19 +30,28 @@ struct WoW_Object {
 };
 
 struct WoW_GameObject : WoW_Object {
+	Vec3 position;
 
+	void pulse();
 };
 
 struct WoW_DynamicObject : WoW_Object {
+	Vec3 position;
 
+	void pulse();
 };
 
 struct WoW_Unit : WoW_Object {
+	Vec3 position;
 
+	void log();
+	void pulse();
 };
 
 struct WoW_Corpse : WoW_Object {
+	Vec3 position;
 
+	void pulse();
 };
 
 struct WoW_Item : WoW_Object {
@@ -68,4 +82,5 @@ struct Object_Manager {
 	WoW_LocalPlayer local_player;
 	void populate_objects();
 	void log();
+	void pulse();
 };

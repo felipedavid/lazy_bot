@@ -66,8 +66,10 @@ void unload_command() {
 }
 
 void objects_command() {
-    object_manager.populate_objects();
-    object_manager.log();
+    Object_Manager tmp_obj_mgr;
+    tmp_obj_mgr.populate_objects();
+    tmp_obj_mgr.pulse();
+	tmp_obj_mgr.log();
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
@@ -88,6 +90,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		orig_wndproc = (WNDPROC)SetWindowLongPtr(window_handle, GWLP_WNDPROC, (LONG_PTR)WndProc);
         break;
     case DLL_PROCESS_DETACH:
+        WoW::ConsoleCommandUnregister("objects");
         WoW::ConsoleCommandUnregister("fish");
         WoW::ConsoleCommandUnregister("unload");
 
