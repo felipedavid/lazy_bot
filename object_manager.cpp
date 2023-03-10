@@ -69,10 +69,15 @@ void Object_Manager::populate_objects() {
 	corpses.clear();
 	players.clear();
 
+	auto local_player_guid = read_memory<u64>(LOCAL_PLAYER_GUID_GLOBAL);
+	if (local_player_guid == 0) {
+		log_fatal("There is no object manager yet, please log in.");
+		return;
+	}
+
 	auto client_conn = read_memory<u8*>(CLIENT_CONNECTION_PTR);
 	auto obj_mgr = read_memory<u8*>(client_conn + CURR_OBJECT_MANAGER);
 	auto obj = read_memory<u8*>(obj_mgr + FIRST_OBJECT);
-	auto local_player_guid = read_memory<u64>(obj_mgr + LOCAL_PLAYER_GUID);
 
 	while (obj && ((u64)obj & 1) == 0) {
 		auto type = read_memory<Object_Type>(obj + OBJECT_TYPE);
@@ -144,5 +149,9 @@ void Object_Manager::log() {
 	for (auto it : units)      it.second.log();
 	for (auto it : corpses)    it.second.log();
 	for (auto it : players)    it.second.log();
-	local_player.log();
+
+	auto local_player_guid = read_memory<u64>(LOCAL_PLAYER_GUID_GLOBAL);
+	if (local_player_guid) {
+		local_player.log();
+	}
 }
