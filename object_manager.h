@@ -1,86 +1,34 @@
 #pragma once
 #include "defs.h"
-#include "map"
+#include "wow_types.h"
 
-struct Vec3 {
-	f32 x, y, z;
-};
+typedef WoW_Item** WoW_Item_Arr;
+typedef WoW_Container** WoW_Container_Arr;
+typedef WoW_Unit** WoW_Unit_Arr;
+typedef WoW_Player** WoW_Player_Arr;
+typedef WoW_GameObject** WoW_GameObject_Arr;
+typedef WoW_DynamicObject** WoW_DynamicObject_Arr;
+typedef WoW_Corpse** WoW_Corpse_Arr;
 
-enum Object_Type {
-	OBJECT_TYPE_NONE,
-	OBJECT_TYPE_ITEM,
-	OBJECT_TYPE_CONTAINER,
-	OBJECT_TYPE_UNIT,
-	OBJECT_TYPE_PLAYER,
-	OBJECT_TYPE_GAMEOBJECT,
-	OBJECT_TYPE_DYNAMICOBJECT,
-	OBJECT_TYPE_CORPSE,
-};
+typedef struct {
+	WoW_Player *local_player;
+	WoW_Item_Arr items;
+	WoW_Container_Arr containers;
+	WoW_Unit_Arr units;
+	WoW_Player_Arr players;
+	WoW_GameObject_Arr game_objects;
+	WoW_DynamicObject_Arr dynamic_objects;
+	WoW_Corpse_Arr corpses;
+} Object_Manager;
 
-struct WoW_Object {
-	u8 *ptr;
-	u64 guid;
-	u8 *descriptors;
-	Object_Type type;
-	b32 valid;
+void object_manager_init(Object_Manager *);
+void object_manager_release(Object_Manager *);
+void object_manager_refresh(Object_Manager *);
 
-	void init(u8 *ptr, u64 guid, Object_Type type);
-	b32 is_valid();
-	void log();
-};
-
-struct WoW_GameObject : WoW_Object {
-	Vec3 position;
-
-	void pulse();
-};
-
-struct WoW_DynamicObject : WoW_Object {
-	Vec3 position;
-
-	void pulse();
-};
-
-struct WoW_Unit : WoW_Object {
-	Vec3 position;
-
-	void log();
-	void pulse();
-};
-
-struct WoW_Corpse : WoW_Object {
-	Vec3 position;
-
-	void pulse();
-};
-
-struct WoW_Item : WoW_Object {
-
-};
-
-struct WoW_Container : WoW_Item {
-
-};
-
-struct WoW_Player : WoW_Unit {
-
-};
-
-struct WoW_LocalPlayer : WoW_Player {
-
-};
-
-struct Object_Manager {
-	std::map<u64, WoW_Item> items;
-	std::map<u64, WoW_Player> players;
-	std::map<u64, WoW_Container> containers;
-	std::map<u64, WoW_Unit> units;
-	std::map<u64, WoW_GameObject> game_objs;
-	std::map<u64, WoW_DynamicObject> dyn_objs;
-	std::map<u64, WoW_Corpse> corpses;
-
-	WoW_LocalPlayer local_player;
-	void populate_objects();
-	void log();
-	void pulse();
-};
+WoW_Item_Descriptors *object_manager_item_get_descriptors(WoW_Item *);
+WoW_Container_Descriptors *object_manager_container_get_descriptors(WoW_Container *);
+WoW_Unit_Descriptors *object_manager_unit_get_descriptors(WoW_Unit *);
+WoW_Player_Descriptors *object_manager_player_get_descriptors(WoW_Player *);  
+WoW_GameObject_Descriptors *object_manager_gameobject_get_descriptors(WoW_GameObject *);  
+WoW_DynamicObject_Descriptors *object_manager_dynamicobject_get_descriptors(WoW_DynamicObject *);  
+WoW_Corpse_Descriptors *object_manager_corpse_get_descriptors(WoW_Corpse *);  
