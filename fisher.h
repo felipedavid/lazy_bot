@@ -19,7 +19,19 @@ typedef enum {
 	FS_LOOTING,
 } Fisher_State;
 
+typedef struct Fisher_Options {
+	b32 loot_everything;
+	b32 loot_trash;
+	b32 loot_non_fish;
+	b32 use_fishing_pools;
+	float delay_after_cast;
+	float delay_after_splash;
+	float delay_after_looting;
+	WoW_Item_ID *fishes_to_loot;
+} Fisher_Options;
+
 typedef struct {
+	struct Fisher_Options;
 	Object_Manager *object_manager;
 	Fisher_State state;
 	b32 is_fishing;
