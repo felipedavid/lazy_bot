@@ -1,12 +1,1 @@
-*.dll
-*.obj
-*.pdb
-*.exe
-*.ilk
-tags
-patches.c
-offsets.h
-bin/
-/worker/.vs/worker
-/worker/Debug
-/worker/offsets.h
+bin
