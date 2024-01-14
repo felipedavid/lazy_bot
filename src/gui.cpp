@@ -63,7 +63,7 @@ void initImGui(LPDIRECT3DDEVICE9 p_device)
 	ImGui::CreateContext();
 
 	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
+	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange | ImGuiConfigFlags_NavNoCaptureKeyboard;
 
 	const char *font_path = "C:\\Users\\Batman\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Ruda-Bold.ttf";
 
@@ -78,8 +78,11 @@ void initImGui(LPDIRECT3DDEVICE9 p_device)
 	ImGui_ImplDX9_Init(p_device);
 }
 
-void drawUI() {
-	ImGui::Begin("Lazy Fish");
+
+void drawGui() {
+	static char whatever[256];
+	ImGui::Begin("Lazy Fish", &lazy_fish_running);
 	ImGui::Text("hiii");
+	ImGui::InputText("whatever", whatever, 256);
 	ImGui::End();
 }

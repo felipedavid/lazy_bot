@@ -13,7 +13,7 @@ i64 __stdcall ourEndscene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-    drawUI();
+    drawGui();
 
 	ImGui::EndFrame();
 	ImGui::Render();
@@ -22,7 +22,7 @@ i64 __stdcall ourEndscene(LPDIRECT3DDEVICE9 pDevice)
 	return originalEndscene(pDevice);
 }
 
-// TODO: do the hooking myself and stop depending on kiero
+// TODO: do the hooking ourselves and stop depending on kiero
 void hookDirectX() {
     if (kiero::init(kiero::RenderType::D3D9) == kiero::Status::Success) {
         kiero::bind(42, (void**)&originalEndscene, ourEndscene);

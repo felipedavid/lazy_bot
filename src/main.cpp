@@ -10,13 +10,15 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx9.h"
 
+bool lazy_fish_running = true;
+
 #include "types.cpp"
 #include "wow\entities.cpp"
 #include "wow\object_manager.cpp"
 #include "wow\globals.cpp"
 #include "wow\functions.cpp"
 #include "window.cpp"
-#include "ui.cpp"
+#include "gui.cpp"
 #include "directx_hook.cpp"
 
 void tick() {
@@ -26,8 +28,7 @@ u32 sneakyThreadEntryPoint(HMODULE module) {
     takeoverWindowProc(getProcessWindow()); 
     hookDirectX();
 
-    for (;;) {
-        if (GetAsyncKeyState(VK_END) & 0x1) break;
+    while (lazy_fish_running) {
         runCodeOnMainThread(tick);
         Sleep(300);
     }

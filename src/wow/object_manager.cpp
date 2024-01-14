@@ -4,14 +4,17 @@ struct ObjectManager {
     WoWObject *visibleObjects;
 };
 
-// TODO: Find out the right way to this so that I don't need to write assembly
 ObjectManager *getObjectManager() {
+    ObjectManager *objMgr = NULL;
     __asm {
-        mov ecx,dword ptr fs:[0x2C]
-        mov eax,dword ptr ds:[0xD439BC]
-        mov edx,dword ptr ds:[ecx+eax*4]
-        mov eax,dword ptr ds:[edx+8]
+        pushad
+        mov ecx, dword ptr fs:[0x2C]
+        mov ecx, dword ptr ds:[ecx]
+        mov ecx, dword ptr ds:[ecx+8]
+        mov objMgr, ecx
+        popad
     }
+    return objMgr;
 }
 
 WoWObject *getObject(ObjectManager *objMgr, u64 guid) {

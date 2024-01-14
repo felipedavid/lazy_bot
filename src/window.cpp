@@ -44,7 +44,10 @@ LRESULT ourWindowProc(HWND window, u32 msg, WPARAM wParam, LPARAM lParam) {
 	if (ImGui_ImplWin32_WndProcHandler(window, msg, wParam, lParam)) return true;
 
     auto io = ImGui::GetIO();
-    if ((io.WantCaptureMouse || io.WantCaptureKeyboard) && msg != WM_KEYUP) return true;
+    if (io.WantCaptureKeyboard && (msg == WM_KEYDOWN)) return true;
+
+    auto isMouseMessage = ((msg == WM_LBUTTONDOWN) || (msg == WM_LBUTTONUP));
+    if (io.WantCaptureMouse && isMouseMessage) return true;
 
     return CallWindowProc(originalWindowProc, window, msg, wParam, lParam);
 }
