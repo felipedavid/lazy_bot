@@ -5,7 +5,7 @@ struct ObjectManager {
 };
 
 // TODO: Find out the right way to this so that I don't need to write assembly
-ObjectManager *get_object_manager() {
+ObjectManager *getObjectManager() {
     __asm {
         mov ecx,dword ptr fs:[0x2C]
         mov eax,dword ptr ds:[0xD439BC]
@@ -14,12 +14,11 @@ ObjectManager *get_object_manager() {
     }
 }
 
-WoWObject *get_object(u64 guid) {
-    ObjectManager *obj_mgr = get_object_manager();
-    WoWObject *obj = obj_mgr->visibleObjects;
+WoWObject *getObject(ObjectManager *objMgr, u64 guid) {
+    WoWObject *obj = objMgr->visibleObjects;
 
     while (obj && (((u32)obj & 1) == 0)) {
-        u32 obj_mgr_unk_field = *(u32*)((u32)obj_mgr+0xA4);
+        u32 obj_mgr_unk_field = *(u32*)((u32)objMgr+0xA4);
         obj = *(WoWObject**)((u32)obj + obj_mgr_unk_field + 4);
     }
 

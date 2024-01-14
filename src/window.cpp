@@ -2,53 +2,53 @@
 // and so we can intercept messages sent to the window passing them to ImGui
 
 HWND window = NULL;
-WNDPROC original_window_proc = NULL;
+WNDPROC originalWindowProc = NULL;
 
-b32 CALLBACK enum_windows_callback(HWND handle, LPARAM l_param) {
-	DWORD window_proc_id;
-	GetWindowThreadProcessId(handle, &window_proc_id);
+b32 CALLBACK enumWindowsCallback(HWND handle, LPARAM lParam) {
+	DWORD windowProcID;
+	GetWindowThreadProcessId(handle, &windowProcID);
 
-	if (GetCurrentProcessId() != window_proc_id) return true;
+	if (GetCurrentProcessId() != windowProcID) return true;
 
 	window = handle;
 	return false;
 }
 
-HWND get_process_window() {
+HWND getProcessWindow() {
 	window = NULL;
-	EnumWindows(enum_windows_callback, NULL);
+	EnumWindows(enumWindowsCallback, NULL);
 	return window;
 }
 
-LRESULT our_window_proc(HWND window, u32 msg, WPARAM w_param, LPARAM l_param);
+LRESULT ourWindowProc(HWND window, u32 msg, WPARAM wParam, LPARAM lParam);
 
-void takeover_window_proc(HWND hwnd) {
+void takeoverWindowProc(HWND hwnd) {
     window = hwnd,
-    original_window_proc = (WNDPROC) SetWindowLong(hwnd, GWL_WNDPROC, (u32)our_window_proc);
+    originalWindowProc = (WNDPROC) SetWindowLong(hwnd, GWL_WNDPROC, (u32)ourWindowProc);
 }
 
-void giveback_window_proc() {
-    SetWindowLong(window, GWL_WNDPROC, (u32)original_window_proc);
+void givebackWindowProc() {
+    SetWindowLong(window, GWL_WNDPROC, (u32)originalWindowProc);
 }
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-typedef void(* _run_on_wndproc_arg)();
+typedef void(* _RunCodeOnMainThreadCallback)();
 
-LRESULT our_window_proc(HWND window, u32 msg, WPARAM w_param, LPARAM l_param) {
+LRESULT ourWindowProc(HWND window, u32 msg, WPARAM wParam, LPARAM lParam) {
     if (msg == WM_USER) {
-        auto callback = (_run_on_wndproc_arg) w_param;
+        auto callback = (_RunCodeOnMainThreadCallback) wParam;
         callback();
         return 0;
     }
 
-	if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param)) return true;
+	if (ImGui_ImplWin32_WndProcHandler(window, msg, wParam, lParam)) return true;
 
     auto io = ImGui::GetIO();
     if ((io.WantCaptureMouse || io.WantCaptureKeyboard) && msg != WM_KEYUP) return true;
 
-    return CallWindowProc(original_window_proc, window, msg, w_param, l_param);
+    return CallWindowProc(originalWindowProc, window, msg, wParam, lParam);
 }
 
-void run_code_on_main_thread(_run_on_wndproc_arg callback) {
+void runCodeOnMainThread(_RunCodeOnMainThreadCallback callback) {
     SendMessage(window, WM_USER, (WPARAM)callback, 0);
 }

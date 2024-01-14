@@ -22,25 +22,26 @@
 void tick() {
 }
 
-u32 sneaky_thread_entry_point(HMODULE parameter) {
-    takeover_window_proc(get_process_window()); 
-    hook_directx();
+u32 sneakyThreadEntryPoint(HMODULE module) {
+    takeoverWindowProc(getProcessWindow()); 
+    hookDirectX();
 
     for (;;) {
         if (GetAsyncKeyState(VK_END) & 0x1) break;
-        run_code_on_main_thread(tick);
+        runCodeOnMainThread(tick);
         Sleep(300);
     }
 
-    unhook_directx();
-    giveback_window_proc();
-    FreeLibraryAndExitThread(parameter, 0);
+    unhookDirectX();
+    givebackWindowProc();
+
+    FreeLibraryAndExitThread(module, 0);
     return true;
 }
 
 b32 DllMain(HMODULE module, u32 reason, void *reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)sneaky_thread_entry_point, module, 0, NULL);
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)sneakyThreadEntryPoint, module, 0, NULL);
     }
     return true;
 }

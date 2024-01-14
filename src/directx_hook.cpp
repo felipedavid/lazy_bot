@@ -1,11 +1,11 @@
 typedef long(__stdcall* EndScene)(LPDIRECT3DDEVICE9);
-EndScene original_endscene = NULL;
+EndScene originalEndscene = NULL;
 
-i64 __stdcall our_endscene(LPDIRECT3DDEVICE9 p_device)
+i64 __stdcall ourEndscene(LPDIRECT3DDEVICE9 pDevice)
 {
     static bool init = false;
 	if (!init) {
-		init_imgui(p_device);
+		initImGui(pDevice);
 		init = true;
 	}
 
@@ -13,22 +13,22 @@ i64 __stdcall our_endscene(LPDIRECT3DDEVICE9 p_device)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-    draw_ui();
+    drawUI();
 
 	ImGui::EndFrame();
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 
-	return original_endscene(p_device);
+	return originalEndscene(pDevice);
 }
 
 // TODO: do the hooking myself and stop depending on kiero
-void hook_directx() {
+void hookDirectX() {
     if (kiero::init(kiero::RenderType::D3D9) == kiero::Status::Success) {
-        kiero::bind(42, (void**)&original_endscene, our_endscene);
+        kiero::bind(42, (void**)&originalEndscene, ourEndscene);
     }
 }
 
-void unhook_directx() {
+void unhookDirectX() {
     kiero::shutdown();
 }
