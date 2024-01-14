@@ -17,36 +17,30 @@
 #include "wow\functions.cpp"
 #include "window.cpp"
 #include "ui.cpp"
+#include "directx_hook.cpp"
 
 void tick() {
 }
 
-u32 start(HMODULE parameter) {
-    UI::hook();
+u32 sneaky_thread_entry_point(HMODULE parameter) {
+    takeover_window_proc(get_process_window()); 
+    hook_directx();
 
     for (;;) {
         if (GetAsyncKeyState(VK_END) & 0x1) break;
-
-        Window::run_on_wndproc(tick);
-
+        run_code_on_main_thread(tick);
         Sleep(300);
     }
 
-    ConsolePrintf("Cleanning thing up, bye bye.");
+    unhook_directx();
+    giveback_window_proc();
     FreeLibraryAndExitThread(parameter, 0);
     return true;
 }
 
-b32 DllMain(HINSTANCE inst, u32 reason, void *reserved) {
-    switch (reason) {
-    case DLL_PROCESS_ATTACH:
-        Window::attach(FindWindowA(NULL, "World of Warcraft")); 
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start, inst, 0, NULL);
-        break;
-    case DLL_PROCESS_DETACH:
-        UI::unhook();
-        Window::dettach();
-        break;
+b32 DllMain(HMODULE module, u32 reason, void *reserved) {
+    if (reason == DLL_PROCESS_ATTACH) {
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)sneaky_thread_entry_point, module, 0, NULL);
     }
     return true;
 }

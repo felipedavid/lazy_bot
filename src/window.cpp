@@ -1,47 +1,54 @@
-extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+// Exchange the application's window proc, so that we can run code in the main thread any time,
+// and so we can intercept messages sent to the window passing them to ImGui
 
-namespace Window {
+HWND window = NULL;
+WNDPROC original_window_proc = NULL;
 
-HWND handle = NULL;
-b32 attached = false;
-WNDPROC old_window_proc = NULL;
+b32 CALLBACK enum_windows_callback(HWND handle, LPARAM l_param) {
+	DWORD window_proc_id;
+	GetWindowThreadProcessId(handle, &window_proc_id);
 
-typedef void(* _run_on_wndproc_arg)();
+	if (GetCurrentProcessId() != window_proc_id) return true;
 
-void run_on_wndproc(_run_on_wndproc_arg callback) {
-    assert(attached);
-
-    SendMessage(handle, WM_USER, (WPARAM)callback, 0);
+	window = handle;
+	return false;
 }
 
-LRESULT new_window_proc(HWND window, u32 msg, WPARAM w_param, LPARAM l_param) {
+HWND get_process_window() {
+	window = NULL;
+	EnumWindows(enum_windows_callback, NULL);
+	return window;
+}
+
+LRESULT our_window_proc(HWND window, u32 msg, WPARAM w_param, LPARAM l_param);
+
+void takeover_window_proc(HWND hwnd) {
+    window = hwnd,
+    original_window_proc = (WNDPROC) SetWindowLong(hwnd, GWL_WNDPROC, (u32)our_window_proc);
+}
+
+void giveback_window_proc() {
+    SetWindowLong(window, GWL_WNDPROC, (u32)original_window_proc);
+}
+
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+typedef void(* _run_on_wndproc_arg)();
+
+LRESULT our_window_proc(HWND window, u32 msg, WPARAM w_param, LPARAM l_param) {
     if (msg == WM_USER) {
         auto callback = (_run_on_wndproc_arg) w_param;
         callback();
         return 0;
     }
 
-	if (true && ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
-		return true;
+	if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param)) return true;
 
-    return CallWindowProc(old_window_proc, handle, msg, w_param, l_param);
+    auto io = ImGui::GetIO();
+    if ((io.WantCaptureMouse || io.WantCaptureKeyboard) && msg != WM_KEYUP) return true;
+
+    return CallWindowProc(original_window_proc, window, msg, w_param, l_param);
 }
 
-void attach(HWND window) {
-    handle = window;
-    old_window_proc = (WNDPROC) SetWindowLong(handle, GWL_WNDPROC, (u32)new_window_proc);
-    if (old_window_proc == 0) {
-        ConsolePrintf("Error: %d", GetLastError());
-        return;
-    }
-    attached = true;
-}
-
-void dettach() {
-    assert(attached);
-
-    SetWindowLong(handle, GWL_WNDPROC, (u32)old_window_proc);
-    attached = false;
-}
-
+void run_code_on_main_thread(_run_on_wndproc_arg callback) {
+    SendMessage(window, WM_USER, (WPARAM)callback, 0);
 }

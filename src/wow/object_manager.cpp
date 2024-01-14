@@ -1,11 +1,11 @@
 
-struct WowObjectManager {
+struct ObjectManager {
     u8 unk[0xAC];
     WoWObject *visibleObjects;
 };
 
 // TODO: Find out the right way to this so that I don't need to write assembly
-WoWObjectManager *get_object_manager() {
+ObjectManager *get_object_manager() {
     __asm {
         mov ecx,dword ptr fs:[0x2C]
         mov eax,dword ptr ds:[0xD439BC]
