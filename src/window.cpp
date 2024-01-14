@@ -1,3 +1,4 @@
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Window {
 
@@ -19,6 +20,9 @@ LRESULT new_window_proc(HWND window, u32 msg, WPARAM w_param, LPARAM l_param) {
         callback();
         return 0;
     }
+
+	if (true && ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
+		return true;
 
     return CallWindowProc(old_window_proc, handle, msg, w_param, l_param);
 }
