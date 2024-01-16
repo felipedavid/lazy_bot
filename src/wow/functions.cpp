@@ -29,3 +29,6 @@ typedef b32(__thiscall *_IsClickMoving)(Player *player);
 auto DeclineGroup = (_DeclineGroup)   0x006D44D0;
 auto DeclineGuild = (_DeclineGuild)   0x006D47D0;
 auto IsClickMoving = (_IsClickMoving) 0x00721F90;
+
+typedef void(__cdecl *_CGGameUI__Target)(u64 guid);
+auto CGameUI__Target = (_CGGameUI__Target) 0x00524BF0;

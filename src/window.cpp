@@ -1,5 +1,5 @@
-// Exchange the application's window proc, so that we can run code in the main thread any time,
-// and so we can intercept messages sent to the window passing them to ImGui
+// Replaces the window proc of the application enabling us to execute code in the main thread at any point,
+// and allowing us to capture and handle messages sent to the window by redirecting them to ImGui.
 
 HWND window = NULL;
 WNDPROC originalWindowProc = NULL;

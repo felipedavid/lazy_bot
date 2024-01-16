@@ -1,63 +1,3 @@
-void initTheme() {
-	ImGuiStyle *style = &ImGui::GetStyle();
- 
-	style->WindowPadding = ImVec2(15, 15);
-	style->WindowRounding = 5.0f;
-	style->FramePadding = ImVec2(5, 5);
-	style->FrameRounding = 4.0f;
-	style->ItemSpacing = ImVec2(12, 8);
-	style->ItemInnerSpacing = ImVec2(8, 6);
-	style->IndentSpacing = 25.0f;
-	style->ScrollbarSize = 15.0f;
-	style->ScrollbarRounding = 9.0f;
-	style->GrabMinSize = 5.0f;
-	style->GrabRounding = 3.0f;
- 
-	style->Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
-	style->Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-	style->Colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	style->Colors[ImGuiCol_ChildBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-	style->Colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-	style->Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
-	style->Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
-	style->Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style->Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-	style->Colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style->Colors[ImGuiCol_TitleBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style->Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
-	style->Colors[ImGuiCol_TitleBgActive] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-	style->Colors[ImGuiCol_MenuBarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style->Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style->Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-	style->Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style->Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	//style->Colors[ImGuiCol_ComboBg] = ImVec4(0.19f, 0.18f, 0.21f, 1.00f);
-	style->Colors[ImGuiCol_CheckMark] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-	style->Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-	style->Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	style->Colors[ImGuiCol_Button] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style->Colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-	style->Colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style->Colors[ImGuiCol_Header] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style->Colors[ImGuiCol_HeaderHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style->Colors[ImGuiCol_HeaderActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	//style->Colors[ImGuiCol_Column] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	//style->Colors[ImGuiCol_ColumnHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-	//style->Colors[ImGuiCol_ColumnActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style->Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-	style->Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style->Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	//style->Colors[ImGuiCol_CloseButton] = ImVec4(0.40f, 0.39f, 0.38f, 0.16f);
-	//style->Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.40f, 0.39f, 0.38f, 0.39f);
-	//style->Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
-	style->Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
-	style->Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
-	style->Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
-	style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
-	style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
-	//style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
-}
-
 void initImGui(LPDIRECT3DDEVICE9 p_device)
 {
 	ImGui::CreateContext();
@@ -65,24 +5,81 @@ void initImGui(LPDIRECT3DDEVICE9 p_device)
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange | ImGuiConfigFlags_NavNoCaptureKeyboard;
 
-	const char *font_path = "C:\\Users\\Batman\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Ruda-Bold.ttf";
-
-	io.Fonts->AddFontFromFileTTF(font_path, 12);
-	io.Fonts->AddFontFromFileTTF(font_path, 10);
-	io.Fonts->AddFontFromFileTTF(font_path, 14);
-	io.Fonts->AddFontFromFileTTF(font_path, 18);
-
-	initTheme();
-
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX9_Init(p_device);
 }
 
+void ObjectManagerInspector(bool* p_open)
+{
+	auto objects = entityManager.visibleObjs;
+	auto objects_len = entityManager.objsLen;
+
+    ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+    if (ImGui::Begin("Object Manager Inspector", p_open, ImGuiWindowFlags_MenuBar))
+    {
+        // Left
+        static int selected = 0;
+        {
+            ImGui::BeginChild("left pane", ImVec2(150, 0), ImGuiChildFlags_Border | ImGuiChildFlags_ResizeX);
+            for (int i = 0; i < objects_len; i++)
+            {
+                // FIXME: Good candidate to use ImGuiSelectableFlags_SelectOnNav
+				auto obj = ClntObjMgrObjectPtr(objects[i], TYPEMASK_ALL);
+				if (!obj) continue;
+
+                char label[256];
+                sprintf(label, "%s %llu", ObjTypeStr[obj->type], objects[i]);
+                if (ImGui::Selectable(label, selected == i)) {
+					*s_currentTargetGUID = objects[i];
+                    selected = i;
+				}
+            }
+            ImGui::EndChild();
+        }
+        ImGui::SameLine();
+
+        // Right
+        {
+            ImGui::BeginGroup();
+            ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+            ImGui::Text("MyObject: %d", selected);
+            ImGui::Separator();
+            if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+            {
+                if (ImGui::BeginTabItem("Description"))
+                {
+                    ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Details"))
+                {
+                    ImGui::Text("ID: 0123456789");
+                    ImGui::EndTabItem();
+                }
+                ImGui::EndTabBar();
+            }
+            ImGui::EndChild();
+            if (ImGui::Button("Revert")) {}
+            ImGui::SameLine();
+            if (ImGui::Button("Save")) {}
+            ImGui::EndGroup();
+        }
+    }
+    ImGui::End();
+}
 
 void drawGui() {
-	static char whatever[256];
+	static char buf[256];
 	ImGui::Begin("Lazy Fish", &lazy_fish_running);
-	ImGui::Text("hiii");
-	ImGui::InputText("whatever", whatever, 256);
+
+	sprintf(buf, "Player: 0x%x", (u32)ClntObjMgrGetActivePlayerObj());
+	ImGui::Text(buf);
+
+	sprintf(buf, "SelectedGuid: 0x%x %llu", (u32)ClntObjMgrObjectPtr(*s_currentTargetGUID, TYPEMASK_OBJECT), *s_currentTargetGUID);
+	ImGui::Text(buf);
+
+	static bool open = true;
+	ObjectManagerInspector(&open);
+
 	ImGui::End();
 }

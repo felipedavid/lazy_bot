@@ -21,7 +21,7 @@ enum ObjectType : u32 {
     OT_CORPSE,
 };
 
-const char *obj_type_str[8] = {
+const char *ObjTypeStr[8] = {
     "None",
     "Item",
     "Container",
@@ -33,9 +33,11 @@ const char *obj_type_str[8] = {
 };
 
 struct WoWObject {
-    u8 unk1[0x14];
+    u8 unk1[0x8];
+    WoWObjectFields *objectFields;
+    u8 unk2[0x8];
     ObjectType type; 
-    u8 unk2[0x780];
+    u8 unk3[0x780];
 };
 
 struct Item : WoWObject {
