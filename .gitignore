@@ -1,2 +1,6 @@
 bin
 *.swp
+*.obj
+*.pdb
+*.dll
+*.exe

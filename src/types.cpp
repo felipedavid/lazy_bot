@@ -1,16 +1,15 @@
-typedef unsigned char      u8;
-typedef unsigned short     u16;
-typedef unsigned int       u32;
-typedef unsigned long long u64;
 
-typedef char      i8;
-typedef short     i16;
-typedef int       i32;
-typedef long long i64;
+typedef char s8;
+typedef short s16;
+typedef int s32;
+typedef long long int s64;
 
-typedef i32 b32;
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef unsigned long long int u64;
 
-typedef float f32;
-typedef double f64;
+typedef u32 b32;
 
-typedef struct {float x; float y; float z;} Vec3;
+#define true  1
+#define false 0
