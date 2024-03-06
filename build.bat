@@ -6,8 +6,8 @@ if not exist "bin" (
 )
 
 set compiler_flags=/LD /DEBUG:FULL
-set libraries=kernel32.lib user32.lib d3d9.lib d3dcompiler.lib dxgi.lib
-set sources=..\src\kiero\minhook\src\hde\hde32.c ..\src\kiero\minhook\src\*.c ..\src\kiero\kiero.cpp ..\src\imgui\imgui*.cpp ..\src\main.cpp
+set libraries=kernel32.lib user32.lib
+set sources=..\src\lazy_bot.cpp
 
 echo "Building go_fish.dll..."
 pushd bin
