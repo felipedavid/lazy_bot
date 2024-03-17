@@ -7,9 +7,9 @@ if not exist "bin" (
 
 set compiler_flags=/LD /DEBUG:FULL
 set libraries=kernel32.lib user32.lib
-set sources=..\src\lazy_bot.cpp
+set sources=..\src\main.cpp
 
-echo "Building go_fish.dll..."
+echo "Building lazy.dll..."
 pushd bin
-cl.exe %compiler_flags% %sources% /Fe:go_fish.dll /link %libraries%
+cl.exe %compiler_flags% %sources% /Fe:lazy.dll /link %libraries%
 popd bin
