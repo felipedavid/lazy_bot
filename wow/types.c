@@ -12,3 +12,6 @@ typedef enum COLOR_T {
     NUM_COLORTYPES=9
 } COLOR_T;
 
+
+#define CGUnit_C void;
+#define CGPlayer_C void;

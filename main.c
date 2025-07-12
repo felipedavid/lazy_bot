@@ -34,13 +34,13 @@ LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return CallWindowProc(g_OriginalWndProc, hwnd, msg, wParam, lParam);
 }
 
-void HookWndProc(HWND hwnd) {
+void hookWindowProc(HWND hwnd) {
     if (g_OriginalWndProc == NULL) {
         g_OriginalWndProc = (WNDPROC)SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)HookedWndProc);
     }
 }
 
-void RunInMainThread(HWND hwnd, MainThreadCallback fn, void* data) {
+void runMainThread(HWND hwnd, MainThreadCallback fn, void* data) {
     MainThreadTask* task = (MainThreadTask*)malloc(sizeof(MainThreadTask));
     if (!task) return;
 
@@ -50,12 +50,11 @@ void RunInMainThread(HWND hwnd, MainThreadCallback fn, void* data) {
     PostMessage(hwnd, WM_RUN_CODE, 0, (LPARAM)task);
 }
 
-    
-void MyInjectedCallback(void* data) {
-    u64 id = ClntObjMgrGetActivePlayer();
-    u32 player = ClntObjMgrObjectPtr(id);
+void doStuff(void* data) {
+    u64 player_guid = ClntObjMgrGetActivePlayer();
+    void *player = GetObjectPtr(player_guid);
 
-    ConsoleWriteA("Active Player: %llu", ERROR_COLOR, id);
+    ConsoleWriteA("Active Player: %llu", ERROR_COLOR, player_guid);
     ConsoleWriteA("Ptr: 0x%x", ERROR_COLOR, player);
 }
 
@@ -64,12 +63,13 @@ u32 entry(HMODULE handle) {
     s_consoleHeight = 1;
     ConsoleWrite("Hello from lazybot!", WARNING_COLOR);
 
-    HWND wowWindow = FindWindowA(NULL, "World of Warcraft");
-    HookWndProc(wowWindow);
+    doStuff(null);
 
     while (true) {
-        RunInMainThread(wowWindow, MyInjectedCallback, NULL);
-        Sleep(100);
+        if (GetAsyncKeyState(VK_END) & 0x8000) break;
+        if (GetAsyncKeyState(VK_UP) & 0x8000) doStuff(null);
+
+        Sleep(80);
     }
 
     ConsoleWrite("Goodbye.", ERROR_COLOR);
