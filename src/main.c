@@ -52,10 +52,12 @@ void runMainThread(HWND hwnd, MainThreadCallback fn, void* data) {
 
 void doStuff(void* data) {
     u64 player_guid = ClntObjMgrGetActivePlayer();
-    void *player = GetObjectPtr(player_guid);
+    CGPlayer_C *player = GetObjectPtr(player_guid);
+    C3Vector pos = ((CGUnit_C *)player)->m_currentPosition;
 
     ConsoleWriteA("Active Player: %llu", ERROR_COLOR, player_guid);
     ConsoleWriteA("Ptr: 0x%x", ERROR_COLOR, player);
+    ConsoleWriteA("Position: X=%.2f Y=%.2f Z=%.2f\n", ERROR_COLOR, pos.x, pos.y, pos.z);
 }
 
 u32 entry(HMODULE handle) {
