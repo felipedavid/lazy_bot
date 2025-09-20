@@ -1,1 +1,0 @@
-cl /LD main.c /Fe:lazy_bot.dll user32.lib

@@ -4,3 +4,4 @@ bin
 *.pdb
 *.dll
 *.exe
+build/
