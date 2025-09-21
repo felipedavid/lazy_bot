@@ -1,5 +1,6 @@
 #define OFFSET_S_ACTIVE                  0x00c4eac8
 #define OFFSET_S_CONSOLEHEIGHT           0x00c4ec10
+#define OFFSET_S_CONSOLEENABLED          0x00c4ec20
 #define OFFSET_S_CURMGR                  0x00b41414
 
 #define OFFSET_CONSOLEWRITE              0x0063cb50

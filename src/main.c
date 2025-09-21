@@ -60,10 +60,25 @@ void doStuff(void* data) {
     ConsoleWriteA("Position: X=%.2f Y=%.2f Z=%.2f\n", ERROR_COLOR, pos.x, pos.y, pos.z);
 }
 
+void init() {
+    s_consoleEnabled = true;
+}
+
+void cleanup() {
+    s_consoleEnabled = false;
+}
+
 u32 entry(HMODULE handle) {
-    s_active = 1;
+    init();
+    s_active = true;
     s_consoleHeight = 1;
     ConsoleWrite("Hello from lazybot!", WARNING_COLOR);
+
+    HWND window = FindWindowA(NULL, "World of Warcraft");
+    if (!window) {
+        ConsoleWrite("Unable to find wow window. Leaving...", ERROR_COLOR);
+        goto END;
+    }
 
     doStuff(null);
 
@@ -74,8 +89,9 @@ u32 entry(HMODULE handle) {
         Sleep(80);
     }
 
+END:
+    cleanup();
     ConsoleWrite("Goodbye.", ERROR_COLOR);
-
     FreeLibraryAndExitThread(handle, 0);
 }
 
