@@ -50,14 +50,29 @@ void runMainThread(HWND hwnd, MainThreadCallback fn, void* data) {
     PostMessage(hwnd, WM_RUN_CODE, 0, (LPARAM)task);
 }
 
-void doStuff(void* data) {
-    u64 player_guid = ClntObjMgrGetActivePlayer();
-    CGPlayer_C *player = GetObjectPtr(player_guid);
-    C3Vector pos = ((CGUnit_C *)player)->m_currentPosition;
+int __stdcall log_object(u64 guid) {
+    CGObject_C *obj = GetObjectPtr(guid);
 
-    ConsoleWriteA("Active Player: %llu", ERROR_COLOR, player_guid);
-    ConsoleWriteA("Ptr: 0x%x", ERROR_COLOR, player);
-    ConsoleWriteA("Position: X=%.2f Y=%.2f Z=%.2f\n", ERROR_COLOR, pos.x, pos.y, pos.z);
+    COLOR_T color = DEFAULT_COLOR;
+    if (obj->type == ID_PLAYER) color = ERROR_COLOR;
+    if (obj->type == ID_UNIT) color = WARNING_COLOR;
+
+    if (obj->type != ID_PLAYER) return 1;
+
+    ConsoleWriteA("Type: %s", color, OBJECT_TYPE_ID_STR[obj->type]);
+    ConsoleWriteA("Pointer: 0x%x", color, obj);
+
+    if (obj->type >= ID_UNIT && obj->type <= ID_CORPSE) {
+        C3Vector pos = ((CGUnit_C *)obj)->m_currentPosition;
+        ConsoleWriteA("Position: %.2f %.2f %.2f", color, pos.x, pos.y, pos.z);
+    }
+    ConsoleWrite(" ", color);
+
+    return 1;
+}
+
+void doStuff(void* data) {
+    ClntObjMgrEnumVisibleObjects(log_object, 0);
 }
 
 void init() {
@@ -80,11 +95,9 @@ u32 entry(HMODULE handle) {
         goto END;
     }
 
-    doStuff(null);
-
     while (true) {
         if (GetAsyncKeyState(VK_END) & 0x8000) break;
-        if (GetAsyncKeyState(VK_UP) & 0x8000) doStuff(null);
+        if (GetAsyncKeyState(VK_RIGHT) & 0x8000) doStuff(null);
 
         Sleep(80);
     }
